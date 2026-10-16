@@ -245,7 +245,7 @@ export function CheckoutForm() {
                 {count} {count === 1 ? "item" : "items"} <Icon name="chevronDown" size={16} className="transition-transform group-open:rotate-180 lg:hidden" />
               </span>
             </summary>
-            <ul className="max-h-[360px] space-y-3 overflow-y-auto px-5 pb-5 md:px-6">
+            <ul className="max-h-[360px] space-y-3 overflow-y-auto px-5 pb-5 pt-1.5 md:px-6">
               {lines.map((l) => (
                 <li key={l.key} className="flex items-center gap-3.5">
                   <span className="relative size-16 shrink-0 rounded-2xl bg-paper-3">

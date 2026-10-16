@@ -84,9 +84,9 @@ export function CartView() {
                 {!l.available && <p className="mt-1 text-sm text-danger">No longer available. Please remove it to continue.</p>}
               </div>
               <p className="col-start-2 text-lg font-semibold tabular-nums md:col-start-3 md:row-start-1 md:text-right">{formatPrice(l.lineTotal)}</p>
-              <div className="col-start-2 flex flex-wrap items-center justify-between gap-3 md:col-span-2 md:col-start-2">
+              <div className="col-start-2 flex flex-wrap items-center justify-between gap-x-2 gap-y-3 md:col-span-2 md:col-start-2">
                 <QuantityStepper value={l.item.quantity} max={stockLimit(l.product)} onChange={(n) => setQuantity(l.key, n, l.product)} label={`Quantity of ${l.product.name}`} />
-                <button type="button" onClick={() => removeFromCart(l.key)} className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-muted transition-colors hover:bg-danger/10 hover:text-danger">
+                <button type="button" onClick={() => removeFromCart(l.key)} className="-mr-2 inline-flex h-9 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium text-muted transition-colors hover:bg-danger/10 hover:text-danger">
                   <Icon name="trash" size={14} /> Remove
                 </button>
               </div>

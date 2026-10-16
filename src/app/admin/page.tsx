@@ -101,7 +101,7 @@ export default async function AdminOverview() {
           <Panel title="Recent orders" className="xl:col-span-2" actions={<Link href="/admin/orders" className="text-link text-sm">All orders →</Link>}>
             {recent.length ? (
               <div className="-mx-5 -mb-5 overflow-x-auto md:-mx-6">
-                <table className="w-full text-sm">
+                <table className="w-full min-w-[600px] text-sm">
                   <thead>
                     <tr>
                       <th className={th}>Order</th>

@@ -35,7 +35,7 @@ export function AdminNav({ user, badges }: { user: { name: string; role: string 
           <Icon name="menu" />
         </button>
         <Link href="/admin" className="flex items-center gap-2">
-          <Logo compact className="w-14" />
+          <Logo className="w-32" />
           <span className="text-sm font-medium text-muted">Admin</span>
         </Link>
         <Link href="/" className="text-sm font-medium text-accent">
@@ -52,7 +52,7 @@ export function AdminNav({ user, badges }: { user: { name: string; role: string 
       >
         <div className="flex items-center justify-between px-6 pb-4 pt-6">
           <Link href="/admin" className="block">
-            <Logo className="w-20" />
+            <Logo className="w-32" />
             <span className="mt-2 block text-xs font-medium text-muted">Admin console</span>
           </Link>
           <button type="button" onClick={() => setOpen(false)} className="grid size-10 place-items-center rounded-full hover:bg-paper-3 lg:hidden" aria-label="Close admin menu">

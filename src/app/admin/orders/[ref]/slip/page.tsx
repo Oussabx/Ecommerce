@@ -18,7 +18,7 @@ export default async function SlipPage({ params }: { params: Promise<{ ref: stri
     <div className="mx-auto max-w-2xl bg-white p-10 text-black print:p-0">
       <div className="flex items-start justify-between border-b-2 border-black/15 pb-4">
         <div>
-          <Logo className="w-32" />
+          <Logo mono className="w-32" />
           {store.contact.phone && <p className="mt-2 text-xs">{store.contact.phone}</p>}
         </div>
         <div className="text-right">
