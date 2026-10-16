@@ -41,7 +41,7 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
       </PageHeader>
       <Body>
         {groups.length ? (
-          <div className="overflow-x-auto border border-rule bg-[#fbfaf7]">
+          <div className="card overflow-x-auto">
             <table className="w-full min-w-[680px] text-sm">
               <thead>
                 <tr>
@@ -56,7 +56,7 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
                 {groups.map((g) => {
                   const c = info.get(g.email);
                   return (
-                    <tr key={g.email} className="hover:bg-paper-2">
+                    <tr key={g.email} className="transition-colors hover:bg-paper-2 [&:last-child>td]:border-b-0">
                       <td className={td}>
                         <Link href={`/admin/customers/${encodeURIComponent(g.email)}`} className="font-semibold hover:underline">
                           {c ? `${c.firstName} ${c.lastName}` : g.email}
@@ -68,8 +68,8 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
                         <span className="block text-xs">{c?.area}</span>
                       </td>
                       <td className={`${td} text-muted`}>{g._max.createdAt ? formatDate(g._max.createdAt.toISOString()) : "—"}</td>
-                      <td className={`${td} text-right font-mono`}>{g._count}</td>
-                      <td className={`${td} text-right font-mono`}>{formatPrice(fromCents(spend.get(g.email) ?? 0))}</td>
+                      <td className={`${td} text-right tabular-nums`}>{g._count}</td>
+                      <td className={`${td} text-right tabular-nums`}>{formatPrice(fromCents(spend.get(g.email) ?? 0))}</td>
                     </tr>
                   );
                 })}

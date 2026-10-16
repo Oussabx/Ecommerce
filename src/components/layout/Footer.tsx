@@ -17,16 +17,16 @@ export async function Footer() {
   ].filter(Boolean) as { label: string; value: string; href?: string }[];
 
   return (
-    <footer className="bg-ink text-paper">
-      <div className="container-x grid gap-12 py-16 md:grid-cols-12">
+    <footer className="mt-8 bg-paper-2 text-ink">
+      <div className="container-x grid gap-10 py-14 md:grid-cols-12">
         <div className="md:col-span-4">
-          <Logo className="w-40 text-paper" />
-          <p className="mt-6 max-w-xs text-sm leading-relaxed text-paper/60">{store.description}</p>
+          <Logo className="w-28" />
+          <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">{store.description}</p>
           {socials.length > 0 && (
-            <ul className="mt-6 flex gap-2">
+            <ul className="mt-5 flex gap-2">
               {socials.map(([name, url]) => (
                 <li key={name}>
-                  <a href={url} target="_blank" rel="noopener noreferrer" className="grid size-10 place-items-center border border-paper/20 transition-colors hover:border-lime hover:text-lime" aria-label={name}>
+                  <a href={url} target="_blank" rel="noopener noreferrer" className="grid size-10 place-items-center rounded-full bg-white text-ink transition-colors hover:text-accent" aria-label={name}>
                     <Icon name={name} size={18} />
                   </a>
                 </li>
@@ -34,27 +34,27 @@ export async function Footer() {
             </ul>
           )}
         </div>
-        <FooterCol title="Shop" index="01" links={footerNav.shop} />
-        <FooterCol title="Help" index="02" links={footerNav.help} />
-        <FooterCol title="OSA" index="03" links={footerNav.company} />
+        <FooterCol title="Shop" links={footerNav.shop} />
+        <FooterCol title="Help" links={footerNav.help} />
+        <FooterCol title="OSA" links={footerNav.company} />
         <div className="md:col-span-2">
-          <h2 className="label mb-4 text-paper/50">04 — Contact</h2>
+          <h2 className="mb-3 text-sm font-semibold">Contact</h2>
           {contactRows.length ? (
-            <dl className="space-y-3 text-sm">
+            <dl className="space-y-2.5 text-sm">
               {contactRows.map((r) => (
                 <div key={r.label}>
-                  <dt className="label text-paper/40">{r.label}</dt>
-                  <dd>{r.href ? <a href={r.href} className="link-underline">{r.value}</a> : r.value}</dd>
+                  <dt className="text-xs text-muted">{r.label}</dt>
+                  <dd>{r.href ? <a href={r.href} className="hover:text-accent">{r.value}</a> : r.value}</dd>
                 </div>
               ))}
             </dl>
           ) : (
-            <p className="text-sm text-paper/70">
-              <Link href="/contact" className="link-underline">Send us a message</Link> — we reply to every enquiry.
+            <p className="text-sm text-muted">
+              <Link href="/contact" className="text-ink hover:text-accent">Send us a message</Link>. We reply to every enquiry.
             </p>
           )}
-          <h2 className="label mb-3 mt-8 text-paper/50">Payment</h2>
-          <ul className="space-y-1 text-sm text-paper/80">
+          <h2 className="mb-2 mt-6 text-sm font-semibold">Payment</h2>
+          <ul className="space-y-1 text-sm text-muted">
             {store.paymentMethods.map((p) => (
               <li key={p.id} className="flex items-center gap-2">
                 <Icon name="cash" size={16} /> {p.label}
@@ -63,15 +63,15 @@ export async function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-paper/15">
-        <div className="container-x flex flex-col gap-3 py-5 text-xs text-paper/50 md:flex-row md:items-center md:justify-between">
+      <div className="container-x">
+        <div className="flex flex-col gap-2 border-t border-rule-strong/60 py-5 text-xs text-muted md:flex-row md:items-center md:justify-between">
           <p>
             © {new Date().getFullYear()} {store.legalName}. Prices in USD. Delivery across {store.country}.
           </p>
-          {store.sampleCatalog && <p className="label text-lime/80">Sample catalogue — products, prices and stock are for demonstration.</p>}
+          {store.sampleCatalog && <p>Sample catalogue: products, prices and stock are for demonstration.</p>}
           <p className="flex gap-4">
-            <Link href="/privacy" className="hover:text-paper">Privacy</Link>
-            <Link href="/terms" className="hover:text-paper">Terms</Link>
+            <Link href="/privacy" className="hover:text-ink">Privacy</Link>
+            <Link href="/terms" className="hover:text-ink">Terms</Link>
           </p>
         </div>
       </div>
@@ -79,16 +79,14 @@ export async function Footer() {
   );
 }
 
-function FooterCol({ title, index, links }: { title: string; index: string; links: { href: string; label: string }[] }) {
+function FooterCol({ title, links }: { title: string; links: { href: string; label: string }[] }) {
   return (
     <nav className="md:col-span-2" aria-label={title}>
-      <h2 className="label mb-4 text-paper/50">
-        {index} — {title}
-      </h2>
+      <h2 className="mb-3 text-sm font-semibold">{title}</h2>
       <ul className="space-y-2 text-sm">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="link-underline text-paper/85 hover:text-paper">
+            <Link href={l.href} className="text-muted transition-colors hover:text-ink">
               {l.label}
             </Link>
           </li>

@@ -42,7 +42,7 @@ export function InfoPageView({ page, children }: { page: InfoPage; children?: Re
   return (
     <div className="container-x pb-20 pt-6">
       <Breadcrumbs items={[{ label: page.title }]} />
-      <header className="mt-8 grid gap-6 border-t border-ink pt-4 md:grid-cols-12">
+      <header className="mt-8 grid gap-6 border-t border-rule pt-4 md:grid-cols-12">
         <div className="md:col-span-12">
           <h1 className="display text-[clamp(3.2rem,9vw,8.5rem)]">{page.title}</h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">{page.intro}</p>
@@ -63,7 +63,7 @@ export function InfoPageView({ page, children }: { page: InfoPage; children?: Re
         </nav>
         <article className="prose-osa max-w-3xl md:col-span-9">
           {hasPlaceholders && (
-            <p className="!mb-8 border border-ink bg-paper-2 p-4 text-sm">
+            <p className="!mb-8 border border-rule bg-paper-2 p-4 text-sm">
               <mark>Highlighted text</mark> is placeholder content awaiting confirmation from OSA Techstore.
             </p>
           )}

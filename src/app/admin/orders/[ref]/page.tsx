@@ -46,7 +46,7 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
       <Body className="grid gap-6 xl:grid-cols-3">
         <div className="space-y-6 xl:col-span-2">
           <Panel title="Items">
-            <div className="-m-4 overflow-x-auto">
+            <div className="-mx-5 -mb-5 overflow-x-auto md:-mx-6">
               <table className="w-full text-sm">
                 <thead>
                   <tr>
@@ -78,9 +78,9 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
                         </span>
                       </td>
                       <td className={`${td} text-muted`}>{[l.colorName, l.configLabel].filter(Boolean).join(" · ")}</td>
-                      <td className={`${td} text-right font-mono`}>{l.quantity}</td>
-                      <td className={`${td} text-right font-mono`}>{formatPrice(fromCents(l.unitPriceCents))}</td>
-                      <td className={`${td} text-right font-mono`}>{formatPrice(fromCents(l.unitPriceCents * l.quantity))}</td>
+                      <td className={`${td} text-right tabular-nums`}>{l.quantity}</td>
+                      <td className={`${td} text-right tabular-nums`}>{formatPrice(fromCents(l.unitPriceCents))}</td>
+                      <td className={`${td} text-right tabular-nums`}>{formatPrice(fromCents(l.unitPriceCents * l.quantity))}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -95,7 +95,7 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
                 <dt>Delivery</dt>
                 <dd className="font-mono">{order.deliveryFeeCents === null ? <span className="text-warn">To confirm</span> : formatPrice(fromCents(order.deliveryFeeCents))}</dd>
               </div>
-              <div className="flex justify-between border-t border-ink pt-1.5 font-semibold">
+              <div className="flex justify-between border-t border-rule pt-1.5 font-semibold">
                 <dt>Total</dt>
                 <dd className="font-mono">{formatPrice(orderTotal(order))}</dd>
               </div>

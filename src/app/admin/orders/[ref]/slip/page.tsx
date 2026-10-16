@@ -16,7 +16,7 @@ export default async function SlipPage({ params }: { params: Promise<{ ref: stri
   const { store } = await getSettings();
   return (
     <div className="mx-auto max-w-2xl bg-white p-10 text-ink print:p-0">
-      <div className="flex items-start justify-between border-b-2 border-ink pb-4">
+      <div className="flex items-start justify-between border-b-2 border-rule pb-4">
         <div>
           <Logo className="w-32" />
           {store.contact.phone && <p className="mt-2 text-xs">{store.contact.phone}</p>}
@@ -52,7 +52,7 @@ export default async function SlipPage({ params }: { params: Promise<{ ref: stri
       </div>
       <table className="mt-8 w-full text-sm">
         <thead>
-          <tr className="border-b border-ink text-left">
+          <tr className="border-b border-rule text-left">
             <th className="label py-1 font-normal">Item</th>
             <th className="label py-1 text-right font-normal">Qty</th>
             <th className="label py-1 text-right font-normal">Price</th>
@@ -72,8 +72,8 @@ export default async function SlipPage({ params }: { params: Promise<{ ref: stri
         </tbody>
       </table>
       <div className="mt-10 grid grid-cols-2 gap-10 text-xs">
-        <div className="border-t border-ink pt-1">Received by (name &amp; signature)</div>
-        <div className="border-t border-ink pt-1">Date</div>
+        <div className="border-t border-rule pt-1">Received by (name &amp; signature)</div>
+        <div className="border-t border-rule pt-1">Date</div>
       </div>
       <PrintButton />
     </div>

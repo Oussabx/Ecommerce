@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { OrderStatus, Prisma } from "@prisma/client";
-import { Body, Empty, PageHeader, Pager, StatusBadge, statusShort, td, th } from "@/components/admin/ui";
+import { Body, Empty, PageHeader, Pager, StatusBadge, statusShort, tableWrap, td, th, tr } from "@/components/admin/ui";
 import { requireStaff } from "@/server/auth";
 import { db } from "@/server/db";
 import { orderTotal } from "@/server/orders";
@@ -46,29 +46,29 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
     <>
       <PageHeader title="Orders" kicker={`${total} ${total === 1 ? "order" : "orders"}`}>
         <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <nav className="no-scrollbar -mx-4 flex gap-1 overflow-x-auto px-4 lg:mx-0 lg:px-0" aria-label="Filter by status">
-            <Link href={href({ status: undefined, page: undefined })} className={cn("label inline-flex h-9 shrink-0 items-center border px-3", !status ? "border-ink bg-ink text-paper" : "border-rule-strong hover:border-ink")}>
+          <nav className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 lg:mx-0 lg:px-0" aria-label="Filter by status">
+            <Link href={href({ status: undefined, page: undefined })} aria-current={!status ? "page" : undefined} className={cn("chip shrink-0", !status ? "is-active" : "bg-paper shadow-[var(--shadow-card)] hover:bg-paper-3")}>
               All
             </Link>
             {STATUSES.map((s) => (
-              <Link key={s} href={href({ status: s, page: undefined })} className={cn("label inline-flex h-9 shrink-0 items-center gap-2 border px-3", status === s ? "border-ink bg-ink text-paper" : "border-rule-strong hover:border-ink")}>
-                {statusShort[s]} <span className="opacity-60">{countFor(s)}</span>
+              <Link key={s} href={href({ status: s, page: undefined })} aria-current={status === s ? "page" : undefined} className={cn("chip shrink-0 gap-2", status === s ? "is-active" : "bg-paper shadow-[var(--shadow-card)] hover:bg-paper-3")}>
+                {statusShort[s]} <span className="tabular-nums opacity-60">{countFor(s)}</span>
               </Link>
             ))}
           </nav>
-          <form className="flex" action="/admin/orders">
+          <form className="flex gap-2" action="/admin/orders">
             {status && <input type="hidden" name="status" value={status} />}
             <label htmlFor="q" className="sr-only">
               Search orders
             </label>
-            <input id="q" name="q" defaultValue={q} placeholder="Ref, name, email or phone" className="field !min-h-9 w-64 !py-1.5 text-sm" />
-            <button className="btn btn-primary !min-h-9 !px-3">Search</button>
+            <input id="q" name="q" defaultValue={q} placeholder="Ref, name, email or phone" className="field !min-h-10 w-full !rounded-full !py-1.5 text-sm sm:w-64" />
+            <button className="btn btn-primary !min-h-10 !px-4 text-sm">Search</button>
           </form>
         </div>
       </PageHeader>
       <Body>
         {orders.length ? (
-          <div className="overflow-x-auto border border-rule bg-[#fbfaf7]">
+          <div className={tableWrap}>
             <table className="w-full min-w-[760px] text-sm">
               <thead>
                 <tr>
@@ -82,9 +82,9 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
               </thead>
               <tbody>
                 {orders.map((o) => (
-                  <tr key={o.id} className="hover:bg-paper-2">
+                  <tr key={o.id} className={tr}>
                     <td className={td}>
-                      <Link href={`/admin/orders/${o.ref}`} className="font-mono font-semibold hover:underline">
+                      <Link href={`/admin/orders/${o.ref}`} className="font-semibold hover:text-accent">
                         {o.ref}
                       </Link>
                     </td>
@@ -101,7 +101,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
                     <td className={td}>
                       <StatusBadge status={o.status} />
                     </td>
-                    <td className={`${td} text-right font-mono`}>
+                    <td className={`${td} text-right font-medium tabular-nums`}>
                       {formatPrice(orderTotal(o))}
                       {o.deliveryFeeCents === null && o.status !== "CANCELLED" && <span className="block text-[10px] text-muted">+ delivery</span>}
                     </td>
@@ -111,7 +111,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
             </table>
           </div>
         ) : (
-          <Empty title={q || status ? "No orders match." : "No orders yet."}>{q || status ? <Link href="/admin/orders" className="underline">Clear filters</Link> : "New orders from the website appear here."}</Empty>
+          <Empty title={q || status ? "No orders match." : "No orders yet."}>{q || status ? <Link href="/admin/orders" className="text-link">Clear filters</Link> : "New orders from the website appear here."}</Empty>
         )}
         <Pager page={page} pages={Math.ceil(total / PER_PAGE)} href={(p) => href({ page: String(p) })} />
       </Body>

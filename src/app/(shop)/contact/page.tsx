@@ -23,7 +23,7 @@ export default async function ContactPage() {
   return (
     <div className="container-x pb-20 pt-6">
       <Breadcrumbs items={[{ label: "Contact" }]} />
-      <div className="mt-8 grid gap-12 border-t border-ink pt-4 lg:grid-cols-12">
+      <div className="mt-8 grid gap-12 border-t border-rule pt-4 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <h1 className="display text-[clamp(3.2rem,9vw,8rem)]">Talk to us.</h1>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-2">

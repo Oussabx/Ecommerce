@@ -29,7 +29,7 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
       />
       <Body className="grid gap-6 xl:grid-cols-3">
         <Panel title={`Orders (${orders.length})`} className="xl:col-span-2">
-          <div className="-m-4 overflow-x-auto">
+          <div className="-mx-5 -mb-5 overflow-x-auto md:-mx-6">
             <table className="w-full text-sm">
               <thead>
                 <tr>
@@ -43,7 +43,7 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
                 {orders.map((o) => (
                   <tr key={o.id}>
                     <td className={td}>
-                      <Link href={`/admin/orders/${o.ref}`} className="font-mono font-semibold hover:underline">
+                      <Link href={`/admin/orders/${o.ref}`} className="tabular-nums font-semibold hover:underline">
                         {o.ref}
                       </Link>
                     </td>
@@ -51,7 +51,7 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
                     <td className={td}>
                       <StatusBadge status={o.status} />
                     </td>
-                    <td className={`${td} text-right font-mono`}>{formatPrice(orderTotal(o))}</td>
+                    <td className={`${td} text-right tabular-nums`}>{formatPrice(orderTotal(o))}</td>
                   </tr>
                 ))}
               </tbody>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { Icon } from "@/components/ui/Icon";
 import { ProductExperience } from "@/components/product/ProductExperience";
 import { FrequentlyBought } from "@/components/product/FrequentlyBought";
 import { ProductRail } from "@/components/product/ProductRail";
@@ -59,7 +60,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
-      <div className="container-x pb-16 pt-6">
+      <div className="container-x pb-12 pt-5 md:pb-20 md:pt-6">
         <Breadcrumbs items={[{ label: "Shop", href: "/shop" }, { label: category.name, href: `/category/${category.slug}` }, { label: product.name }]} />
         <div className="mt-6 md:mt-8">
           <ProductExperience product={product} />
@@ -67,17 +68,19 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {/* overview + specs */}
-      <section className="border-t border-ink bg-paper-2" aria-labelledby="specs-title">
-        <div className="container-x grid gap-10 py-14 md:py-20 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <h2 className="display text-5xl md:text-6xl">In short</h2>
-            <p className="mt-5 leading-relaxed text-ink-2">{product.description}</p>
+      <section className="bg-paper-2" aria-labelledby="specs-title">
+        <div className="container-x grid gap-8 py-12 md:py-20 lg:grid-cols-12 lg:gap-10">
+          <div className="space-y-5 lg:col-span-5">
+            <div className="card p-6 md:p-8">
+              <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">In short</h2>
+              <p className="mt-3 text-[15px] leading-relaxed text-muted md:text-base">{product.description}</p>
+            </div>
             {product.inTheBox && (
-              <div className="mt-8">
-                <h3 className="label">In the box</h3>
-                <ul className="mt-2 divide-y divide-rule border-y border-rule text-sm">
+              <div className="card p-6 md:p-8">
+                <h3 className="text-lg font-semibold">In the box</h3>
+                <ul className="mt-3 divide-y divide-rule text-[15px]">
                   {product.inTheBox.map((x) => (
-                    <li key={x} className="py-2">
+                    <li key={x} className="py-3 first:pt-0 last:pb-0">
                       {x}
                     </li>
                   ))}
@@ -85,29 +88,27 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </div>
             )}
           </div>
-          <div className="lg:col-span-8">
-            <h2 id="specs-title" className="display text-5xl md:text-6xl">
-              The details
+          <div className="lg:col-span-7">
+            <h2 id="specs-title" className="text-2xl font-semibold tracking-tight md:text-3xl">
+              Tech specs
             </h2>
-            <div className="mt-6 border-t border-ink">
+            <div className="mt-5 space-y-3">
               {product.specs.map((g, gi) => (
-                <details key={g.group} open={gi < 3} className="group border-b border-rule">
-                  <summary className="flex list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden">
-                    <span className="flex items-baseline gap-4">
-                      <span className="label text-muted">{String(gi + 1).padStart(2, "0")}</span>
-                      <span className="text-lg font-semibold">{g.group}</span>
+                <details key={g.group} open={gi < 3} className="card group overflow-hidden">
+                  <summary className="flex list-none items-center justify-between gap-4 px-5 py-4 md:px-6 [&::-webkit-details-marker]:hidden">
+                    <span className="text-[17px] font-semibold">{g.group}</span>
+                    <span className="grid size-8 place-items-center rounded-full bg-paper-2 text-muted transition-transform group-open:rotate-180" aria-hidden>
+                      <Icon name="chevronDown" size={16} />
                     </span>
-                    <span className="label text-muted group-open:hidden">Show</span>
-                    <span className="label hidden text-muted group-open:inline">Hide</span>
                   </summary>
-                  <table className="mb-4 w-full text-sm">
-                    <tbody>
+                  <table className="w-full text-sm md:text-[15px]">
+                    <tbody className="divide-y divide-rule border-t border-rule">
                       {g.rows.map(([k, v]) => (
-                        <tr key={k} className="border-t border-rule/70">
-                          <th scope="row" className="w-2/5 py-2.5 pr-4 text-left font-normal text-muted">
+                        <tr key={k}>
+                          <th scope="row" className="w-2/5 py-3 pl-5 pr-4 text-left align-top font-normal text-muted md:pl-6">
                             {k}
                           </th>
-                          <td className="py-2.5">{v}</td>
+                          <td className="py-3 pr-5 md:pr-6">{v}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -120,14 +121,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      <div className="container-x space-y-16 py-16 md:py-20">
+      <div className="container-x space-y-16 py-12 md:space-y-20 md:py-20">
         {product.pairsWith?.length ? <FrequentlyBought slug={product.slug} pairs={product.pairsWith} /> : null}
         <section aria-labelledby="related-title">
-          <div className="border-t border-ink pt-5">
-            <h2 id="related-title" className="display text-5xl md:text-6xl">
-              Related products
-            </h2>
-          </div>
+          <h2 id="related-title" className="text-2xl font-semibold tracking-tight md:text-3xl">
+            Related products
+          </h2>
           <div className="mt-6">
             <ProductRail items={related} />
           </div>

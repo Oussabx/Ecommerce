@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Body, PageHeader, Panel, StatusBadge, td, th } from "@/components/admin/ui";
+import { Body, PageHeader, Panel, StatusBadge, td, th, tr } from "@/components/admin/ui";
 import { OrdersChart } from "@/components/admin/OrdersChart";
 import { requireStaff } from "@/server/auth";
 import { db, fromCents } from "@/server/db";
@@ -53,13 +53,16 @@ export default async function AdminOverview() {
     <>
       <PageHeader title={`Hello, ${user.name.split(" ")[0]}.`} kicker={new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })} />
       <Body className="space-y-6">
-        <ul className="grid grid-cols-2 gap-px border border-rule bg-rule lg:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
           {tiles.map((t) => (
             <li key={t.label}>
-              <Link href={t.href} className={`block h-full p-5 transition-colors ${t.hot ? "bg-lime hover:bg-[#e3ff7d]" : "bg-[#fbfaf7] hover:bg-paper-2"}`}>
-                <p className="label text-muted">{t.label}</p>
-                <p className="display-wide mt-2 text-3xl tabular-nums md:text-4xl">{t.value}</p>
-                {t.sub && <p className="label mt-1 text-muted">{t.sub}</p>}
+              <Link href={t.href} className="card block h-full p-5 transition-shadow hover:shadow-[var(--shadow-lift)] md:p-6">
+                <p className="flex items-center gap-2 text-[13px] font-medium text-muted">
+                  {t.hot && <span className="size-2 shrink-0 rounded-full bg-warn" aria-hidden />}
+                  {t.label}
+                </p>
+                <p className={`mt-2 text-[1.75rem] font-semibold tabular-nums tracking-[-0.03em] md:text-4xl ${t.hot ? "text-warn" : ""}`}>{t.value}</p>
+                {t.sub && <p className="mt-1 text-[13px] text-muted">{t.sub}</p>}
               </Link>
             </li>
           ))}
@@ -76,28 +79,28 @@ export default async function AdminOverview() {
                 <Link href="/admin/orders?status=RECEIVED" className="hover:underline">
                   Orders waiting for a call
                 </Link>
-                <span className="font-mono">{toConfirm}</span>
+                <span className="font-semibold tabular-nums">{toConfirm}</span>
               </li>
               <li className="flex justify-between py-2.5">
                 <Link href="/admin/messages" className="hover:underline">
                   Unread messages
                 </Link>
-                <span className="font-mono">{unread}</span>
+                <span className="font-semibold tabular-nums">{unread}</span>
               </li>
               <li className="flex justify-between py-2.5">
                 <Link href="/admin/inventory?filter=low" className="hover:underline">
                   Low or out of stock
                 </Link>
-                <span className="font-mono">{lowStock.length}</span>
+                <span className="font-semibold tabular-nums">{lowStock.length}</span>
               </li>
             </ul>
           </Panel>
         </div>
 
         <div className="grid gap-6 xl:grid-cols-3">
-          <Panel title="Recent orders" className="xl:col-span-2" actions={<Link href="/admin/orders" className="label hover:underline">All orders →</Link>}>
+          <Panel title="Recent orders" className="xl:col-span-2" actions={<Link href="/admin/orders" className="text-link text-sm">All orders →</Link>}>
             {recent.length ? (
-              <div className="-m-4 overflow-x-auto">
+              <div className="-mx-5 -mb-5 overflow-x-auto md:-mx-6">
                 <table className="w-full text-sm">
                   <thead>
                     <tr>
@@ -110,9 +113,9 @@ export default async function AdminOverview() {
                   </thead>
                   <tbody>
                     {recent.map((o) => (
-                      <tr key={o.id} className="hover:bg-paper-2">
+                      <tr key={o.id} className={tr}>
                         <td className={td}>
-                          <Link href={`/admin/orders/${o.ref}`} className="font-mono font-semibold hover:underline">
+                          <Link href={`/admin/orders/${o.ref}`} className="font-semibold hover:text-accent">
                             {o.ref}
                           </Link>
                           <span className="block text-xs text-muted">{o.createdAt.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}</span>
@@ -125,7 +128,7 @@ export default async function AdminOverview() {
                         <td className={td}>
                           <StatusBadge status={o.status} />
                         </td>
-                        <td className={`${td} text-right font-mono`}>{formatPrice(orderTotal(o))}</td>
+                        <td className={`${td} text-right font-medium tabular-nums`}>{formatPrice(orderTotal(o))}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -135,16 +138,16 @@ export default async function AdminOverview() {
               <p className="text-sm text-muted">No orders yet. They&apos;ll appear here as soon as customers check out.</p>
             )}
           </Panel>
-          <Panel title="Low stock" actions={<Link href="/admin/inventory" className="label hover:underline">Inventory →</Link>}>
+          <Panel title="Low stock" actions={<Link href="/admin/inventory" className="text-link text-sm">Inventory →</Link>}>
             {lowStock.length ? (
               <ul className="divide-y divide-rule">
                 {lowStock.map((p) => (
-                  <li key={p.id} className="flex items-center gap-3 py-2">
-                    <span className="relative size-10 shrink-0 bg-paper-2">{p.images[0] && <Image src={p.images[0].url} alt="" fill sizes="40px" className="object-contain p-0.5" />}</span>
-                    <Link href={`/admin/products/${p.id}`} className="min-w-0 flex-1 truncate text-sm hover:underline">
+                  <li key={p.id} className="flex items-center gap-3 py-2.5">
+                    <span className="relative size-10 shrink-0 overflow-hidden rounded-xl bg-paper-2">{p.images[0] && <Image src={p.images[0].url} alt="" fill sizes="40px" className="object-contain p-0.5" />}</span>
+                    <Link href={`/admin/products/${p.id}`} className="min-w-0 flex-1 truncate text-sm hover:text-accent">
                       {p.name}
                     </Link>
-                    <span className={`font-mono text-sm ${p.stock === 0 ? "text-danger" : "text-warn"}`}>{p.stock}</span>
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums ${p.stock === 0 ? "bg-[#fdecee] text-danger" : "bg-[#fff4e5] text-warn"}`}>{p.stock}</span>
                   </li>
                 ))}
               </ul>

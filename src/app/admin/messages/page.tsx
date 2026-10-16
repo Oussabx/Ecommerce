@@ -22,10 +22,10 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
     <>
       <PageHeader title="Inbox" kicker={`${openCount} open ${openCount === 1 ? "message" : "messages"}`}>
         <nav className="mt-4 flex gap-1">
-          <Link href="/admin/messages" className={cn("label inline-flex h-9 items-center border px-3", !showHandled ? "border-ink bg-ink text-paper" : "border-rule-strong")}>
+          <Link href="/admin/messages" className={cn("label inline-flex h-9 items-center border px-3", !showHandled ? "border-rule bg-ink text-paper" : "border-rule-strong")}>
             Open
           </Link>
-          <Link href="/admin/messages?view=handled" className={cn("label inline-flex h-9 items-center border px-3", showHandled ? "border-ink bg-ink text-paper" : "border-rule-strong")}>
+          <Link href="/admin/messages?view=handled" className={cn("label inline-flex h-9 items-center border px-3", showHandled ? "border-rule bg-ink text-paper" : "border-rule-strong")}>
             Handled
           </Link>
         </nav>

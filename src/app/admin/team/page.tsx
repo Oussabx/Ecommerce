@@ -19,7 +19,7 @@ export default async function TeamPage() {
           </p>
           <AddMember />
         </Panel>
-        <div className="overflow-x-auto border border-rule bg-[#fbfaf7]">
+        <div className="card overflow-x-auto">
           <table className="w-full min-w-[560px] text-sm">
             <thead>
               <tr>

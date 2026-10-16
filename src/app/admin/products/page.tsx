@@ -65,7 +65,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
       </PageHeader>
       <Body>
         {products.length ? (
-          <div className="overflow-x-auto border border-rule bg-[#fbfaf7]">
+          <div className="card overflow-x-auto">
             <table className="w-full min-w-[760px] text-sm">
               <thead>
                 <tr>
@@ -78,7 +78,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
               </thead>
               <tbody>
                 {products.map((p) => (
-                  <tr key={p.id} className="hover:bg-paper-2">
+                  <tr key={p.id} className="transition-colors hover:bg-paper-2 [&:last-child>td]:border-b-0">
                     <td className={td}>
                       <Link href={`/admin/products/${p.id}`} className="flex items-center gap-3">
                         <span className="relative size-11 shrink-0 bg-paper-2">
@@ -91,11 +91,11 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                       </Link>
                     </td>
                     <td className={`${td} text-muted`}>{p.category.name}</td>
-                    <td className={`${td} text-right font-mono`}>
+                    <td className={`${td} text-right tabular-nums`}>
                       {formatPrice(fromCents(p.priceCents))}
                       {p.compareAtCents && <span className="block text-xs text-muted line-through">{formatPrice(fromCents(p.compareAtCents))}</span>}
                     </td>
-                    <td className={cn(td, "text-right font-mono", p.stock === 0 ? "text-danger" : p.stock <= LOW_STOCK_THRESHOLD && "text-warn")}>{p.stock}</td>
+                    <td className={cn(td, "text-right tabular-nums", p.stock === 0 ? "text-danger" : p.stock <= LOW_STOCK_THRESHOLD && "text-warn")}>{p.stock}</td>
                     <td className={td}>
                       <span className={cn("label inline-flex h-6 items-center px-2", p.published ? "bg-paper-3" : "border border-rule-strong text-muted")}>{p.published ? "Live" : "Hidden"}</span>
                     </td>

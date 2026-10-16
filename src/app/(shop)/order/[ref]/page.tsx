@@ -58,7 +58,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
           <Icon name="check" size={16} /> Order request received
         </p>
         <h1 className="display mt-4 text-[clamp(3rem,9vw,8rem)]">Thank you, {order.firstName}.</h1>
-        <div className="mt-6 grid gap-6 border-t border-ink pt-4 sm:grid-cols-3">
+        <div className="mt-6 grid gap-6 border-t border-rule pt-4 sm:grid-cols-3">
           <div>
             <p className="label">Order reference</p>
             <p className="display-wide mt-1 text-3xl">{order.ref}</p>
@@ -76,7 +76,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
 
       <div className="mt-12 grid gap-12 lg:grid-cols-12">
         <section className="lg:col-span-7" aria-labelledby="next-title">
-          <h2 id="next-title" className="display border-t border-ink pt-4 text-4xl md:text-5xl">
+          <h2 id="next-title" className="display border-t border-rule pt-4 text-4xl md:text-5xl">
             What happens next
           </h2>
           <ol className="mt-6 grid gap-px border border-rule bg-rule md:grid-cols-3">
@@ -121,8 +121,8 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
         </section>
 
         <aside className="lg:col-span-5" aria-labelledby="items-title">
-          <div className="border border-ink">
-            <h2 id="items-title" className="display border-b border-ink p-5 text-3xl">
+          <div className="border border-rule">
+            <h2 id="items-title" className="display border-b border-rule p-5 text-3xl">
               Items
             </h2>
             <ul className="divide-y divide-rule px-5">
@@ -151,7 +151,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
                 <dt>Delivery</dt>
                 <dd className="text-muted">{order.deliveryFeeCents === null ? "Confirmed by phone" : formatPrice(fromCents(order.deliveryFeeCents))}</dd>
               </div>
-              <div className="flex justify-between border-t border-ink pt-3 text-base font-semibold">
+              <div className="flex justify-between border-t border-rule pt-3 text-base font-semibold">
                 <dt>Total{order.deliveryFeeCents === null ? " before delivery" : ""}</dt>
                 <dd className="font-mono tabular-nums">{formatPrice(orderTotal(order))}</dd>
               </div>

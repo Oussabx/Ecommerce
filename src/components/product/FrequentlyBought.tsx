@@ -23,7 +23,7 @@ export function FrequentlyBought({ slug, pairs }: { slug: string; pairs: string[
   const total = chosen.reduce((s, p) => s + priceFor(p).price, 0);
 
   return (
-    <section aria-labelledby="fbt-title" className="border-t border-ink pt-5">
+    <section aria-labelledby="fbt-title" className="border-t border-rule pt-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 id="fbt-title" className="display text-5xl md:text-6xl">

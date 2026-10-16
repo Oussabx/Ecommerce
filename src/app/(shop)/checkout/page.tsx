@@ -18,7 +18,7 @@ export default function CheckoutPage() {
         <span aria-hidden>—</span>
         <span>03 Confirmation</span>
       </nav>
-      <h1 className="display mt-8 border-t border-ink pt-4 text-[clamp(3.2rem,9vw,8rem)]">Checkout</h1>
+      <h1 className="display mt-8 border-t border-rule pt-4 text-[clamp(3.2rem,9vw,8rem)]">Checkout</h1>
       <div className="mt-8">
         <CheckoutForm />
       </div>

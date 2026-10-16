@@ -35,7 +35,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             <ul className="mt-3 flex flex-wrap gap-2">
               {categories.map((c) => (
                 <li key={c.slug}>
-                  <Link href={`/category/${c.slug}`} className="label inline-flex h-9 items-center border border-ink px-3 hover:bg-lime">
+                  <Link href={`/category/${c.slug}`} className="label inline-flex h-9 items-center border border-rule px-3 hover:bg-lime">
                     {c.name}
                   </Link>
                 </li>

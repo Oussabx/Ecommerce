@@ -15,7 +15,7 @@ function Wrap({ label, name, error, hint, optional, className, children }: Base 
     <div className={className}>
       <label htmlFor={name} className="mb-1.5 flex items-baseline justify-between gap-2 text-sm font-medium">
         {label}
-        {optional && <span className="label text-subtle">Optional</span>}
+        {optional && <span className="text-xs font-normal text-subtle">Optional</span>}
       </label>
       {children}
       {error ? (
@@ -62,7 +62,7 @@ export function TextAreaField({ label, name, error, hint, optional, className, .
 export function FormError({ message }: { message?: string | null }) {
   if (!message) return null;
   return (
-    <div role="alert" className="border border-danger bg-danger/5 px-4 py-3 text-sm text-danger">
+    <div role="alert" className="rounded-2xl bg-[#fdecea] px-4 py-3 text-sm text-danger">
       {message}
     </div>
   );

@@ -42,15 +42,15 @@ export function Shortlist({ items, categories }: { items: ProductSummary[]; cate
 
   return (
     <div className="mt-10">
-      <div className="flex flex-col gap-4 border-y border-rule py-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="no-scrollbar -mx-4 flex gap-1 overflow-x-auto px-4 lg:mx-0 lg:px-0" role="tablist" aria-label="Filter by category">
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 lg:mx-0 lg:px-0" role="tablist" aria-label="Filter by category">
           {[{ slug: "all", name: "All" }, ...categories].map((c) => (
             <button
               key={c.slug}
               role="tab"
               aria-selected={cat === c.slug}
               onClick={() => setCat(c.slug)}
-              className={cn("h-9 shrink-0 rounded-full border px-4 text-sm font-medium transition-colors", cat === c.slug ? "border-ink bg-ink text-paper" : "border-rule-strong hover:border-ink")}
+              className={cn("chip shrink-0", cat === c.slug && "is-active")}
             >
               {c.name}
             </button>
@@ -58,45 +58,45 @@ export function Shortlist({ items, categories }: { items: ProductSummary[]; cate
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <label className="sr-only" htmlFor="sl-brand">Brand</label>
-          <select id="sl-brand" value={brand} onChange={(e) => setBrand(e.target.value)} className="field !min-h-9 w-auto !py-1.5 text-sm">
+          <select id="sl-brand" value={brand} onChange={(e) => setBrand(e.target.value)} className="field !min-h-9 w-auto !rounded-full !border-transparent !bg-paper-2 !py-1.5 text-sm font-medium">
             <option value="all">All brands</option>
             {brands.map((b) => (
               <option key={b}>{b}</option>
             ))}
           </select>
           <label className="sr-only" htmlFor="sl-price">Price</label>
-          <select id="sl-price" value={price} onChange={(e) => setPrice(e.target.value)} className="field !min-h-9 w-auto !py-1.5 text-sm">
+          <select id="sl-price" value={price} onChange={(e) => setPrice(e.target.value)} className="field !min-h-9 w-auto !rounded-full !border-transparent !bg-paper-2 !py-1.5 text-sm font-medium">
             {PRICE.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.label}
               </option>
             ))}
           </select>
-          <label className="flex h-9 cursor-pointer items-center gap-2 rounded-full border border-rule-strong px-4 text-sm font-medium hover:border-ink">
-            <input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} className="size-3.5 accent-ink" />
+          <label className="chip cursor-pointer">
+            <input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} className="size-3.5 accent-[#0066cc]" />
             In stock
           </label>
         </div>
       </div>
-      <p className="label mt-3 text-muted" aria-live="polite">
+      <p className="mt-4 text-sm text-muted" aria-live="polite">
         Showing {shown.length} of {filtered.length}
       </p>
       {shown.length ? (
-        <div className="mt-3 grid animate-[fade_.4s_ease] grid-cols-2 gap-px border border-rule bg-rule lg:grid-cols-4" key={`${cat}${brand}${price}${inStock}`}>
-          {shown.map((p, i) => (
-            <ProductCard key={p.slug} p={p} index={i + 1} sizes="(min-width: 1024px) 25vw, 50vw" />
+        <div className="mt-4 grid animate-[fade_.4s_ease] grid-cols-2 gap-x-3 gap-y-8 md:gap-x-5 md:gap-y-10 lg:grid-cols-4" key={`${cat}${brand}${price}${inStock}`}>
+          {shown.map((p) => (
+            <ProductCard key={p.slug} p={p} sizes="(min-width: 1024px) 25vw, 50vw" />
           ))}
         </div>
       ) : (
-        <div className="mt-3 border border-rule p-10 text-center">
-          <p className="display text-4xl">Nothing matches that combination.</p>
+        <div className="tile mt-4 p-10 text-center">
+          <p className="display text-2xl">Nothing matches that combination.</p>
           <button onClick={reset} className="btn btn-outline mt-6">
             Reset filters
           </button>
         </div>
       )}
-      <div className="mt-8 flex justify-center">
-        <Link href={shopHref} className="btn btn-primary">
+      <div className="mt-10 flex justify-center">
+        <Link href={shopHref} className="btn btn-outline">
           {filtered.length > shown.length ? `See all ${filtered.length}` : "Browse the full collection"} <Icon name="arrow" size={16} className="btn-arrow" />
         </Link>
       </div>

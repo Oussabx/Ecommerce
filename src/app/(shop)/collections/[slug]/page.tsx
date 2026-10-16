@@ -46,7 +46,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
         <Suspense fallback={<ListingSkeleton />}>
           <ListingView items={items} />
         </Suspense>
-        <nav aria-label="Other collections" className="mt-16 border-t border-ink pt-5">
+        <nav aria-label="Other collections" className="mt-16 border-t border-rule pt-5">
           <p className="label text-muted">More edits</p>
           <ul className="mt-4 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-5">
             {collections

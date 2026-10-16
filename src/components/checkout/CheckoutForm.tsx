@@ -234,7 +234,7 @@ export function CheckoutForm() {
 
       {/* summary */}
       <aside className="order-first lg:order-none lg:col-span-5" aria-label="Order summary">
-        <div className="border border-ink bg-paper-2 lg:sticky lg:top-24">
+        <div className="border border-rule bg-paper-2 lg:sticky lg:top-24">
           <details className="group" open>
             <summary className="flex list-none items-center justify-between p-5 lg:pointer-events-none [&::-webkit-details-marker]:hidden">
               <span className="display text-3xl">Order summary</span>
@@ -268,7 +268,7 @@ export function CheckoutForm() {
               <dt>Delivery</dt>
               <dd className="text-right text-muted">{delivery.feeUSD === null ? "Confirmed by phone" : formatPrice(delivery.feeUSD)}</dd>
             </div>
-            <div className="flex justify-between border-t border-ink pt-3 text-base font-semibold">
+            <div className="flex justify-between border-t border-rule pt-3 text-base font-semibold">
               <dt>Total{delivery.feeUSD === null ? " before delivery" : ""}</dt>
               <dd className="font-mono tabular-nums">{formatPrice(subtotal + (delivery.feeUSD ?? 0))}</dd>
             </div>
@@ -286,7 +286,7 @@ export function CheckoutForm() {
 
 function Step({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
   return (
-    <fieldset className="border-t border-ink pt-4">
+    <fieldset className="border-t border-rule pt-4">
       <legend className="contents">
         <span className="mb-5 flex items-baseline gap-4">
           <span className="label text-muted">{n}</span>
@@ -312,7 +312,7 @@ function Radios({
   return (
     <div className="grid gap-2">
       {options.map((o) => (
-        <label key={o.id} className={cn("flex cursor-pointer items-start gap-3 border p-4 transition-colors", value === o.id ? "border-ink bg-paper-2" : "border-rule-strong hover:border-ink")}>
+        <label key={o.id} className={cn("flex cursor-pointer items-start gap-3 border p-4 transition-colors", value === o.id ? "border-rule bg-paper-2" : "border-rule-strong hover:border-ink")}>
           <input type="radio" name={name} value={o.id} checked={value === o.id} onChange={onChange} className="mt-1 size-4 accent-ink" />
           <span className="flex-1">
             <span className="block font-semibold">{o.label}</span>

@@ -190,8 +190,8 @@ export function ListingView({
 
       <div className="min-w-0">
         {/* toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-y border-ink py-2.5 lg:border-t-0 lg:pt-0">
-          <button type="button" onClick={() => setDrawer(true)} className="inline-flex h-10 items-center gap-2 rounded-md border-[1.5px] border-ink px-3.5 text-sm font-semibold lg:hidden">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-y border-rule py-2.5 lg:border-t-0 lg:pt-0">
+          <button type="button" onClick={() => setDrawer(true)} className="inline-flex h-10 items-center gap-2 rounded-md border-[1.5px] border-rule px-3.5 text-sm font-semibold lg:hidden">
             <Icon name="filter" size={16} /> Filters {activeCount > 0 && `(${activeCount})`}
           </button>
           <p className="label text-muted" aria-live="polite">
@@ -292,7 +292,7 @@ export function ListingView({
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Filters">
           <button type="button" aria-label="Close filters" className="absolute inset-0 animate-[fade_.2s_ease] bg-ink/40" onClick={() => setDrawer(false)} />
           <div className="absolute inset-x-0 bottom-0 flex max-h-[88dvh] animate-[rise_.4s_var(--ease-out-expo)_both] flex-col bg-paper">
-            <div className="flex items-center justify-between border-b border-ink px-4 py-3">
+            <div className="flex items-center justify-between border-b border-rule px-4 py-3">
               <h2 className="display text-3xl">Filters</h2>
               <button type="button" onClick={() => setDrawer(false)} className="grid size-10 place-items-center" aria-label="Close filters">
                 <Icon name="close" />
@@ -330,7 +330,7 @@ function Check({ label, count, checked, onChange }: { label: string; count?: num
   return (
     <label className="flex min-h-9 cursor-pointer items-center gap-3 text-sm">
       <input type="checkbox" checked={checked} onChange={onChange} className="peer sr-only" />
-      <span className="grid size-4 shrink-0 place-items-center border border-ink transition-colors peer-checked:bg-ink peer-checked:text-lime peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt">
+      <span className="grid size-4 shrink-0 place-items-center border border-rule transition-colors peer-checked:bg-ink peer-checked:text-lime peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt">
         {checked && <Icon name="check" size={12} strokeWidth={2.5} />}
       </span>
       <span className="flex-1">{label}</span>

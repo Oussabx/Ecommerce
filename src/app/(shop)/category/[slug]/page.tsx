@@ -38,7 +38,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               <Link
                 href={`/category/${c.slug}`}
                 aria-current={c.slug === category.slug ? "page" : undefined}
-                className={cn("inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors", c.slug === category.slug ? "border-ink bg-ink text-paper" : "border-rule-strong hover:border-ink")}
+                className={cn("inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors", c.slug === category.slug ? "border-rule bg-ink text-paper" : "border-rule-strong hover:border-ink")}
               >
                 {c.name}
               </Link>

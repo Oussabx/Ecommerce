@@ -17,17 +17,17 @@ export function SectionHeader({
   tone?: "light" | "dark";
 }) {
   return (
-    <div className={cn("grid gap-6 border-t pt-5 md:grid-cols-12 md:gap-8", tone === "dark" ? "border-paper/25" : "border-ink", className)}>
-      <h2 className="display text-[clamp(2.6rem,7vw,6.5rem)] md:col-span-8">{title}</h2>
-      <div className="flex flex-col justify-end gap-5 md:col-span-4">
-        {intro && <p className={cn("max-w-sm text-[15px] leading-relaxed", tone === "dark" ? "text-paper/70" : "text-muted")}>{intro}</p>}
-        {link && (
-          <Link href={link.href} className="label group inline-flex items-center gap-2">
-            <span className="link-underline">{link.label}</span>
-            <Icon name="arrow" size={14} className="transition-transform group-hover:translate-x-1" />
-          </Link>
-        )}
+    <div className={cn("flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-8", className)}>
+      <div className="max-w-2xl">
+        <h2 className="display text-[clamp(2rem,4.2vw,3.25rem)]">{title}</h2>
+        {intro && <p className={cn("mt-2 text-lg leading-relaxed", tone === "dark" ? "text-white/65" : "text-muted")}>{intro}</p>}
       </div>
+      {link && (
+        <Link href={link.href} className={cn("group inline-flex shrink-0 items-center gap-1.5 font-medium", tone === "dark" ? "text-white" : "text-accent")}>
+          {link.label}
+          <Icon name="chevronRight" size={16} className="transition-transform group-hover:translate-x-0.5" />
+        </Link>
+      )}
     </div>
   );
 }

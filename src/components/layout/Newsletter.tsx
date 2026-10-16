@@ -27,56 +27,50 @@ export function Newsletter() {
   }
 
   return (
-    <section className="border-t border-ink bg-paper" aria-labelledby="newsletter-title">
-      <div className="container-x grid gap-8 py-16 md:grid-cols-12 md:py-24">
-        <div className="md:col-span-7">
-          <h2 id="newsletter-title" className="display text-[clamp(3rem,9vw,7.5rem)]">
-            Stay in
-            <br />
-            the know.
-          </h2>
-          <p className="mt-5 max-w-md text-muted">New arrivals, worthwhile deals, and technology worth paying attention to.</p>
-        </div>
-        <div className="flex flex-col justify-end md:col-span-5">
-          {state === "done" ? (
-            <div className="border border-ink bg-lime p-5" role="status">
-              <p className="label">Subscribed</p>
-              <p className="mt-2 font-semibold">You&apos;re on the list. We&apos;ll only write when there&apos;s something worth reading.</p>
+    <section className="container-x py-16 md:py-24" aria-labelledby="newsletter-title">
+      <div className="mx-auto max-w-2xl text-center">
+        <h2 id="newsletter-title" className="display text-[clamp(1.75rem,3.5vw,2.5rem)]">
+          Stay in the know
+        </h2>
+        <p className="mt-2 text-lg text-muted">New arrivals, worthwhile deals, and technology worth paying attention to.</p>
+        {state === "done" ? (
+          <div className="mx-auto mt-8 flex max-w-md items-center gap-3 rounded-2xl bg-[#e8f6ec] p-4 text-left" role="status">
+            <Icon name="check" size={20} className="shrink-0 text-ok" />
+            <p className="font-medium">You&apos;re on the list. We&apos;ll only write when there&apos;s something worth reading.</p>
+          </div>
+        ) : (
+          <form onSubmit={onSubmit} noValidate className="mx-auto mt-8 max-w-md">
+            <label htmlFor="nl-email" className="sr-only">
+              Email address
+            </label>
+            <div className="flex gap-2 rounded-full bg-paper-2 p-1.5 focus-within:ring-4 focus-within:ring-accent/15">
+              <input
+                id="nl-email"
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                aria-invalid={!!error}
+                aria-describedby={error ? "nl-error" : "nl-hint"}
+                className="min-w-0 flex-1 bg-transparent px-4 placeholder:text-subtle focus:outline-none"
+              />
+              <button type="submit" disabled={state === "loading"} className="btn btn-primary !min-h-11 !px-5">
+                {state === "loading" ? "Sending…" : "Subscribe"}
+              </button>
             </div>
-          ) : (
-            <form onSubmit={onSubmit} noValidate>
-              <label htmlFor="nl-email" className="label mb-2 block">
-                Email address
-              </label>
-              <div className="flex border-b-2 border-ink">
-                <input
-                  id="nl-email"
-                  type="email"
-                  inputMode="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  aria-invalid={!!error}
-                  aria-describedby={error ? "nl-error" : "nl-hint"}
-                  className="min-w-0 flex-1 bg-transparent py-3 text-lg placeholder:text-subtle focus:outline-none"
-                />
-                <button type="submit" disabled={state === "loading"} className="label inline-flex items-center gap-2 px-2 hover:text-cobalt disabled:opacity-50">
-                  {state === "loading" ? "Sending…" : "Subscribe"} <Icon name="arrow" size={16} />
-                </button>
-              </div>
-              {error ? (
-                <p id="nl-error" className="mt-2 text-sm text-danger">
-                  {error}
-                </p>
-              ) : (
-                <p id="nl-hint" className="mt-2 text-xs text-muted">
-                  Unsubscribe any time. See our <a href="/privacy" className="underline">privacy policy</a>.
-                </p>
-              )}
-            </form>
-          )}
-        </div>
+            {error ? (
+              <p id="nl-error" className="mt-3 text-sm text-danger">
+                {error}
+              </p>
+            ) : (
+              <p id="nl-hint" className="mt-3 text-xs text-muted">
+                Unsubscribe any time. See our <a href="/privacy" className="underline">privacy policy</a>.
+              </p>
+            )}
+          </form>
+        )}
       </div>
     </section>
   );

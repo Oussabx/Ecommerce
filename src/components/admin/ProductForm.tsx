@@ -214,8 +214,8 @@ export function ProductForm({
               <div className="grid flex-1 grid-cols-[48px_1fr_1fr] items-center gap-2 sm:grid-cols-[48px_1fr_140px_120px_auto]">
                 <input type="color" value={c.swatch} onChange={(e) => upd({ swatch: e.target.value })} className="h-10 w-12 cursor-pointer border border-rule-strong bg-transparent p-0.5" aria-label="Swatch colour" />
                 <input value={c.name} onChange={(e) => upd({ name: e.target.value, ...(c.key ? {} : {}) })} onBlur={() => !c.key && upd({ key: slugify(c.name) })} placeholder="Name, e.g. Black Titanium" className="field !min-h-10 text-sm" aria-label="Colour name" />
-                <input value={c.key} onChange={(e) => upd({ key: slugify(e.target.value) })} placeholder="id, e.g. black" className="field !min-h-10 font-mono text-xs" aria-label="Colour id" />
-                <input value={c.swatch} onChange={(e) => upd({ swatch: e.target.value })} className="field !min-h-10 font-mono text-xs" aria-label="Swatch hex" />
+                <input value={c.key} onChange={(e) => upd({ key: slugify(e.target.value) })} placeholder="id, e.g. black" className="field !min-h-10 tabular-nums text-xs" aria-label="Colour id" />
+                <input value={c.swatch} onChange={(e) => upd({ swatch: e.target.value })} className="field !min-h-10 tabular-nums text-xs" aria-label="Swatch hex" />
                 <label className="label flex items-center gap-1.5">
                   <input type="checkbox" checked={c.soldOut} onChange={(e) => upd({ soldOut: e.target.checked })} className="accent-ink" /> Sold out
                 </label>
@@ -235,7 +235,7 @@ export function ProductForm({
               render={(c, upd) => (
                 <div className="grid flex-1 grid-cols-[1fr_1fr_120px] items-center gap-2">
                   <input value={c.label} onChange={(e) => upd({ label: e.target.value })} onBlur={() => !c.key && upd({ key: slugify(c.label) })} placeholder="Label, e.g. 256GB" className="field !min-h-10 text-sm" aria-label="Option label" />
-                  <input value={c.key} onChange={(e) => upd({ key: slugify(e.target.value) })} placeholder="id, e.g. 256" className="field !min-h-10 font-mono text-xs" aria-label="Option id" />
+                  <input value={c.key} onChange={(e) => upd({ key: slugify(e.target.value) })} placeholder="id, e.g. 256" className="field !min-h-10 tabular-nums text-xs" aria-label="Option id" />
                   <input value={String(c.priceDelta)} inputMode="decimal" onChange={(e) => upd({ priceDelta: e.target.value as unknown as number })} placeholder="+ price" className="field !min-h-10 text-sm" aria-label="Price difference in USD" />
                 </div>
               )}
@@ -489,7 +489,7 @@ function PairsPicker({ value, options, onChange }: { value: string[]; options: {
         <div className="relative mt-3 max-w-sm">
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search products to suggest…" className="field !min-h-10 text-sm" aria-label="Add a product suggestion" />
           {matches.length > 0 && (
-            <ul className="absolute inset-x-0 top-full z-10 border border-ink bg-paper shadow-lg">
+            <ul className="absolute inset-x-0 top-full z-10 border border-rule bg-paper shadow-lg">
               {matches.map((m) => (
                 <li key={m.slug}>
                   <button type="button" onClick={() => { onChange([...value, m.slug]); setQ(""); }} className="block w-full px-3 py-2 text-left text-sm hover:bg-lime">

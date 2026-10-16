@@ -10,7 +10,7 @@ const map: Record<Availability, { text: string; dot: string }> = {
 export function Stock({ value, className }: { value: Availability; className?: string }) {
   const m = map[value];
   return (
-    <span className={cn("label inline-flex items-center gap-1.5 text-muted", className)}>
+    <span className={cn("inline-flex items-center gap-1.5 text-[13px] text-muted", className)}>
       <span className={cn("size-1.5 rounded-full", m.dot)} aria-hidden />
       {m.text}
     </span>

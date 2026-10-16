@@ -151,7 +151,7 @@ export function CategoryEditor({ category, products }: { category: Category | nu
         e.preventDefault();
         a.exec(() => saveCategory(category?.slug ?? null, c), { onOk: () => !category && setC(blank) });
       }}
-      className="grid gap-3 border border-ink bg-paper p-4 sm:grid-cols-4"
+      className="grid gap-3 border border-rule bg-paper p-4 sm:grid-cols-4"
     >
       <L label="Name">
         <input value={c.name} onChange={(e) => setC({ ...c, name: e.target.value })} className={field} />
@@ -233,7 +233,7 @@ export function CollectionEditor({ collection, products }: { collection: Collect
         e.preventDefault();
         a.exec(() => saveCollection(collection?.slug ?? null, c), { onOk: () => !collection && setC(blank) });
       }}
-      className="grid gap-3 border border-ink bg-paper p-4 sm:grid-cols-4"
+      className="grid gap-3 border border-rule bg-paper p-4 sm:grid-cols-4"
     >
       <L label="Title">
         <input value={c.title} onChange={(e) => setC({ ...c, title: e.target.value })} className={field} />

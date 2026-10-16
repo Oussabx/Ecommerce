@@ -33,7 +33,7 @@ export default async function ActivityPage({ searchParams }: { searchParams: Pro
     <>
       <PageHeader title="Activity log" kicker="Every change made in the admin" />
       <Body>
-        <div className="overflow-x-auto border border-rule bg-[#fbfaf7]">
+        <div className="card overflow-x-auto">
           <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr>

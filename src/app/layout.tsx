@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { UIProvider } from "@/components/layout/UIProvider";
 import { Toaster } from "@/components/layout/Toaster";
@@ -9,9 +9,7 @@ import { getCatalog } from "@/server/catalog";
 import { getSettings } from "@/server/settings";
 import { toClientProduct } from "@/lib/catalog";
 
-const display = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--nf-display", display: "swap" });
 const ui = Inter({ subsets: ["latin"], variable: "--nf-ui", display: "swap" });
-const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--nf-mono", display: "swap" });
 
 export async function generateMetadata(): Promise<Metadata> {
   const { store } = await getSettings();
@@ -27,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#f5f3ee",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };
@@ -35,12 +33,12 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [catalog, settings] = await Promise.all([getCatalog(), getSettings()]);
   return (
-    <html lang="en" className={`${display.variable} ${ui.variable} ${mono.variable}`}>
+    <html lang="en" className={ui.variable}>
       <body className="min-h-dvh">
         <noscript>
           <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
         </noscript>
-        <a href="#main" className="sr-only z-[70] bg-lime px-4 py-3 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+        <a href="#main" className="sr-only z-[70] rounded-full bg-ink text-white px-4 py-3 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
           Skip to content
         </a>
         <ShopDataProvider products={catalog.products.map(toClientProduct)} categories={catalog.categories} settings={settings}>

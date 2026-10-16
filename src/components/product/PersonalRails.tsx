@@ -31,7 +31,7 @@ export function PersonalRails({ exclude, showPairs = true }: { exclude?: string;
 
   return (
     <section className="container-x py-14 md:py-20" aria-label="Based on your browsing">
-      <div className="flex items-end justify-between border-t border-ink pt-5">
+      <div className="flex items-end justify-between border-t border-rule pt-5">
         <div>
           <h2 className="display text-5xl md:text-6xl">Recently viewed</h2>
         </div>
@@ -44,7 +44,7 @@ export function PersonalRails({ exclude, showPairs = true }: { exclude?: string;
       </div>
       {pairs.length > 0 && (
         <>
-          <div className="mt-14 border-t border-ink pt-5">
+          <div className="mt-14 border-t border-rule pt-5">
             <h2 className="display text-5xl md:text-6xl">Pairs well with</h2>
           </div>
           <div className="mt-6">

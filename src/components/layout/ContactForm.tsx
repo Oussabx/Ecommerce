@@ -15,7 +15,7 @@ export function ContactForm() {
 
   if (done)
     return (
-      <div className="border border-ink bg-lime p-6" role="status">
+      <div className="border border-rule bg-lime p-6" role="status">
         <p className="label flex items-center gap-2">
           <Icon name="check" size={16} /> Message sent
         </p>

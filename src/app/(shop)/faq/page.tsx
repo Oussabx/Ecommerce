@@ -19,14 +19,14 @@ export default function FaqPage() {
   return (
     <div className="container-x pb-20 pt-6">
       <Breadcrumbs items={[{ label: "FAQs" }]} />
-      <header className="mt-8 grid gap-6 border-t border-ink pt-4 md:grid-cols-12">
+      <header className="mt-8 grid gap-6 border-t border-rule pt-4 md:grid-cols-12">
         <div className="md:col-span-12">
           <h1 className="display text-[clamp(3.2rem,9vw,8.5rem)]">Questions, answered.</h1>
         </div>
       </header>
       <div className="mt-12 grid gap-10 md:grid-cols-12">
         <div className="md:col-span-10 md:col-start-3">
-          <div className="border-t border-ink">
+          <div className="border-t border-rule">
             {faqs.map((f, i) => (
               <details key={f.q} className="group border-b border-rule">
                 <summary className="flex list-none items-baseline gap-4 py-5 [&::-webkit-details-marker]:hidden">
