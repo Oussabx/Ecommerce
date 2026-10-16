@@ -40,5 +40,8 @@
   },
   "prisma": {
     "seed": "node --no-warnings scripts/seed.mts"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
