@@ -57,7 +57,7 @@ export function CartView() {
         <ul className="divide-y divide-rule border-b border-rule">
           {lines.map((l) => (
             <li key={l.key} className="grid grid-cols-[96px_1fr] gap-4 py-5 md:grid-cols-[120px_1fr_140px_120px] md:items-center">
-              <Link href={`/product/${l.product.slug}?color=${l.color.id}${l.config ? `&config=${l.config.id}` : ""}`} className="relative block aspect-square bg-paper-2">
+              <Link href={`/product/${l.product.slug}?color=${l.color.id}${l.config ? `&config=${l.config.id}` : ""}`} className="relative block aspect-square overflow-hidden rounded-lg bg-paper-2">
                 <Image src={primaryImage(l.product, l.color.id).src} alt={l.product.name} fill sizes="120px" className="object-contain p-2" />
               </Link>
               <div className="min-w-0">
@@ -84,7 +84,7 @@ export function CartView() {
                   </div>
                 </dl>
                 {!l.available && <p className="mt-1 text-sm text-danger">No longer available. Please remove it to continue.</p>}
-                <button type="button" onClick={() => removeFromCart(l.key)} className="label mt-2 inline-flex items-center gap-1 text-muted hover:text-danger">
+                <button type="button" onClick={() => removeFromCart(l.key)} className="mt-2 inline-flex h-8 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium text-muted transition-colors hover:bg-danger/10 hover:text-danger">
                   <Icon name="trash" size={14} /> Remove
                 </button>
               </div>

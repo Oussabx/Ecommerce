@@ -72,3 +72,19 @@ export async function addOrderNote(ref: string, note: string) {
     return { ok: true, message: "Note added." } as const;
   });
 }
+
+export async function resendReceiptEmail(ref: string) {
+  return run(async () => {
+    const user = await requireStaffAction();
+    const { emailConfigured } = await import("@/server/email");
+    if (!emailConfigured) throw new ActionError("Email isn't connected yet. Add RESEND_API_KEY and EMAIL_FROM in Vercel to send receipts.");
+    const { getOrder } = await import("@/server/orders");
+    const { resendReceipt } = await import("@/server/notify");
+    const order = await getOrder(ref);
+    if (!order) throw new ActionError("Order not found.");
+    await resendReceipt(order);
+    await audit(user, "order.receipt", "order", ref);
+    revalidatePath(`/admin/orders/${ref}`);
+    return { ok: true, message: `Receipt sent to ${order.email}.` } as const;
+  });
+}

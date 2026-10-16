@@ -54,40 +54,47 @@ export function CartDrawer() {
         ) : (
           <>
             <ul className="flex-1 divide-y divide-rule overflow-y-auto px-5">
-              {lines.map((l) => (
-                <li key={l.key} className="grid grid-cols-[88px_1fr] gap-4 py-4">
-                  <Link href={`/product/${l.product.slug}`} onClick={close} className="relative block aspect-square bg-paper-2">
-                    <Image src={primaryImage(l.product, l.color.id).src} alt={l.product.name} fill sizes="88px" className="object-contain p-1.5" />
-                  </Link>
-                  <div className="min-w-0">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="label text-muted">{l.product.brand}</p>
-                        <Link href={`/product/${l.product.slug}`} onClick={close} className="block font-semibold leading-snug hover:underline">
-                          {l.product.name}
-                        </Link>
-                        <p className="mt-0.5 text-sm text-muted">
-                          {[l.product.colors.length > 1 ? l.color.name : null, l.config?.label].filter(Boolean).join(" · ")}
-                        </p>
+              {lines.map((l) => {
+                const options = [l.product.colors.length > 1 ? l.color.name : null, l.config?.label].filter(Boolean).join(" · ");
+                return (
+                  <li key={l.key} className="flex gap-4 py-4">
+                    <Link href={`/product/${l.product.slug}`} onClick={close} className="relative size-[88px] shrink-0 overflow-hidden rounded-lg bg-paper-2">
+                      <Image src={primaryImage(l.product, l.color.id).src} alt={l.product.name} fill sizes="88px" className="object-contain p-2" />
+                    </Link>
+                    <div className="flex min-w-0 flex-1 flex-col">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <Link href={`/product/${l.product.slug}`} onClick={close} className="block font-semibold leading-snug hover:underline">
+                            {l.product.name}
+                          </Link>
+                          <p className="mt-0.5 text-sm text-muted">{[l.product.brand, options].filter(Boolean).join(" · ")}</p>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <p className="font-semibold tabular-nums">{formatPrice(l.lineTotal)}</p>
+                          {l.item.quantity > 1 && <p className="text-xs text-muted tabular-nums">{formatPrice(l.unitPrice)} each</p>}
+                        </div>
                       </div>
-                      <p className="font-mono text-sm tabular-nums">{formatPrice(l.lineTotal)}</p>
+                      {!l.available && <p className="mt-1 text-sm text-danger">No longer available. Please remove it.</p>}
+                      <div className="mt-auto flex items-center justify-between pt-3">
+                        <QuantityStepper
+                          size="sm"
+                          value={l.item.quantity}
+                          max={stockLimit(l.product)}
+                          onChange={(n) => setQuantity(l.key, n, l.product)}
+                          label={`Quantity of ${l.product.name}`}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeFromCart(l.key)}
+                          className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-muted transition-colors hover:bg-danger/10 hover:text-danger"
+                        >
+                          <Icon name="trash" size={15} /> Remove
+                        </button>
+                      </div>
                     </div>
-                    {!l.available && <p className="mt-1 text-sm text-danger">No longer available — please remove.</p>}
-                    <div className="mt-3 flex items-center justify-between">
-                      <QuantityStepper
-                        size="sm"
-                        value={l.item.quantity}
-                        max={stockLimit(l.product)}
-                        onChange={(n) => setQuantity(l.key, n, l.product)}
-                        label={`Quantity of ${l.product.name}`}
-                      />
-                      <button type="button" onClick={() => removeFromCart(l.key)} className="label text-muted underline-offset-4 hover:text-danger hover:underline">
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
             <div className="border-t border-ink bg-paper-2 px-5 py-5">
               <dl className="space-y-2 text-sm">
@@ -117,7 +124,7 @@ export function CartDrawer() {
                   Checkout <Icon name="arrow" size={16} className="btn-arrow" />
                 </Link>
               </div>
-              <button type="button" onClick={close} className="label mt-4 w-full text-center text-muted hover:text-ink">
+              <button type="button" onClick={close} className="mt-4 w-full text-center text-sm font-medium text-muted hover:text-ink">
                 Continue shopping
               </button>
             </div>

@@ -5,7 +5,6 @@ import { availability, priceFor, primaryImage } from "@/lib/catalog";
 import { db, fromCents, toCents } from "./db";
 import { mapProduct, productInclude } from "./catalog";
 import { getSettings } from "./settings";
-import { notifyNewOrder } from "./email";
 import type { OrderInput } from "./validation";
 
 export class OrderError extends Error {
@@ -106,7 +105,6 @@ export async function createOrder(input: OrderInput, userId: string | null) {
           include: orderInclude,
         });
       });
-      notifyNewOrder(order).catch((e) => console.error("[orders] notification failed", e));
       return order;
     } catch (e) {
       // Retry only on a reference collision; an idempotency collision means a parallel duplicate submit.

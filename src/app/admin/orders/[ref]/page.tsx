@@ -3,6 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Body, PageHeader, Panel, StatusBadge, td, th } from "@/components/admin/ui";
 import { OrderActions } from "@/components/admin/OrderActions";
+import { OrderMessaging } from "@/components/admin/OrderMessaging";
+import { toWhatsAppNumber } from "@/lib/phone";
+import { orderConfirmationText } from "@/lib/order-message";
+import { getSettings } from "@/server/settings";
+import { emailConfigured } from "@/server/email";
 import { requireStaff } from "@/server/auth";
 import { db, fromCents } from "@/server/db";
 import { getOrder, orderTotal, statusLabel } from "@/server/orders";
@@ -16,7 +21,9 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
   const order = await getOrder(ref);
   if (!order) notFound();
   const previous = await db.order.count({ where: { email: order.email, id: { not: order.id } } });
-  const waNumber = order.phone.replace(/\D/g, "").replace(/^0+/, "");
+  const waNumber = toWhatsAppNumber(order.phone);
+  const { store } = await getSettings();
+  const waHref = waNumber ? `https://wa.me/${waNumber}?text=${encodeURIComponent(orderConfirmationText({ ...order, storeName: store.name }))}` : null;
 
   return (
     <>
@@ -120,6 +127,9 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
         <div className="space-y-6">
           <Panel title="Actions">
             <OrderActions orderRef={order.ref} status={order.status} fee={order.deliveryFeeCents === null ? null : fromCents(order.deliveryFeeCents)} />
+          </Panel>
+          <Panel title="Message the customer">
+            <OrderMessaging orderRef={order.ref} waHref={waHref} emailReady={emailConfigured} />
           </Panel>
           <Panel title="Customer">
             <p className="font-semibold">
