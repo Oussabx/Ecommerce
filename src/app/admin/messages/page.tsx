@@ -21,11 +21,11 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
   return (
     <>
       <PageHeader title="Inbox" kicker={`${openCount} open ${openCount === 1 ? "message" : "messages"}`}>
-        <nav className="mt-4 flex gap-1">
-          <Link href="/admin/messages" className={cn("label inline-flex h-9 items-center border px-3", !showHandled ? "border-ink bg-ink text-paper" : "border-rule-strong")}>
+        <nav className="mt-5 flex gap-2">
+          <Link href="/admin/messages" className={cn("chip shrink-0", !showHandled ? "is-active" : "")}>
             Open
           </Link>
-          <Link href="/admin/messages?view=handled" className={cn("label inline-flex h-9 items-center border px-3", showHandled ? "border-ink bg-ink text-paper" : "border-rule-strong")}>
+          <Link href="/admin/messages?view=handled" className={cn("chip shrink-0", showHandled ? "is-active" : "")}>
             Handled
           </Link>
         </nav>
@@ -34,20 +34,20 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
         <div className="space-y-3 xl:col-span-2">
           {messages.length ? (
             messages.map((m) => (
-              <article key={m.id} className="border border-rule bg-[#fbfaf7] p-4">
+              <article key={m.id} className="rounded-3xl bg-paper-2 p-5 md:p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="font-semibold">{m.name}</p>
                     <p className="text-sm text-muted">
-                      <a href={`mailto:${m.email}?subject=${encodeURIComponent("Re: your message to OSA Techstore")}`} className="underline underline-offset-4">
+                      <a href={`mailto:${m.email}?subject=${encodeURIComponent("Re: your message to OSA Techstore")}`} className="text-link">
                         {m.email}
                       </a>
                       {m.phone && <> · {m.phone}</>}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="label bg-paper-3 px-2 py-0.5">{topics[m.topic] ?? m.topic}</p>
-                    <p className="label mt-1 text-muted">{m.createdAt.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}</p>
+                    <p className="inline-flex rounded-full bg-accent/15 px-2.5 py-0.5 text-xs font-semibold text-accent">{topics[m.topic] ?? m.topic}</p>
+                    <p className="mt-1.5 text-xs text-muted">{m.createdAt.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}</p>
                   </div>
                 </div>
                 <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed">{m.message}</p>
@@ -64,7 +64,7 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
           title={`Newsletter · ${subCount} subscribers`}
           actions={
             subCount > 0 ? (
-              <a href="/admin/subscribers.csv" className="label hover:underline">
+              <a href="/admin/subscribers.csv" className="text-link text-sm">
                 Export CSV
               </a>
             ) : undefined
@@ -73,7 +73,7 @@ export default async function MessagesPage({ searchParams }: { searchParams: Pro
           {subscribers.length ? (
             <ul className="divide-y divide-rule text-sm">
               {subscribers.map((s) => (
-                <li key={s.email} className="flex items-center justify-between gap-2 py-2">
+                <li key={s.email} className="flex items-center justify-between gap-2 py-2.5">
                   <span className="min-w-0 truncate">{s.email}</span>
                   <RemoveSubscriber email={s.email} />
                 </li>

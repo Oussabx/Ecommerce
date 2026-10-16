@@ -139,23 +139,29 @@ export function CheckoutForm() {
     router.replace(`/order/${res.data.ref}?t=${res.data.token}`);
   }
 
-  if (!hydrated) return <div className="skeleton h-[600px]" aria-busy="true" />;
+  if (!hydrated) return <div className="skeleton h-[600px] rounded-3xl" aria-busy="true" />;
 
   if (!lines.length && !placed) {
     return (
-      <div className="border border-rule p-10 md:p-16">
-        <p className="display text-5xl md:text-7xl">Nothing to check out.</p>
-        <p className="mt-4 text-muted">Your cart is empty. Add something first.</p>
-        <Link href="/shop" className="btn btn-primary mt-8">
-          Explore the collection <Icon name="arrow" size={16} className="btn-arrow" />
+      <div className="flex flex-col rounded-3xl bg-paper-2 items-center px-6 py-14 text-center md:py-20">
+        <span className="grid size-16 place-items-center rounded-full bg-paper-3 text-muted">
+          <Icon name="bag" size={28} />
+        </span>
+        <p className="mt-5 text-2xl font-semibold tracking-tight md:text-3xl">Nothing to check out.</p>
+        <p className="mt-2 text-muted">Your cart is empty. Add something first.</p>
+        <Link href="/shop" className="btn btn-primary mt-7">
+          Explore the collection
         </Link>
       </div>
     );
   }
   if (placed) {
     return (
-      <div className="flex min-h-[40vh] flex-col items-start justify-center gap-4" role="status">
-        <p className="display text-5xl">Order received.</p>
+      <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-center" role="status">
+        <span className="grid size-14 place-items-center rounded-full bg-ok/15 text-ok">
+          <Icon name="check" size={28} />
+        </span>
+        <p className="text-2xl font-semibold tracking-tight md:text-3xl">Order received.</p>
         <p className="text-muted">Taking you to your confirmation…</p>
       </div>
     );
@@ -164,10 +170,9 @@ export function CheckoutForm() {
   const delivery = store.deliveryMethods.find((d) => d.id === form.deliveryMethod)!;
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} noValidate className="grid gap-10 lg:grid-cols-12">
-      <div className="space-y-10 lg:col-span-7">
-
-        <Step n="01" title="Contact">
+    <form ref={formRef} onSubmit={onSubmit} noValidate className="grid gap-6 lg:grid-cols-12 lg:gap-10">
+      <div className="space-y-4 md:space-y-5 lg:col-span-7">
+        <Step n={1} title="Contact">
           <div className="grid gap-4 sm:grid-cols-2">
             <TextField label="First name" name="firstName" autoComplete="given-name" value={form.firstName} onChange={set("firstName")} error={errors.firstName} />
             <TextField label="Last name" name="lastName" autoComplete="family-name" value={form.lastName} onChange={set("lastName")} error={errors.lastName} />
@@ -176,7 +181,7 @@ export function CheckoutForm() {
           </div>
         </Step>
 
-        <Step n="02" title="Delivery address">
+        <Step n={2} title="Delivery address">
           <div className="grid gap-4 sm:grid-cols-2">
             <TextField className="sm:col-span-2" label="Street, building, floor" name="line1" autoComplete="address-line1" value={form.line1} onChange={set("line1")} error={errors.line1} />
             <TextField className="sm:col-span-2" label="Apartment, landmark" name="line2" optional autoComplete="address-line2" value={form.line2} onChange={set("line2")} error={errors.line2} hint="Landmarks help our drivers find you." />
@@ -191,24 +196,23 @@ export function CheckoutForm() {
           </div>
         </Step>
 
-
-        <Step n="03" title="Payment">
+        <Step n={3} title="Payment">
           <Radios name="paymentMethod" value={form.paymentMethod} onChange={set("paymentMethod")} options={store.paymentMethods.map((p) => ({ id: p.id, label: p.label, description: p.description }))} />
-          <p className="mt-3 flex gap-2 text-xs text-muted">
+          <p className="mt-4 flex gap-2 text-[13px] leading-relaxed text-muted">
             <Icon name="info" size={16} className="shrink-0" /> Online card payment isn&apos;t available yet. Nothing is charged when you place your order.
           </p>
         </Step>
 
-        <Step n="04" title="Confirm">
-          <label className="flex cursor-pointer items-start gap-3 text-sm">
-            <input type="checkbox" name="acceptTerms" checked={form.acceptTerms} onChange={set("acceptTerms")} className="mt-0.5 size-4 accent-ink" aria-invalid={!!errors.acceptTerms} aria-describedby={errors.acceptTerms ? "acceptTerms-error" : undefined} />
+        <Step n={4} title="Confirm">
+          <label className="flex cursor-pointer items-start gap-3 text-[15px]">
+            <input type="checkbox" name="acceptTerms" checked={form.acceptTerms} onChange={set("acceptTerms")} className="mt-0.5 size-[18px] shrink-0 accent-accent" aria-invalid={!!errors.acceptTerms} aria-describedby={errors.acceptTerms ? "acceptTerms-error" : undefined} />
             <span>
               I agree to the{" "}
-              <Link href="/terms" target="_blank" className="underline underline-offset-4">
+              <Link href="/terms" target="_blank" className="text-link">
                 terms &amp; conditions
               </Link>{" "}
               and{" "}
-              <Link href="/privacy" target="_blank" className="underline underline-offset-4">
+              <Link href="/privacy" target="_blank" className="text-link">
                 privacy policy
               </Link>
               .
@@ -221,11 +225,10 @@ export function CheckoutForm() {
           )}
           <div className="mt-6 space-y-4">
             <FormError message={formError} />
-            <button type="submit" disabled={submitting || hasUnavailable} className="btn btn-primary w-full text-sm">
+            <button type="submit" disabled={submitting || hasUnavailable} className="btn btn-primary h-14 w-full text-base">
               {submitting ? "Placing order…" : `Place order · ${formatPrice(subtotal + (delivery.feeUSD ?? 0))}`}
-              {!submitting && <Icon name="arrow" size={16} className="btn-arrow" />}
             </button>
-            <p className="text-xs leading-relaxed text-muted">
+            <p className="text-[13px] leading-relaxed text-muted">
               Your order is sent to our team, who will call you to confirm availability, delivery fee and timing before dispatch. You pay {store.paymentMethods.find((p) => p.id === form.paymentMethod)?.label.toLowerCase()}.
             </p>
           </div>
@@ -234,47 +237,47 @@ export function CheckoutForm() {
 
       {/* summary */}
       <aside className="order-first lg:order-none lg:col-span-5" aria-label="Order summary">
-        <div className="border border-ink bg-paper-2 lg:sticky lg:top-24">
+        <div className="rounded-3xl bg-paper-2 lg:sticky lg:top-24">
           <details className="group" open>
-            <summary className="flex list-none items-center justify-between p-5 lg:pointer-events-none [&::-webkit-details-marker]:hidden">
-              <span className="display text-3xl">Order summary</span>
-              <span className="flex items-center gap-2 font-mono text-sm">
+            <summary className="flex list-none items-center justify-between p-5 md:px-6 lg:pointer-events-none [&::-webkit-details-marker]:hidden">
+              <span className="text-xl font-semibold tracking-tight">Order summary</span>
+              <span className="flex items-center gap-2 text-sm text-muted">
                 {count} {count === 1 ? "item" : "items"} <Icon name="chevronDown" size={16} className="transition-transform group-open:rotate-180 lg:hidden" />
               </span>
             </summary>
-            <ul className="max-h-[360px] divide-y divide-rule overflow-y-auto border-t border-rule px-5">
+            <ul className="max-h-[360px] space-y-3 overflow-y-auto px-5 pb-5 pt-1.5 md:px-6">
               {lines.map((l) => (
-                <li key={l.key} className="flex gap-3 py-3">
-                  <span className="relative size-16 shrink-0 bg-paper">
-                    <Image src={primaryImage(l.product, l.color.id).src} alt="" fill sizes="64px" className="object-contain p-1" />
-                    <span className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center bg-ink font-mono text-[10px] text-paper">{l.item.quantity}</span>
+                <li key={l.key} className="flex items-center gap-3.5">
+                  <span className="relative size-16 shrink-0 rounded-2xl bg-paper-3">
+                    <Image src={primaryImage(l.product, l.color.id).src} alt="" fill sizes="64px" className="rounded-2xl object-contain p-1.5" />
+                    <span className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-ink text-[11px] font-semibold text-paper ring-2 ring-paper-2">{l.item.quantity}</span>
                   </span>
                   <span className="min-w-0 flex-1 text-sm">
                     <span className="block font-semibold">{l.product.name}</span>
                     <span className="block text-muted">{[l.product.colors.length > 1 ? l.color.name : null, l.config?.label].filter(Boolean).join(" · ")}</span>
                     {!l.available && <span className="block text-danger">Unavailable — remove from cart</span>}
                   </span>
-                  <span className="font-mono text-sm tabular-nums">{formatPrice(l.lineTotal)}</span>
+                  <span className="text-sm font-semibold tabular-nums">{formatPrice(l.lineTotal)}</span>
                 </li>
               ))}
             </ul>
           </details>
-          <dl className="space-y-2 border-t border-rule p-5 text-sm">
+          <dl className="mx-5 space-y-2.5 border-t border-rule-strong/60 py-5 text-[15px] md:mx-6">
             <div className="flex justify-between">
-              <dt>Subtotal</dt>
-              <dd className="font-mono tabular-nums">{formatPrice(subtotal)}</dd>
+              <dt className="text-ink-2">Subtotal</dt>
+              <dd className="font-semibold tabular-nums">{formatPrice(subtotal)}</dd>
             </div>
             <div className="flex justify-between gap-6">
-              <dt>Delivery</dt>
+              <dt className="text-ink-2">Delivery</dt>
               <dd className="text-right text-muted">{delivery.feeUSD === null ? "Confirmed by phone" : formatPrice(delivery.feeUSD)}</dd>
             </div>
-            <div className="flex justify-between border-t border-ink pt-3 text-base font-semibold">
+            <div className="flex justify-between border-t border-rule-strong/60 pt-4 text-lg font-semibold">
               <dt>Total{delivery.feeUSD === null ? " before delivery" : ""}</dt>
-              <dd className="font-mono tabular-nums">{formatPrice(subtotal + (delivery.feeUSD ?? 0))}</dd>
+              <dd className="tabular-nums">{formatPrice(subtotal + (delivery.feeUSD ?? 0))}</dd>
             </div>
           </dl>
-          <div className="border-t border-rule px-5 py-3">
-            <Link href="/cart" className="label text-muted hover:text-ink">
+          <div className="px-5 pb-5 md:px-6">
+            <Link href="/cart" className="text-link text-sm">
               Edit cart
             </Link>
           </div>
@@ -284,13 +287,15 @@ export function CheckoutForm() {
   );
 }
 
-function Step({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
+function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
-    <fieldset className="border-t border-ink pt-4">
+    <fieldset className="rounded-3xl bg-paper-2 p-5 md:p-7">
       <legend className="contents">
-        <span className="mb-5 flex items-baseline gap-4">
-          <span className="label text-muted">{n}</span>
-          <span className="display text-3xl md:text-4xl">{title}</span>
+        <span className="mb-5 flex items-center gap-3">
+          <span className="grid size-7 shrink-0 place-items-center rounded-full bg-ink text-[13px] font-semibold text-paper" aria-hidden>
+            {n}
+          </span>
+          <span className="text-xl font-semibold tracking-tight">{title}</span>
         </span>
       </legend>
       {children}
@@ -310,15 +315,21 @@ function Radios({
   options: { id: string; label: string; description: string; aside?: string }[];
 }) {
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-2.5">
       {options.map((o) => (
-        <label key={o.id} className={cn("flex cursor-pointer items-start gap-3 border p-4 transition-colors", value === o.id ? "border-ink bg-paper-2" : "border-rule-strong hover:border-ink")}>
-          <input type="radio" name={name} value={o.id} checked={value === o.id} onChange={onChange} className="mt-1 size-4 accent-ink" />
+        <label
+          key={o.id}
+          className={cn(
+            "flex cursor-pointer items-start gap-3 rounded-2xl p-4 transition-all",
+            value === o.id ? "bg-accent/10 ring-2 ring-accent" : "bg-paper ring-1 ring-rule-strong hover:ring-subtle",
+          )}
+        >
+          <input type="radio" name={name} value={o.id} checked={value === o.id} onChange={onChange} className="mt-1 size-[18px] shrink-0 accent-accent" />
           <span className="flex-1">
             <span className="block font-semibold">{o.label}</span>
             <span className="mt-0.5 block text-sm text-muted">{o.description}</span>
           </span>
-          {o.aside && <span className="label text-right text-muted">{o.aside}</span>}
+          {o.aside && <span className="text-right text-sm text-muted">{o.aside}</span>}
         </label>
       ))}
     </div>

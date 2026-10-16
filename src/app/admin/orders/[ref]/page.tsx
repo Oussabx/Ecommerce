@@ -33,20 +33,20 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
         actions={
           <>
             <StatusBadge status={order.status} />
-            <Link href={`/admin/orders/${order.ref}/slip`} target="_blank" className="btn btn-outline !min-h-10 text-xs">
+            <Link href={`/admin/orders/${order.ref}/slip`} target="_blank" className="btn btn-outline !min-h-10 text-sm">
               Print slip
             </Link>
           </>
         }
       >
-        <Link href="/admin/orders" className="label mt-3 inline-block text-muted hover:text-ink">
+        <Link href="/admin/orders" className="mt-3 inline-block text-sm font-medium text-accent hover:underline">
           ← All orders
         </Link>
       </PageHeader>
       <Body className="grid gap-6 xl:grid-cols-3">
         <div className="space-y-6 xl:col-span-2">
           <Panel title="Items">
-            <div className="-m-4 overflow-x-auto">
+            <div className="-mx-5 -mb-5 overflow-x-auto md:-mx-6">
               <table className="w-full text-sm">
                 <thead>
                   <tr>
@@ -59,16 +59,16 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
                 </thead>
                 <tbody>
                   {order.lines.map((l) => (
-                    <tr key={l.id}>
+                    <tr key={l.id} className="[&:last-child>td]:border-b-0">
                       <td className={td}>
                         <span className="flex items-center gap-3">
-                          <span className="relative size-12 shrink-0 bg-paper-2">
+                          <span className="relative size-12 shrink-0 overflow-hidden rounded-xl bg-paper">
                             <Image src={l.image} alt="" fill sizes="48px" className="object-contain p-1" />
                           </span>
                           <span>
                             <span className="label block text-muted">{l.brand}</span>
                             {l.productId ? (
-                              <Link href={`/admin/products/${l.productId}`} className="font-semibold hover:underline">
+                              <Link href={`/admin/products/${l.productId}`} className="font-semibold hover:text-accent">
                                 {l.name}
                               </Link>
                             ) : (
@@ -78,26 +78,26 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
                         </span>
                       </td>
                       <td className={`${td} text-muted`}>{[l.colorName, l.configLabel].filter(Boolean).join(" · ")}</td>
-                      <td className={`${td} text-right font-mono`}>{l.quantity}</td>
-                      <td className={`${td} text-right font-mono`}>{formatPrice(fromCents(l.unitPriceCents))}</td>
-                      <td className={`${td} text-right font-mono`}>{formatPrice(fromCents(l.unitPriceCents * l.quantity))}</td>
+                      <td className={`${td} text-right tabular-nums`}>{l.quantity}</td>
+                      <td className={`${td} text-right tabular-nums`}>{formatPrice(fromCents(l.unitPriceCents))}</td>
+                      <td className={`${td} text-right tabular-nums`}>{formatPrice(fromCents(l.unitPriceCents * l.quantity))}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <dl className="ml-auto mt-4 max-w-xs space-y-1.5 text-sm">
+            <dl className="ml-auto mt-8 max-w-xs space-y-1.5 rounded-2xl bg-paper p-4 text-sm">
               <div className="flex justify-between">
                 <dt>Subtotal</dt>
-                <dd className="font-mono">{formatPrice(fromCents(order.subtotalCents))}</dd>
+                <dd className="tabular-nums">{formatPrice(fromCents(order.subtotalCents))}</dd>
               </div>
               <div className="flex justify-between">
                 <dt>Delivery</dt>
-                <dd className="font-mono">{order.deliveryFeeCents === null ? <span className="text-warn">To confirm</span> : formatPrice(fromCents(order.deliveryFeeCents))}</dd>
+                <dd className="tabular-nums">{order.deliveryFeeCents === null ? <span className="text-warn">To confirm</span> : formatPrice(fromCents(order.deliveryFeeCents))}</dd>
               </div>
-              <div className="flex justify-between border-t border-ink pt-1.5 font-semibold">
+              <div className="flex justify-between border-t border-rule-strong pt-2 text-base font-semibold">
                 <dt>Total</dt>
-                <dd className="font-mono">{formatPrice(orderTotal(order))}</dd>
+                <dd className="tabular-nums">{formatPrice(orderTotal(order))}</dd>
               </div>
               <div className="flex justify-between text-muted">
                 <dt>Payment</dt>
@@ -107,15 +107,15 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
           </Panel>
 
           <Panel title="Timeline">
-            <ol className="relative space-y-4 border-l border-rule pl-5">
+            <ol className="relative space-y-5 border-l border-rule pl-5">
               {[...order.events].reverse().map((e) => (
                 <li key={e.id} className="relative">
-                  <span className={`absolute -left-[25px] top-1 size-2.5 ${e.type === "status" ? "bg-ink" : e.type === "note" ? "bg-lime ring-1 ring-ink" : "bg-cobalt"}`} aria-hidden />
+                  <span className={`absolute -left-[26px] top-1 size-3 rounded-full ring-4 ring-paper-2 ${e.type === "status" ? "bg-accent" : e.type === "note" ? "bg-warn" : "bg-subtle"}`} aria-hidden />
                   <p className="text-sm">
                     {e.type === "status" && e.toStatus ? <strong>{statusLabel[e.toStatus]}</strong> : null}
                     {e.type === "status" && e.message !== statusLabel[e.toStatus ?? "RECEIVED"] ? <> — {e.message}</> : e.type !== "status" ? e.message : null}
                   </p>
-                  <p className="label mt-0.5 text-muted">
+                  <p className="mt-0.5 text-xs text-muted">
                     {e.createdAt.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })} · {e.actorName ?? "System"}
                   </p>
                 </li>
@@ -136,25 +136,25 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
               {order.firstName} {order.lastName}
             </p>
             <p className="mt-1 text-sm">
-              <a href={`mailto:${order.email}`} className="underline underline-offset-4">
+              <a href={`mailto:${order.email}`} className="text-link">
                 {order.email}
               </a>
             </p>
             <p className="text-sm">
-              <a href={`tel:${order.phone.replace(/\s/g, "")}`} className="underline underline-offset-4">
+              <a href={`tel:${order.phone.replace(/\s/g, "")}`} className="text-link">
                 {order.phone}
               </a>
               {waNumber && (
                 <>
                   {" · "}
-                  <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
+                  <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer" className="text-link">
                     WhatsApp
                   </a>
                 </>
               )}
             </p>
-            <p className="label mt-3 text-muted">
-              <a href={`/admin/customers/${encodeURIComponent(order.email)}`} className="underline underline-offset-4">{previous} previous {previous === 1 ? "order" : "orders"}</a>
+            <p className="mt-3 text-sm">
+              <a href={`/admin/customers/${encodeURIComponent(order.email)}`} className="text-link">{previous} previous {previous === 1 ? "order" : "orders"}</a>
             </p>
           </Panel>
           <Panel title="Deliver to">
@@ -169,8 +169,8 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
               <br />
               {order.city}, {order.area}
             </address>
-            {order.notes && <p className="mt-2 border-l-2 border-lime pl-2 text-sm">“{order.notes}”</p>}
-            <p className="label mt-3 text-muted">{order.deliveryMethodLabel}</p>
+            {order.notes && <p className="mt-3 rounded-xl bg-paper px-3 py-2 text-sm">“{order.notes}”</p>}
+            <p className="mt-3 text-sm text-muted">{order.deliveryMethodLabel}</p>
           </Panel>
         </div>
       </Body>

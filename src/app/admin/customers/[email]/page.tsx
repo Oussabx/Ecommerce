@@ -22,14 +22,14 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
         kicker={`First order ${formatDate(orders[orders.length - 1].createdAt.toISOString())} · ${formatPrice(fromCents(spent))} spent`}
         title={`${last.firstName} ${last.lastName}`}
         actions={
-          <Link href="/admin/customers" className="label text-muted hover:text-ink">
+          <Link href="/admin/customers" className="text-sm font-medium text-accent hover:underline">
             ← All customers
           </Link>
         }
       />
       <Body className="grid gap-6 xl:grid-cols-3">
         <Panel title={`Orders (${orders.length})`} className="xl:col-span-2">
-          <div className="-m-4 overflow-x-auto">
+          <div className="-mx-5 -mb-5 overflow-x-auto md:-mx-6">
             <table className="w-full text-sm">
               <thead>
                 <tr>
@@ -41,9 +41,9 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
               </thead>
               <tbody>
                 {orders.map((o) => (
-                  <tr key={o.id}>
+                  <tr key={o.id} className="transition-colors hover:bg-paper-3 [&:last-child>td]:border-b-0">
                     <td className={td}>
-                      <Link href={`/admin/orders/${o.ref}`} className="font-mono font-semibold hover:underline">
+                      <Link href={`/admin/orders/${o.ref}`} className="font-semibold tabular-nums hover:text-accent">
                         {o.ref}
                       </Link>
                     </td>
@@ -51,7 +51,7 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
                     <td className={td}>
                       <StatusBadge status={o.status} />
                     </td>
-                    <td className={`${td} text-right font-mono`}>{formatPrice(orderTotal(o))}</td>
+                    <td className={`${td} text-right tabular-nums`}>{formatPrice(orderTotal(o))}</td>
                   </tr>
                 ))}
               </tbody>
@@ -61,18 +61,18 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
         <div className="space-y-6">
           <Panel title="Contact">
             <p>
-              <a href={`mailto:${email}`} className="underline underline-offset-4">
+              <a href={`mailto:${email}`} className="text-link">
                 {email}
               </a>
             </p>
             <p className="mt-1">
-              <a href={`tel:${last.phone.replace(/\s/g, "")}`} className="underline underline-offset-4">
+              <a href={`tel:${last.phone.replace(/\s/g, "")}`} className="text-link">
                 {last.phone}
               </a>
               {waNumber && (
                 <>
                   {" · "}
-                  <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
+                  <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer" className="text-link">
                     WhatsApp
                   </a>
                 </>

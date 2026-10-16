@@ -11,8 +11,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!hasDatabase) {
     return (
       <div className="container-x py-20">
-        <p className="label text-muted">Admin</p>
-        <h1 className="display mt-3 text-5xl md:text-7xl">Connect a database to use the admin.</h1>
+        <p className="text-sm font-medium text-muted">Admin</p>
+        <h1 className="display mt-3 text-[clamp(2rem,4.5vw,3.5rem)]">Connect a database to use the admin.</h1>
         <p className="mt-4 max-w-xl text-muted">
           The store is running on its built-in sample catalogue. To manage orders, products and settings, connect a Postgres database: in Vercel open the project → Storage → Create Database → Neon → Connect (leave the prefix empty), then redeploy.
           The first deploy afterwards prints your admin login in the build log.

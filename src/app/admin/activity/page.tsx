@@ -33,7 +33,7 @@ export default async function ActivityPage({ searchParams }: { searchParams: Pro
     <>
       <PageHeader title="Activity log" kicker="Every change made in the admin" />
       <Body>
-        <div className="overflow-x-auto border border-rule bg-[#fbfaf7]">
+        <div className="overflow-x-auto rounded-3xl bg-paper-2">
           <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr>
@@ -44,7 +44,7 @@ export default async function ActivityPage({ searchParams }: { searchParams: Pro
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.id}>
+                <tr key={r.id} className="transition-colors hover:bg-paper-3 [&:last-child>td]:border-b-0">
                   <td className={`${td} whitespace-nowrap text-muted`}>{r.createdAt.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}</td>
                   <td className={td}>{r.actorName}</td>
                   <td className={td}>{describe(r)}</td>

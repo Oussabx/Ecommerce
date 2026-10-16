@@ -19,7 +19,7 @@ export default async function TeamPage() {
           </p>
           <AddMember />
         </Panel>
-        <div className="overflow-x-auto border border-rule bg-[#fbfaf7]">
+        <div className="overflow-x-auto rounded-3xl bg-paper-2">
           <table className="w-full min-w-[560px] text-sm">
             <thead>
               <tr>
@@ -31,9 +31,9 @@ export default async function TeamPage() {
             </thead>
             <tbody>
               {team.map((u) => (
-                <tr key={u.id}>
+                <tr key={u.id} className="transition-colors hover:bg-paper-3 [&:last-child>td]:border-b-0">
                   <td className={td}>
-                    {u.name} {u.id === me.id && <span className="label text-muted">(you)</span>}
+                    <span className="font-medium">{u.name}</span> {u.id === me.id && <span className="text-xs text-muted">(you)</span>}
                   </td>
                   <td className={`${td} text-muted`}>{u.email}</td>
                   <td className={`${td} text-muted`}>{formatDate(u.createdAt.toISOString())}</td>

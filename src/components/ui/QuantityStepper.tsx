@@ -31,7 +31,7 @@ export function QuantityStepper({
         className={cn(
           "grid place-items-center rounded-full transition-colors disabled:opacity-30",
           btn,
-          showRemove ? "text-muted hover:bg-danger/10 hover:text-danger" : "hover:bg-paper",
+          showRemove ? "text-muted hover:bg-danger/10 hover:text-danger" : "hover:bg-paper-3",
         )}
         onClick={() => (showRemove ? onRemove!() : onChange(value - 1))}
         disabled={atMin && !onRemove}
@@ -44,7 +44,7 @@ export function QuantityStepper({
       </output>
       <button
         type="button"
-        className={cn("grid place-items-center rounded-full transition-colors hover:bg-paper disabled:opacity-30", btn)}
+        className={cn("grid place-items-center rounded-full transition-colors hover:bg-paper-3 disabled:opacity-30 disabled:hover:bg-transparent", btn)}
         onClick={() => onChange(value + 1)}
         disabled={value >= max}
         aria-label={`Increase ${what}`}

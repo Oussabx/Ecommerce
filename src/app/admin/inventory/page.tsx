@@ -26,17 +26,17 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
   return (
     <>
       <PageHeader title="Inventory" kicker="Stock is deducted when an order is placed and returned if it is cancelled.">
-        <nav className="mt-4 flex gap-1">
-          <Link href="/admin/inventory" className={cn("label inline-flex h-9 items-center border px-3", !filter ? "border-ink bg-ink text-paper" : "border-rule-strong")}>
+        <nav className="mt-5 flex gap-2">
+          <Link href="/admin/inventory" className={cn("chip shrink-0", !filter ? "is-active" : "")}>
             All products
           </Link>
-          <Link href="/admin/inventory?filter=low" className={cn("label inline-flex h-9 items-center border px-3", filter === "low" ? "border-ink bg-ink text-paper" : "border-rule-strong")}>
+          <Link href="/admin/inventory?filter=low" className={cn("chip shrink-0", filter === "low" ? "is-active" : "")}>
             Low &amp; out of stock
           </Link>
         </nav>
       </PageHeader>
       <Body className="grid gap-6 2xl:grid-cols-3">
-        <div className="overflow-x-auto border border-rule bg-[#fbfaf7] 2xl:col-span-2">
+        <div className="overflow-x-auto rounded-3xl bg-paper-2 2xl:col-span-2">
           <table className="w-full min-w-[720px] text-sm">
             <thead>
               <tr>
@@ -48,9 +48,9 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
             </thead>
             <tbody>
               {products.map((p) => (
-                <tr key={p.id}>
+                <tr key={p.id} className="transition-colors hover:bg-paper-3 [&:last-child>td]:border-b-0">
                   <td className={td}>
-                    <Link href={`/admin/products/${p.id}`} className="font-semibold hover:underline">
+                    <Link href={`/admin/products/${p.id}`} className="font-semibold hover:text-accent">
                       {p.name}
                     </Link>
                     <span className="block text-xs text-muted">
@@ -59,8 +59,8 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
                       {p.colors.length > 0 && ` · sold out: ${p.colors.map((c) => c.name).join(", ")}`}
                     </span>
                   </td>
-                  <td className={cn(td, "text-right font-mono text-base", p.stock === 0 ? "text-danger" : p.stock <= LOW_STOCK_THRESHOLD && "text-warn")}>{p.stock}</td>
-                  <td className={`${td} text-right font-mono text-muted`}>{reservedFor(p.id)}</td>
+                  <td className={cn(td, "text-right text-base font-semibold tabular-nums", p.stock === 0 ? "text-danger" : p.stock <= LOW_STOCK_THRESHOLD && "text-warn")}>{p.stock}</td>
+                  <td className={`${td} text-right tabular-nums text-muted`}>{reservedFor(p.id)}</td>
                   <td className={td}>
                     <StockAdjuster productId={p.id} name={p.name} />
                   </td>
@@ -72,10 +72,10 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
         <Panel title="Recent stock movements">
           <ul className="divide-y divide-rule text-sm">
             {movements.map((m) => (
-              <li key={m.id} className="flex gap-3 py-2">
-                <span className={cn("w-12 shrink-0 text-right font-mono", m.delta > 0 ? "text-ok" : "text-danger")}>{m.delta > 0 ? `+${m.delta}` : m.delta}</span>
+              <li key={m.id} className="flex gap-3 py-2.5">
+                <span className={cn("h-6 w-12 shrink-0 rounded-full text-center text-xs font-semibold leading-6 tabular-nums", m.delta > 0 ? "bg-ok/15 text-ok" : "bg-danger/15 text-danger")}>{m.delta > 0 ? `+${m.delta}` : m.delta}</span>
                 <span className="min-w-0 flex-1">
-                  <Link href={`/admin/products/${m.product.id}`} className="block truncate font-medium hover:underline">
+                  <Link href={`/admin/products/${m.product.id}`} className="block truncate font-medium hover:text-accent">
                     {m.product.name}
                   </Link>
                   <span className="text-xs text-muted">
@@ -83,7 +83,7 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
                     {m.orderRef && (
                       <>
                         {" · "}
-                        <Link href={`/admin/orders/${m.orderRef}`} className="underline">
+                        <Link href={`/admin/orders/${m.orderRef}`} className="text-link">
                           {m.orderRef}
                         </Link>
                       </>

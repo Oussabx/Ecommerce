@@ -15,10 +15,10 @@ export default async function SlipPage({ params }: { params: Promise<{ ref: stri
   if (!order) notFound();
   const { store } = await getSettings();
   return (
-    <div className="mx-auto max-w-2xl bg-white p-10 text-ink print:p-0">
-      <div className="flex items-start justify-between border-b-2 border-ink pb-4">
+    <div className="mx-auto max-w-2xl bg-white p-10 text-black print:p-0">
+      <div className="flex items-start justify-between border-b-2 border-black/15 pb-4">
         <div>
-          <Logo className="w-32" />
+          <Logo mono className="w-32" />
           {store.contact.phone && <p className="mt-2 text-xs">{store.contact.phone}</p>}
         </div>
         <div className="text-right">
@@ -52,7 +52,7 @@ export default async function SlipPage({ params }: { params: Promise<{ ref: stri
       </div>
       <table className="mt-8 w-full text-sm">
         <thead>
-          <tr className="border-b border-ink text-left">
+          <tr className="border-b border-black/15 text-left">
             <th className="label py-1 font-normal">Item</th>
             <th className="label py-1 text-right font-normal">Qty</th>
             <th className="label py-1 text-right font-normal">Price</th>
@@ -60,10 +60,10 @@ export default async function SlipPage({ params }: { params: Promise<{ ref: stri
         </thead>
         <tbody>
           {order.lines.map((l) => (
-            <tr key={l.id} className="border-b border-rule">
+            <tr key={l.id} className="border-b border-black/15">
               <td className="py-2">
                 {l.brand} {l.name}
-                <span className="block text-xs text-muted">{[l.colorName, l.configLabel].filter(Boolean).join(" · ")}</span>
+                <span className="block text-xs text-black/60">{[l.colorName, l.configLabel].filter(Boolean).join(" · ")}</span>
               </td>
               <td className="py-2 text-right">{l.quantity}</td>
               <td className="py-2 text-right">{formatPrice(fromCents(l.unitPriceCents * l.quantity))}</td>
@@ -72,8 +72,8 @@ export default async function SlipPage({ params }: { params: Promise<{ ref: stri
         </tbody>
       </table>
       <div className="mt-10 grid grid-cols-2 gap-10 text-xs">
-        <div className="border-t border-ink pt-1">Received by (name &amp; signature)</div>
-        <div className="border-t border-ink pt-1">Date</div>
+        <div className="border-t border-black/15 pt-1">Received by (name &amp; signature)</div>
+        <div className="border-t border-black/15 pt-1">Date</div>
       </div>
       <PrintButton />
     </div>

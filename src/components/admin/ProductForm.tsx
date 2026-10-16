@@ -152,12 +152,12 @@ export function ProductForm({
               ))}
             </Select>
             <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple className="sr-only" id="img-upload" onChange={(e) => upload(e.target.files)} />
-            <label htmlFor="img-upload" className={cn("btn btn-primary !min-h-12 cursor-pointer text-xs", up.pending && "pointer-events-none opacity-50")}>
+            <label htmlFor="img-upload" className={cn("btn btn-primary !min-h-12 cursor-pointer text-sm", up.pending && "pointer-events-none opacity-50")}>
               <Icon name="plus" size={14} /> {up.pending ? "Uploading…" : "Upload images"}
             </label>
             <div className="flex min-w-[240px] flex-1 gap-2">
               <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="…or paste an image URL / /products/… path" className="field text-sm" aria-label="Image URL" />
-              <button type="button" className="btn btn-outline !min-h-12 shrink-0 text-xs" onClick={() => { if (imageUrl.trim()) { addImage(imageUrl.trim()); setImageUrl(""); } }}>
+              <button type="button" className="btn btn-outline !min-h-12 shrink-0 text-sm" onClick={() => { if (imageUrl.trim()) { addImage(imageUrl.trim()); setImageUrl(""); } }}>
                 Add
               </button>
             </div>
@@ -168,8 +168,8 @@ export function ProductForm({
           {p.images.length ? (
             <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {p.images.map((im, i) => (
-                <li key={`${im.url}-${i}`} className="border border-rule bg-paper p-2">
-                  <div className="relative aspect-square bg-paper-2">
+                <li key={`${im.url}-${i}`} className="rounded-2xl bg-paper p-2.5 ring-1 ring-rule">
+                  <div className="relative aspect-square overflow-hidden rounded-xl bg-paper-2">
                     <Image src={im.url} alt={im.alt || ""} fill sizes="200px" className="object-contain p-1" unoptimized={im.url.startsWith("/uploads/")} />
                   </div>
                   <select
@@ -197,13 +197,13 @@ export function ProductForm({
               ))}
             </ul>
           ) : (
-            <p className="mt-4 border border-dashed border-rule-strong p-6 text-center text-sm text-muted">No images yet — the store shows a neutral placeholder until you add some.</p>
+            <p className="mt-4 rounded-2xl bg-paper p-6 text-center text-sm text-muted">No images yet — the store shows a neutral placeholder until you add some.</p>
           )}
         </Section>
 
         {/* colours & options */}
         <Section title="Colours & options">
-          <h3 className="label mb-2">Colours / finishes</h3>
+          <h3 className="mb-3 text-sm font-semibold">Colours / finishes</h3>
           {err("colors") && <p className="mb-2 text-sm text-danger">{err("colors")}</p>}
           <Rows<Color>
             items={p.colors}
@@ -212,12 +212,12 @@ export function ProductForm({
             addLabel="Add colour"
             render={(c, upd) => (
               <div className="grid flex-1 grid-cols-[48px_1fr_1fr] items-center gap-2 sm:grid-cols-[48px_1fr_140px_120px_auto]">
-                <input type="color" value={c.swatch} onChange={(e) => upd({ swatch: e.target.value })} className="h-10 w-12 cursor-pointer border border-rule-strong bg-transparent p-0.5" aria-label="Swatch colour" />
+                <input type="color" value={c.swatch} onChange={(e) => upd({ swatch: e.target.value })} className="h-10 w-12 cursor-pointer rounded-xl border border-rule-strong bg-paper p-1" aria-label="Swatch colour" />
                 <input value={c.name} onChange={(e) => upd({ name: e.target.value, ...(c.key ? {} : {}) })} onBlur={() => !c.key && upd({ key: slugify(c.name) })} placeholder="Name, e.g. Black Titanium" className="field !min-h-10 text-sm" aria-label="Colour name" />
-                <input value={c.key} onChange={(e) => upd({ key: slugify(e.target.value) })} placeholder="id, e.g. black" className="field !min-h-10 font-mono text-xs" aria-label="Colour id" />
-                <input value={c.swatch} onChange={(e) => upd({ swatch: e.target.value })} className="field !min-h-10 font-mono text-xs" aria-label="Swatch hex" />
-                <label className="label flex items-center gap-1.5">
-                  <input type="checkbox" checked={c.soldOut} onChange={(e) => upd({ soldOut: e.target.checked })} className="accent-ink" /> Sold out
+                <input value={c.key} onChange={(e) => upd({ key: slugify(e.target.value) })} placeholder="id, e.g. black" className="field !min-h-10 tabular-nums text-xs" aria-label="Colour id" />
+                <input value={c.swatch} onChange={(e) => upd({ swatch: e.target.value })} className="field !min-h-10 tabular-nums text-xs" aria-label="Swatch hex" />
+                <label className="flex items-center gap-1.5 text-[13px] font-medium">
+                  <input type="checkbox" checked={c.soldOut} onChange={(e) => upd({ soldOut: e.target.checked })} className="accent-accent" /> Sold out
                 </label>
               </div>
             )}
@@ -235,7 +235,7 @@ export function ProductForm({
               render={(c, upd) => (
                 <div className="grid flex-1 grid-cols-[1fr_1fr_120px] items-center gap-2">
                   <input value={c.label} onChange={(e) => upd({ label: e.target.value })} onBlur={() => !c.key && upd({ key: slugify(c.label) })} placeholder="Label, e.g. 256GB" className="field !min-h-10 text-sm" aria-label="Option label" />
-                  <input value={c.key} onChange={(e) => upd({ key: slugify(e.target.value) })} placeholder="id, e.g. 256" className="field !min-h-10 font-mono text-xs" aria-label="Option id" />
+                  <input value={c.key} onChange={(e) => upd({ key: slugify(e.target.value) })} placeholder="id, e.g. 256" className="field !min-h-10 tabular-nums text-xs" aria-label="Option id" />
                   <input value={String(c.priceDelta)} inputMode="decimal" onChange={(e) => upd({ priceDelta: e.target.value as unknown as number })} placeholder="+ price" className="field !min-h-10 text-sm" aria-label="Price difference in USD" />
                 </div>
               )}
@@ -246,7 +246,7 @@ export function ProductForm({
 
         {/* details */}
         <Section title="Key specs & details">
-          <h3 className="label mb-2">Highlights (up to 8, shown on the product page and in search)</h3>
+          <h3 className="mb-3 text-sm font-semibold">Highlights (up to 8, shown on the product page and in search)</h3>
           <Rows
             items={p.highlights}
             onChange={(v) => set("highlights", v)}
@@ -260,7 +260,7 @@ export function ProductForm({
               </div>
             )}
           />
-          <h3 className="label mb-2 mt-6">Technical specifications</h3>
+          <h3 className="mb-3 mt-8 text-sm font-semibold">Technical specifications</h3>
           <SpecsEditor specs={p.specs} onChange={(v) => set("specs", v)} error={err("specs")} />
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <Area label="In the box" optional rows={4} value={p.inTheBox.join("\n")} hint="One item per line." onChange={(v) => set("inTheBox", v.split("\n").map((s) => s.trim()).filter(Boolean))} />
@@ -278,14 +278,14 @@ export function ProductForm({
         <div className="sticky top-4 space-y-6">
           <Section title="Publish">
             <label className="flex items-start gap-3 text-sm">
-              <input type="checkbox" checked={p.published} onChange={(e) => set("published", e.target.checked)} className="mt-0.5 size-4 accent-ink" />
+              <input type="checkbox" checked={p.published} onChange={(e) => set("published", e.target.checked)} className="mt-0.5 size-4 accent-accent" />
               <span>
                 <span className="font-semibold">Visible in the store</span>
                 <span className="block text-muted">Unpublished products are hidden from customers.</span>
               </span>
             </label>
             <label className="mt-3 flex items-start gap-3 text-sm">
-              <input type="checkbox" checked={p.isNew} onChange={(e) => set("isNew", e.target.checked)} className="mt-0.5 size-4 accent-ink" />
+              <input type="checkbox" checked={p.isNew} onChange={(e) => set("isNew", e.target.checked)} className="mt-0.5 size-4 accent-accent" />
               <span>Show a “New” badge</span>
             </label>
             <div className="mt-4">
@@ -294,16 +294,16 @@ export function ProductForm({
             <div className="mt-5 space-y-2">
               <FormError message={save.error} />
               {save.message && !save.error && !dirty && (
-                <p className="label flex items-center gap-1.5 text-ok" role="status">
+                <p className="flex items-center gap-1.5 text-sm font-medium text-ok" role="status">
                   <Icon name="check" size={14} /> {save.message}
                 </p>
               )}
               <button disabled={save.pending} className="btn btn-primary w-full">
                 {save.pending ? "Saving…" : id ? "Save changes" : "Create product"}
               </button>
-              {dirty && <p className="label text-center text-warn">Unsaved changes</p>}
+              {dirty && <p className="text-center text-[13px] font-medium text-warn">Unsaved changes</p>}
               {publicHref && (
-                <Link href={publicHref} target="_blank" className="label block text-center text-muted hover:text-ink">
+                <Link href={publicHref} target="_blank" className="block text-center text-sm font-medium text-accent hover:underline">
                   View in store ↗
                 </Link>
               )}
@@ -333,7 +333,7 @@ export function ProductForm({
                 type="button"
                 disabled={del.pending}
                 onClick={() => confirm(`Delete “${p.name}” permanently?`) && del.exec(() => deleteProduct(id))}
-                className="btn mt-3 w-full border-danger text-danger hover:bg-danger hover:text-paper"
+                className="btn mt-4 w-full border-danger/40 bg-transparent text-danger hover:border-danger hover:bg-danger/10"
               >
                 Delete product
               </button>
@@ -350,12 +350,12 @@ export function ProductForm({
 
 function Section({ title, note, children }: { title: string; note?: string; children: React.ReactNode }) {
   return (
-    <section className="border border-rule bg-[#fbfaf7]">
-      <div className="border-b border-rule px-4 py-3">
-        <h2 className="label">{title}</h2>
-        {note && <p className="mt-1 text-xs text-muted">{note}</p>}
+    <section className="min-w-0 rounded-3xl bg-paper-2">
+      <div className="px-5 pb-1 pt-5 md:px-6">
+        <h2 className="text-[17px] font-semibold tracking-[-0.015em]">{title}</h2>
+        {note && <p className="mt-1 text-[13px] text-muted">{note}</p>}
       </div>
-      <div className="p-4">{children}</div>
+      <div className="p-5 md:px-6">{children}</div>
     </section>
   );
 }
@@ -369,7 +369,7 @@ function Text({ label, value, onChange, error, hint, optional, className, type =
   return (
     <div className={className}>
       <label htmlFor={id} className="mb-1.5 flex justify-between text-sm font-medium">
-        {label} {optional && <span className="label text-subtle">Optional</span>}
+        {label} {optional && <span className="text-xs font-normal text-subtle">Optional</span>}
       </label>
       <input id={id} type={type} inputMode={inputMode} value={value} onChange={(e) => onChange(e.target.value)} className="field text-sm" aria-invalid={!!error} />
       {error ? <p className="mt-1 text-sm text-danger">{error}</p> : hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
@@ -382,7 +382,7 @@ function Area({ label, value, onChange, hint, optional, rows = 3, className }: {
   return (
     <div className={className}>
       <label htmlFor={id} className="mb-1.5 flex justify-between text-sm font-medium">
-        {label} {optional && <span className="label text-subtle">Optional</span>}
+        {label} {optional && <span className="text-xs font-normal text-subtle">Optional</span>}
       </label>
       <textarea id={id} rows={rows} value={value} onChange={(e) => onChange(e.target.value)} className="field min-h-0 text-sm" />
       {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
@@ -407,7 +407,7 @@ function Select({ label, value, onChange, error, children, className }: { label:
 
 function IconBtn({ label, onClick, icon, danger }: { label: string; onClick: () => void; icon: "arrowLeft" | "arrow" | "trash" | "chevronDown" | "close"; danger?: boolean }) {
   return (
-    <button type="button" onClick={onClick} aria-label={label} title={label} className={cn("grid size-8 place-items-center hover:bg-paper-2", danger && "text-danger")}>
+    <button type="button" onClick={onClick} aria-label={label} title={label} className={cn("grid size-8 place-items-center rounded-full text-muted transition-colors hover:bg-paper-3 hover:text-ink", danger && "hover:bg-danger/10 hover:text-danger")}>
       <Icon name={icon} size={14} />
     </button>
   );
@@ -428,7 +428,7 @@ function Rows<T>({ items, onChange, blank, render, addLabel, max }: { items: T[]
         ))}
       </ul>
       {(!max || items.length < max) && (
-        <button type="button" onClick={() => onChange([...items, { ...blank }])} className="label mt-2 inline-flex h-9 items-center gap-1.5 border border-dashed border-rule-strong px-3 hover:border-ink">
+        <button type="button" onClick={() => onChange([...items, { ...blank }])} className="mt-3 inline-flex h-9 items-center gap-1.5 rounded-full bg-accent/15 px-4 text-[13px] font-semibold text-accent transition-colors hover:bg-accent/25">
           <Icon name="plus" size={12} /> {addLabel}
         </button>
       )}
@@ -442,7 +442,7 @@ function SpecsEditor({ specs, onChange, error }: { specs: Spec[]; onChange: (v: 
     <div className="space-y-3">
       {error && <p className="text-sm text-danger">{error}</p>}
       {specs.map((g, i) => (
-        <div key={i} className="border border-rule p-3">
+        <div key={i} className="rounded-2xl bg-paper p-4">
           <div className="flex items-center gap-2">
             <input value={g.group} onChange={(e) => upd(i, { ...g, group: e.target.value })} placeholder="Group, e.g. Display" className="field !min-h-10 text-sm font-semibold" aria-label="Spec group name" />
             <IconBtn label="Move group up" icon="chevronDown" onClick={() => onChange(move(specs, i, -1))} />
@@ -457,12 +457,12 @@ function SpecsEditor({ specs, onChange, error }: { specs: Spec[]; onChange: (v: 
               </li>
             ))}
           </ul>
-          <button type="button" onClick={() => upd(i, { ...g, rows: [...g.rows, ["", ""]] })} className="label mt-2 text-muted hover:text-ink">
+          <button type="button" onClick={() => upd(i, { ...g, rows: [...g.rows, ["", ""]] })} className="mt-2 text-[13px] font-medium text-accent hover:underline">
             + Add row
           </button>
         </div>
       ))}
-      <button type="button" onClick={() => onChange([...specs, { group: "", rows: [["", ""]] }])} className="label inline-flex h-9 items-center gap-1.5 border border-dashed border-rule-strong px-3 hover:border-ink">
+      <button type="button" onClick={() => onChange([...specs, { group: "", rows: [["", ""]] }])} className="inline-flex h-9 items-center gap-1.5 rounded-full bg-accent/15 px-4 text-[13px] font-semibold text-accent transition-colors hover:bg-accent/25">
         <Icon name="plus" size={12} /> Add spec group
       </button>
     </div>
@@ -478,7 +478,7 @@ function PairsPicker({ value, options, onChange }: { value: string[]; options: {
       <ul className="flex flex-wrap gap-2">
         {value.map((s) => (
           <li key={s}>
-            <button type="button" onClick={() => onChange(value.filter((x) => x !== s))} className="label inline-flex h-8 items-center gap-1.5 bg-ink px-2.5 text-paper hover:bg-danger" aria-label={`Remove ${name(s)}`}>
+            <button type="button" onClick={() => onChange(value.filter((x) => x !== s))} className="inline-flex h-8 items-center gap-1.5 rounded-full bg-paper px-3 text-[13px] font-medium text-ink transition-colors hover:bg-danger/10 hover:text-danger" aria-label={`Remove ${name(s)}`}>
               {name(s)} <Icon name="close" size={12} />
             </button>
           </li>
@@ -489,10 +489,10 @@ function PairsPicker({ value, options, onChange }: { value: string[]; options: {
         <div className="relative mt-3 max-w-sm">
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search products to suggest…" className="field !min-h-10 text-sm" aria-label="Add a product suggestion" />
           {matches.length > 0 && (
-            <ul className="absolute inset-x-0 top-full z-10 border border-ink bg-paper shadow-lg">
+            <ul className="absolute inset-x-0 top-full z-10 mt-1 overflow-hidden rounded-xl bg-paper py-1 shadow-[var(--shadow-lift)] ring-1 ring-rule">
               {matches.map((m) => (
                 <li key={m.slug}>
-                  <button type="button" onClick={() => { onChange([...value, m.slug]); setQ(""); }} className="block w-full px-3 py-2 text-left text-sm hover:bg-lime">
+                  <button type="button" onClick={() => { onChange([...value, m.slug]); setQ(""); }} className="block w-full px-3 py-2 text-left text-sm hover:bg-paper-3">
                     {m.name}
                   </button>
                 </li>

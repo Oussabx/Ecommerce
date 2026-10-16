@@ -15,7 +15,7 @@ export function SignOutButton() {
         router.replace("/admin/login");
         router.refresh();
       }}
-      className="label inline-flex items-center gap-2 text-paper/60 hover:text-lime"
+      className="inline-flex items-center gap-1.5 text-[13px] font-medium text-muted hover:text-danger"
     >
       <Icon name="logout" size={14} /> Sign out
     </button>

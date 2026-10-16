@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { ProductImage } from "@/lib/catalog";
 import { Icon } from "@/components/ui/Icon";
-import { cn, pad2 } from "@/lib/format";
+import { cn } from "@/lib/format";
 
 export function Gallery({ images, name }: { images: ProductImage[]; name: string }) {
   const [active, setActive] = useState(0);
@@ -35,9 +35,9 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
   const img = images[active] ?? images[0];
 
   return (
-    <div className="grid gap-3 md:grid-cols-[72px_1fr] md:gap-4">
+    <div className="grid gap-3 md:grid-cols-[92px_1fr] md:gap-4">
       {/* thumbnails */}
-      <ul className="no-scrollbar order-2 flex gap-2 overflow-x-auto md:order-1 md:flex-col" aria-label="Product images">
+      <ul className="no-scrollbar order-2 flex gap-2.5 overflow-x-auto p-1.5 md:order-1 md:flex-col md:overflow-visible" aria-label="Product images">
         {images.map((im, i) => (
           <li key={im.src} className="shrink-0">
             <button
@@ -45,10 +45,9 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
               onClick={() => setActive(i)}
               aria-label={`Show ${im.label.toLowerCase()} view`}
               aria-current={i === active}
-              className={cn("relative block size-16 border bg-paper-2 transition-colors md:size-[72px]", i === active ? "border-ink" : "border-transparent hover:border-rule-strong")}
+              className={cn("relative block size-16 overflow-hidden rounded-2xl bg-paper-2 transition md:size-20", i === active ? "ring-2 ring-ink ring-offset-2 ring-offset-paper" : "opacity-80 hover:opacity-100 hover:bg-paper-3")}
             >
-              <Image src={im.src} alt="" fill sizes="72px" className="object-contain p-1.5" />
-              <span className="label absolute bottom-0.5 left-1 text-[9px] text-muted">{pad2(i + 1)}</span>
+              <Image src={im.src} alt="" fill sizes="80px" className="object-contain p-2" />
             </button>
           </li>
         ))}
@@ -57,7 +56,7 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
       {/* main image with hover zoom */}
       <div className="order-1 md:order-2">
         <div
-          className="group relative aspect-square cursor-zoom-in overflow-hidden bg-paper-2"
+          className="group relative aspect-square cursor-zoom-in overflow-hidden rounded-3xl bg-paper-2 md:rounded-[32px]"
           onMouseEnter={() => setZoom(true)}
           onMouseLeave={() => setZoom(false)}
           onMouseMove={(e) => {
@@ -76,26 +75,28 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
             className="animate-[fade_.4s_ease] object-contain p-[6%] transition-transform duration-300 ease-out"
             style={{ transform: zoom ? "scale(1.8)" : "scale(1)", transformOrigin: origin }}
           />
-          <span className="label pointer-events-none absolute left-3 top-3 text-muted">
-            {pad2(active + 1)} / {pad2(images.length)} — {img.label}
-          </span>
+          {images.length > 1 && (
+            <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-paper/80 px-2.5 py-1 text-xs font-medium text-muted backdrop-blur-sm">
+              {active + 1} / {images.length}
+            </span>
+          )}
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               setLightbox(true);
             }}
-            className="absolute bottom-3 right-3 grid size-10 place-items-center bg-paper/90 hover:bg-lime"
+            className="absolute bottom-4 right-4 grid size-10 place-items-center rounded-full bg-paper/85 text-ink backdrop-blur-sm transition-colors hover:bg-paper"
             aria-label={`Enlarge image of ${name}`}
           >
             <Icon name="zoom" size={18} />
           </button>
           {images.length > 1 && (
-            <div className="absolute bottom-3 left-3 flex gap-1 md:hidden">
-              <button type="button" onClick={(e) => { e.stopPropagation(); setActive((active - 1 + images.length) % images.length); }} className="grid size-10 place-items-center bg-paper/90" aria-label="Previous image">
+            <div className="absolute bottom-4 left-4 flex gap-2 md:hidden">
+              <button type="button" onClick={(e) => { e.stopPropagation(); setActive((active - 1 + images.length) % images.length); }} className="grid size-10 place-items-center rounded-full bg-paper/85 text-ink backdrop-blur-sm" aria-label="Previous image">
                 <Icon name="arrowLeft" size={16} />
               </button>
-              <button type="button" onClick={(e) => { e.stopPropagation(); setActive((active + 1) % images.length); }} className="grid size-10 place-items-center bg-paper/90" aria-label="Next image">
+              <button type="button" onClick={(e) => { e.stopPropagation(); setActive((active + 1) % images.length); }} className="grid size-10 place-items-center rounded-full bg-paper/85 text-ink backdrop-blur-sm" aria-label="Next image">
                 <Icon name="arrow" size={16} />
               </button>
             </div>
@@ -105,22 +106,22 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
 
       {lightbox && (
         <div className="fixed inset-0 z-[60] flex animate-[fade_.2s_ease] flex-col bg-paper" role="dialog" aria-modal="true" aria-label={`${name} images`}>
-          <div className="container-x flex h-16 items-center justify-between border-b border-ink">
-            <p className="label">
-              {pad2(active + 1)} / {pad2(images.length)} — {img.label}
+          <div className="container-x flex h-16 items-center justify-between">
+            <p className="text-sm font-medium text-muted">
+              {active + 1} / {images.length} · {img.label}
             </p>
-            <button ref={closeRef} type="button" onClick={() => setLightbox(false)} className="label inline-flex h-10 items-center gap-2" aria-label="Close enlarged image">
-              Close <Icon name="close" />
+            <button ref={closeRef} type="button" onClick={() => setLightbox(false)} className="grid size-10 place-items-center rounded-full bg-paper-2 transition-colors hover:bg-paper-3" aria-label="Close enlarged image">
+              <Icon name="close" />
             </button>
           </div>
           <div className="relative flex-1">
             <Image key={img.src} src={img.src} alt={img.alt} fill sizes="100vw" className="animate-[fade_.3s_ease] object-contain p-6 md:p-12" />
             {images.length > 1 && (
               <>
-                <button type="button" onClick={() => setActive((active - 1 + images.length) % images.length)} className="absolute left-4 top-1/2 grid size-12 -translate-y-1/2 place-items-center border border-ink bg-paper hover:bg-lime" aria-label="Previous image">
+                <button type="button" onClick={() => setActive((active - 1 + images.length) % images.length)} className="absolute left-4 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-paper-2 transition-colors hover:bg-paper-3" aria-label="Previous image">
                   <Icon name="arrowLeft" />
                 </button>
-                <button type="button" onClick={() => setActive((active + 1) % images.length)} className="absolute right-4 top-1/2 grid size-12 -translate-y-1/2 place-items-center border border-ink bg-paper hover:bg-lime" aria-label="Next image">
+                <button type="button" onClick={() => setActive((active + 1) % images.length)} className="absolute right-4 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full bg-paper-2 transition-colors hover:bg-paper-3" aria-label="Next image">
                   <Icon name="arrow" />
                 </button>
               </>

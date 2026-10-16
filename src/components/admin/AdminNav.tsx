@@ -30,68 +30,74 @@ export function AdminNav({ user, badges }: { user: { name: string; role: string 
   return (
     <>
       {/* mobile top bar */}
-      <div className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-paper/10 bg-ink px-4 text-paper lg:hidden print:hidden">
-        <button type="button" onClick={() => setOpen(true)} className="-ml-2 grid size-11 place-items-center" aria-label="Open admin menu">
+      <div className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-rule bg-paper/85 px-4 text-ink backdrop-blur-xl lg:hidden print:hidden">
+        <button type="button" onClick={() => setOpen(true)} className="-ml-2 grid size-11 place-items-center rounded-full hover:bg-paper-3" aria-label="Open admin menu">
           <Icon name="menu" />
         </button>
         <Link href="/admin" className="flex items-center gap-2">
-          <Logo compact className="w-16" />
-          <span className="label text-lime">Admin</span>
+          <Logo className="w-32" />
+          <span className="text-sm font-medium text-muted">Admin</span>
         </Link>
-        <Link href="/" className="label text-paper/60">
+        <Link href="/" className="text-sm font-medium text-accent">
           Store
         </Link>
       </div>
-      {open && <button type="button" aria-label="Close admin menu" className="fixed inset-0 z-40 bg-ink/50 lg:hidden" onClick={() => setOpen(false)} />}
+      {open && <button type="button" aria-label="Close admin menu" className="fixed inset-0 z-40 bg-paper/70 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-ink text-paper transition-transform duration-300 lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 print:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-rule bg-paper text-ink transition-transform duration-300 lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 print:hidden",
           open ? "translate-x-0" : "-translate-x-full",
         )}
         aria-label="Admin"
       >
-        <div className="flex items-center justify-between border-b border-paper/10 px-5 py-5">
+        <div className="flex items-center justify-between px-6 pb-4 pt-6">
           <Link href="/admin" className="block">
-            <Logo className="w-24" />
-            <span className="label mt-2 block text-lime">Admin console</span>
+            <Logo className="w-32" />
+            <span className="mt-2 block text-xs font-medium text-muted">Admin console</span>
           </Link>
-          <button type="button" onClick={() => setOpen(false)} className="grid size-10 place-items-center lg:hidden" aria-label="Close admin menu">
+          <button type="button" onClick={() => setOpen(false)} className="grid size-10 place-items-center rounded-full hover:bg-paper-3 lg:hidden" aria-label="Close admin menu">
             <Icon name="close" />
           </button>
         </div>
-        <nav className="flex-1 overflow-y-auto px-3 py-4">
-          <ul className="space-y-0.5">
+        <nav className="flex-1 overflow-y-auto px-3 py-2">
+          <ul className="space-y-1">
             {items.map((n) => {
               const count = n.badgeKey ? badges[n.badgeKey] : 0;
+              const on = active(n.href);
               return (
                 <li key={n.href}>
                   <Link
                     href={n.href}
-                    aria-current={active(n.href) ? "page" : undefined}
+                    aria-current={on ? "page" : undefined}
                     className={cn(
-                      "flex h-10 items-center gap-3 px-3 text-sm transition-colors",
-                      active(n.href) ? "bg-lime font-semibold text-ink" : "text-paper/75 hover:bg-paper/10 hover:text-paper",
+                      "flex h-10 items-center gap-3 rounded-xl px-3 text-sm transition-colors",
+                      on ? "bg-paper-3 font-semibold text-ink" : "text-ink-2 hover:bg-paper-3 hover:text-ink",
                     )}
                   >
-                    <Icon name={n.icon} size={17} />
+                    <Icon name={n.icon} size={17} className={on ? "text-accent" : "text-muted"} />
                     <span className="flex-1">{n.label}</span>
-                    {count > 0 && (
-                      <span className={cn("grid h-5 min-w-5 place-items-center px-1 font-mono text-[10px]", active(n.href) ? "bg-ink text-lime" : "bg-lime text-ink")}>{count}</span>
-                    )}
+                    {count > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1.5 text-[11px] font-semibold tabular-nums text-on-accent">{count}</span>}
                   </Link>
                 </li>
               );
             })}
           </ul>
         </nav>
-        <div className="border-t border-paper/10 p-4 text-sm">
-          <p className="font-semibold">{user.name}</p>
-          <p className="label text-paper/50">{user.role.toLowerCase()}</p>
-          <div className="mt-3 flex gap-4">
-            <Link href="/" className="label text-paper/60 hover:text-lime">
+        <div className="m-3 rounded-2xl bg-paper-2 p-4 text-sm">
+          <div className="flex items-center gap-3">
+            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-accent/15 text-sm font-semibold text-accent" aria-hidden>
+              {user.name.trim().charAt(0).toUpperCase()}
+            </span>
+            <div className="min-w-0">
+              <p className="truncate font-semibold">{user.name}</p>
+              <p className="text-xs capitalize text-muted">{user.role.toLowerCase()}</p>
+            </div>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-rule pt-3">
+            <Link href="/" className="text-[13px] font-medium text-muted hover:text-accent">
               View store ↗
             </Link>
-            <Link href="/admin/account" className="label text-paper/60 hover:text-lime">
+            <Link href="/admin/account" className="text-[13px] font-medium text-muted hover:text-accent">
               My account
             </Link>
             <SignOutButton />

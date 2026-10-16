@@ -25,12 +25,12 @@ export default async function EditProductPage({ params, searchParams }: { params
         kicker={`${product.brand} · ${product.published ? "Published" : "Hidden from store"}`}
         title={product.name}
         actions={
-          <Link href="/admin/products" className="label text-muted hover:text-ink">
+          <Link href="/admin/products" className="text-sm font-medium text-accent hover:underline">
             ← All products
           </Link>
         }
       >
-        {created && <p className="label mt-3 inline-block bg-lime px-2 py-1">Product created — add images and publish when ready.</p>}
+        {created && <p className="mt-3 inline-flex rounded-full bg-accent/15 px-3 py-1.5 text-sm font-medium text-accent">Product created — add images and publish when ready.</p>}
       </PageHeader>
       <Body>
         <ProductForm id={product.id} initial={toProductInput(product)} categories={categories} allProducts={all} canDelete={user.role === "ADMIN"} publicHref={product.published ? `/product/${product.slug}` : undefined} />

@@ -18,7 +18,7 @@ export default async function NewProductPage() {
         kicker="Catalogue"
         title="New product"
         actions={
-          <Link href="/admin/products" className="label text-muted hover:text-ink">
+          <Link href="/admin/products" className="text-sm font-medium text-accent hover:underline">
             ← All products
           </Link>
         }

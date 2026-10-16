@@ -21,26 +21,27 @@ export default async function ContactPage() {
   ].filter(Boolean) as { label: string; value: string; href?: string }[];
 
   return (
-    <div className="container-x pb-20 pt-6">
+    <div className="container-x pb-20 pt-6 md:pb-28">
       <Breadcrumbs items={[{ label: "Contact" }]} />
-      <div className="mt-8 grid gap-12 border-t border-ink pt-4 lg:grid-cols-12">
+      <div className="mt-8 grid gap-10 md:mt-12 lg:grid-cols-12 lg:gap-12">
         <div className="lg:col-span-5">
-          <h1 className="display text-[clamp(3.2rem,9vw,8rem)]">Talk to us.</h1>
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-2">
+          <h1 className="display text-[clamp(2rem,4.5vw,3.5rem)]">Talk to us.</h1>
+          <p className="mt-4 max-w-md text-lg leading-relaxed text-muted">
             Not sure which device fits? Have a question about an order? Send a message and a person who knows the product will reply.
           </p>
           {rows.length > 0 && (
-            <dl className="mt-10 divide-y divide-rule border-y border-rule">
+            <dl className="mt-8 rounded-3xl bg-paper-2 divide-y divide-rule px-5 md:px-6">
               {rows.map((r) => (
-                <div key={r.label} className="grid grid-cols-[110px_1fr] py-3">
-                  <dt className="label pt-0.5 text-muted">{r.label}</dt>
-                  <dd>{r.href ? <a href={r.href} className="underline underline-offset-4">{r.value}</a> : r.value}</dd>
+                <div key={r.label} className="grid grid-cols-[100px_1fr] gap-3 py-3.5 text-[15px]">
+                  <dt className="text-muted">{r.label}</dt>
+                  <dd className="min-w-0 break-words">{r.href ? <a href={r.href} className="text-link">{r.value}</a> : r.value}</dd>
                 </div>
               ))}
             </dl>
           )}
         </div>
-        <div className="lg:col-span-6 lg:col-start-7">
+        <div className="rounded-3xl bg-paper-2 p-5 md:p-8 lg:col-span-7">
+          <h2 className="mb-6 text-xl font-semibold tracking-tight">Send a message</h2>
           <ContactForm />
         </div>
       </div>

@@ -30,12 +30,10 @@ export function PersonalRails({ exclude, showPairs = true }: { exclude?: string;
   }
 
   return (
-    <section className="container-x py-14 md:py-20" aria-label="Based on your browsing">
-      <div className="flex items-end justify-between border-t border-ink pt-5">
-        <div>
-          <h2 className="display text-5xl md:text-6xl">Recently viewed</h2>
-        </div>
-        <button type="button" onClick={() => viewedStore.set([])} className="label text-muted underline-offset-4 hover:text-ink hover:underline">
+    <section className="container-x pb-12 md:pb-20" aria-label="Based on your browsing">
+      <div className="flex items-end justify-between gap-4">
+        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Recently viewed</h2>
+        <button type="button" onClick={() => viewedStore.set([])} className="text-link text-sm">
           Clear
         </button>
       </div>
@@ -44,9 +42,7 @@ export function PersonalRails({ exclude, showPairs = true }: { exclude?: string;
       </div>
       {pairs.length > 0 && (
         <>
-          <div className="mt-14 border-t border-ink pt-5">
-            <h2 className="display text-5xl md:text-6xl">Pairs well with</h2>
-          </div>
+          <h2 className="mt-16 text-2xl font-semibold tracking-tight md:mt-20 md:text-3xl">Pairs well with</h2>
           <div className="mt-6">
             <ProductRail items={pairs.slice(0, 8)} />
           </div>

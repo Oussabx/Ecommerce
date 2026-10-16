@@ -134,7 +134,7 @@ export function ListingView({
   }, [drawer]);
 
   const filters = (
-    <div className="divide-y divide-rule border-y border-rule">
+    <div className="divide-y divide-rule">
       {facets.includes("category") && options.category.length > 1 && (
         <FacetGroup title="Category">
           {options.category.map((o) => (
@@ -175,40 +175,40 @@ export function ListingView({
     <div className="grid gap-8 lg:grid-cols-[240px_1fr] xl:grid-cols-[264px_1fr]">
       {/* Desktop filters */}
       <aside className="hidden lg:block" aria-label="Filters">
-        <div className="sticky top-24">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="label">Filter {activeCount > 0 && `(${activeCount})`}</h2>
+        <div className="tile sticky top-24 max-h-[calc(100dvh-7rem)] overflow-y-auto px-5 pb-2 pt-5">
+          <div className="flex items-center justify-between">
+            <h2 className="text-[17px] font-semibold">Filters {activeCount > 0 && <span className="font-normal text-muted">({activeCount})</span>}</h2>
             {activeCount > 0 && (
-              <button type="button" onClick={clearAll} className="label text-muted underline-offset-4 hover:text-ink hover:underline">
+              <button type="button" onClick={clearAll} className="text-link text-sm">
                 Clear all
               </button>
             )}
           </div>
-          {filters}
+          <div className="mt-2">{filters}</div>
         </div>
       </aside>
 
       <div className="min-w-0">
         {/* toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-y border-ink py-2.5 lg:border-t-0 lg:pt-0">
-          <button type="button" onClick={() => setDrawer(true)} className="inline-flex h-10 items-center gap-2 rounded-md border-[1.5px] border-ink px-3.5 text-sm font-semibold lg:hidden">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <button type="button" onClick={() => setDrawer(true)} className={cn("chip lg:hidden", activeCount > 0 && "is-active")}>
             <Icon name="filter" size={16} /> Filters {activeCount > 0 && `(${activeCount})`}
           </button>
-          <p className="label text-muted" aria-live="polite">
+          <p className="text-sm text-muted" aria-live="polite">
             {filtered.length} {filtered.length === 1 ? "product" : "products"}
           </p>
           <div className="ml-auto flex items-center gap-2">
-            <label htmlFor="sort" className="label hidden text-muted sm:block">
+            <label htmlFor="sort" className="hidden text-sm text-muted sm:block">
               Sort
             </label>
-            <select id="sort" value={sort} onChange={(e) => update({ sort: e.target.value === "featured" ? null : e.target.value }, false)} className="field !min-h-10 w-auto !py-1.5 text-sm">
+            <select id="sort" value={sort} onChange={(e) => update({ sort: e.target.value === "featured" ? null : e.target.value }, false)} className="field !min-h-10 w-auto !rounded-full !border-transparent !bg-paper-2 !py-1.5 pl-4 text-sm font-medium hover:!bg-paper-3">
               {SORTS.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.label}
                 </option>
               ))}
             </select>
-            <div className="hidden border border-rule-strong sm:flex" role="group" aria-label="View">
+            <div className="hidden gap-0.5 rounded-full bg-paper-2 p-1 sm:flex" role="group" aria-label="View">
               {(["grid", "list"] as const).map((v) => (
                 <button
                   key={v}
@@ -216,7 +216,7 @@ export function ListingView({
                   aria-pressed={view === v}
                   aria-label={`${v} view`}
                   onClick={() => update({ view: v === "grid" ? null : v }, false)}
-                  className={cn("grid size-10 place-items-center transition-colors", view === v ? "bg-ink text-paper" : "hover:bg-paper-2")}
+                  className={cn("grid size-8 place-items-center rounded-full transition-colors", view === v ? "bg-paper-3 text-ink" : "text-muted hover:text-ink")}
                 >
                   <Icon name={v} size={16} />
                 </button>
@@ -227,18 +227,18 @@ export function ListingView({
 
         {/* active filter chips */}
         {activeCount > 0 && (
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             {chips.map((c) => (
-              <button key={`${c.k}-${c.v}`} type="button" onClick={() => toggle(c.k, c.v)} className="inline-flex h-8 items-center gap-1.5 rounded-full bg-ink px-3 text-xs font-semibold text-paper hover:bg-black" aria-label={`Remove filter ${c.label}`}>
+              <button key={`${c.k}-${c.v}`} type="button" onClick={() => toggle(c.k, c.v)} className="chip !min-h-8 bg-accent/15 !px-3 text-[13px] text-accent hover:bg-accent/25" aria-label={`Remove filter ${c.label}`}>
                 {c.label} <Icon name="close" size={12} />
               </button>
             ))}
             {sel.stock && (
-              <button type="button" onClick={() => update({ stock: null })} className="inline-flex h-8 items-center gap-1.5 rounded-full bg-ink px-3 text-xs font-semibold text-paper hover:bg-black" aria-label="Remove filter In stock only">
+              <button type="button" onClick={() => update({ stock: null })} className="chip !min-h-8 bg-accent/15 !px-3 text-[13px] text-accent hover:bg-accent/25" aria-label="Remove filter In stock only">
                 In stock <Icon name="close" size={12} />
               </button>
             )}
-            <button type="button" onClick={clearAll} className="label h-8 px-2 text-muted underline-offset-4 hover:text-ink hover:underline">
+            <button type="button" onClick={clearAll} className="text-link h-8 px-2 text-sm">
               Clear all
             </button>
           </div>
@@ -246,8 +246,8 @@ export function ListingView({
 
         {/* results */}
         {filtered.length === 0 ? (
-          <div className="mt-6 border border-rule p-10 text-center md:p-16">
-            <p className="display text-4xl md:text-6xl">{emptyTitle}</p>
+          <div className="tile mt-6 px-6 py-14 text-center md:py-20">
+            <p className="text-2xl font-semibold tracking-tight md:text-3xl">{emptyTitle}</p>
             <p className="mx-auto mt-3 max-w-md text-muted">Try removing a filter or two — or browse everything we stock.</p>
             {activeCount > 0 && (
               <button type="button" onClick={clearAll} className="btn btn-primary mt-6">
@@ -256,26 +256,26 @@ export function ListingView({
             )}
           </div>
         ) : (
-          <div key={params.toString().replace(/&?page=\d+/, "")} className="mt-4 animate-[fade_.35s_ease]">
+          <div key={params.toString().replace(/&?page=\d+/, "")} className="mt-6 animate-[fade_.35s_ease]">
             {view === "grid" ? (
-              <div className="grid grid-cols-2 gap-px border border-rule bg-rule md:grid-cols-3">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-3 md:gap-x-5 md:gap-y-10">
                 {shown.map((p, i) => (
-                  <ProductCard key={p.slug} p={p} index={i + 1} priority={i < 3} sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" />
+                  <ProductCard key={p.slug} p={p} priority={i < 3} sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" />
                 ))}
               </div>
             ) : (
-              <div className="grid gap-px border border-rule bg-rule">
-                {shown.map((p, i) => (
-                  <ProductCard key={p.slug} p={p} index={i + 1} view="list" />
+              <div className="grid gap-3">
+                {shown.map((p) => (
+                  <ProductCard key={p.slug} p={p} view="list" />
                 ))}
               </div>
             )}
-            <div className="mt-8 flex flex-col items-center gap-3">
-              <p className="label text-muted">
+            <div className="mt-12 flex flex-col items-center gap-3">
+              <p className="text-sm text-muted">
                 Showing {shown.length} of {filtered.length}
               </p>
-              <div className="h-px w-48 bg-rule">
-                <div className="h-px bg-ink transition-[width] duration-500" style={{ width: `${(shown.length / filtered.length) * 100}%` }} />
+              <div className="h-1 w-48 overflow-hidden rounded-full bg-paper-3">
+                <div className="h-full rounded-full bg-ink transition-[width] duration-500" style={{ width: `${(shown.length / filtered.length) * 100}%` }} />
               </div>
               {shown.length < filtered.length && (
                 <button type="button" onClick={() => update({ page: String(page + 1) }, false)} className="btn btn-outline mt-2">
@@ -291,15 +291,16 @@ export function ListingView({
       {drawer && (
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Filters">
           <button type="button" aria-label="Close filters" className="absolute inset-0 animate-[fade_.2s_ease] bg-ink/40" onClick={() => setDrawer(false)} />
-          <div className="absolute inset-x-0 bottom-0 flex max-h-[88dvh] animate-[rise_.4s_var(--ease-out-expo)_both] flex-col bg-paper">
-            <div className="flex items-center justify-between border-b border-ink px-4 py-3">
-              <h2 className="display text-3xl">Filters</h2>
-              <button type="button" onClick={() => setDrawer(false)} className="grid size-10 place-items-center" aria-label="Close filters">
+          <div className="absolute inset-x-0 bottom-0 flex max-h-[88dvh] animate-[rise_.4s_var(--ease-out-expo)_both] flex-col overflow-hidden rounded-t-[28px] bg-paper-2 shadow-[var(--shadow-lift)]">
+            <div className="mx-auto mt-2.5 h-1 w-10 rounded-full bg-rule" aria-hidden />
+            <div className="flex items-center justify-between px-5 pb-2 pt-3">
+              <h2 className="text-xl font-semibold">Filters</h2>
+              <button type="button" onClick={() => setDrawer(false)} className="grid size-9 place-items-center rounded-full bg-paper-3 transition-colors hover:bg-rule" aria-label="Close filters">
                 <Icon name="close" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto px-4">{filters}</div>
-            <div className="grid grid-cols-2 gap-2 border-t border-rule p-4">
+            <div className="flex-1 overflow-y-auto px-5">{filters}</div>
+            <div className="grid grid-cols-2 gap-2 border-t border-rule p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
               <button type="button" onClick={clearAll} className="btn btn-outline" disabled={!activeCount}>
                 Clear all
               </button>
@@ -317,9 +318,9 @@ export function ListingView({
 function FacetGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <details open className="group py-3">
-      <summary className="label flex list-none items-center justify-between py-1 [&::-webkit-details-marker]:hidden">
+      <summary className="flex list-none items-center justify-between py-1.5 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
         {title}
-        <Icon name="chevronDown" size={14} className="transition-transform group-open:rotate-180" />
+        <Icon name="chevronDown" size={16} className="text-muted transition-transform group-open:rotate-180" />
       </summary>
       <div className="mt-2 space-y-0.5">{children}</div>
     </details>
@@ -328,13 +329,13 @@ function FacetGroup({ title, children }: { title: string; children: React.ReactN
 
 function Check({ label, count, checked, onChange }: { label: string; count?: number; checked: boolean; onChange: () => void }) {
   return (
-    <label className="flex min-h-9 cursor-pointer items-center gap-3 text-sm">
+    <label className="flex min-h-9 cursor-pointer items-center gap-3 text-[15px] text-ink-2">
       <input type="checkbox" checked={checked} onChange={onChange} className="peer sr-only" />
-      <span className="grid size-4 shrink-0 place-items-center border border-ink transition-colors peer-checked:bg-ink peer-checked:text-lime peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt">
+      <span className="grid size-[18px] shrink-0 place-items-center rounded-[6px] bg-paper ring-1 ring-inset ring-rule-strong transition-colors peer-checked:bg-accent peer-checked:text-on-accent peer-checked:ring-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent">
         {checked && <Icon name="check" size={12} strokeWidth={2.5} />}
       </span>
       <span className="flex-1">{label}</span>
-      {count !== undefined && <span className="font-mono text-xs text-muted tabular-nums">{count}</span>}
+      {count !== undefined && <span className="text-xs text-muted tabular-nums">{count}</span>}
     </label>
   );
 }

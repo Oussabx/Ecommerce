@@ -6,11 +6,11 @@ export const metadata: Metadata = { title: "Wishlist", robots: { index: false } 
 
 export default function WishlistPage() {
   return (
-    <div className="container-x pb-20 pt-6">
+    <div className="container-x pb-16 pt-5 md:pb-24 md:pt-6">
       <Breadcrumbs items={[{ label: "Wishlist" }]} />
-      <h1 className="display mt-8 border-t border-ink pt-4 text-[clamp(3.2rem,9vw,8rem)]">Wishlist</h1>
-      <p className="mt-3 max-w-lg text-muted">Saved on this device. Products you save stay here until you remove them.</p>
-      <div className="mt-8">
+      <h1 className="display mt-6 text-[clamp(2rem,4.5vw,3.5rem)] md:mt-10">Wishlist</h1>
+      <p className="mt-3 max-w-lg text-[17px] text-muted">Saved on this device. Products you save stay here until you remove them.</p>
+      <div className="mt-8 md:mt-10">
         <WishlistView />
       </div>
     </div>

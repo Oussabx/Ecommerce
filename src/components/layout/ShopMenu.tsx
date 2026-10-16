@@ -38,31 +38,34 @@ export function ShopMenu() {
     closeTimer.current = setTimeout(() => setOpen(false), 150);
   };
 
-  return (
+return (
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         type="button"
         aria-expanded={open}
         aria-haspopup="true"
         onClick={() => setOpen((o) => !o)}
-        className={cn("relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors", active || open ? "text-ink" : "text-ink/70 hover:text-ink")}
+        className={cn("flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors", active || open ? "bg-paper-2 text-ink" : "text-ink/75 hover:bg-paper-3 hover:text-ink")}
       >
         Shop <Icon name="chevronDown" size={14} className={cn("transition-transform duration-200", open && "rotate-180")} />
-        <span className={cn("absolute inset-x-3 -bottom-px h-[2px] origin-left bg-ink transition-transform duration-300", active ? "scale-x-100" : "scale-x-0")} />
       </button>
       {open && (
-        <div className="absolute left-0 top-full z-50 w-[560px] animate-[rise_.25s_var(--ease-out-expo)_both] pt-2">
-          <div className="grid grid-cols-2 gap-px border border-ink bg-rule shadow-xl">
-            {categories.map((c) => {
-              const cover = products.find((p) => p.slug === c.coverProduct) ?? products.find((p) => p.category === c.slug);
-              return (
-                <Link key={c.slug} href={`/category/${c.slug}`} className="group flex items-center gap-3 bg-paper p-3 transition-colors hover:bg-lime">
-                  <span className="relative size-12 shrink-0 bg-paper-2">{cover && <Image src={primaryImage(cover).src} alt="" fill sizes="48px" className="object-contain p-1" />}</span>
-                  <span className="text-sm font-semibold">{c.name}</span>
-                </Link>
-              );
-            })}
-            <Link href="/shop" className="col-span-2 flex items-center justify-between bg-ink px-4 py-3 text-sm font-semibold text-paper hover:bg-cobalt">
+        <div className="absolute left-0 top-full z-50 w-[600px] animate-[rise_.25s_var(--ease-out-expo)_both] pt-3">
+          <div className="rounded-3xl bg-paper-2 p-3 shadow-[var(--shadow-lift)]">
+            <div className="grid grid-cols-3 gap-2">
+              {categories.map((c) => {
+                const cover = products.find((p) => p.slug === c.coverProduct) ?? products.find((p) => p.category === c.slug);
+                return (
+                  <Link key={c.slug} href={`/category/${c.slug}`} className="group flex flex-col items-center gap-2 rounded-2xl p-3 text-center transition-colors hover:bg-accent hover:text-on-accent">
+                    <span className="relative size-20 shrink-0">
+                      {cover && <Image src={primaryImage(cover).src} alt="" fill sizes="80px" className="object-contain transition-transform duration-300 group-hover:scale-105" />}
+                    </span>
+                    <span className="text-sm font-medium">{c.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+            <Link href="/shop" className="mt-2 flex items-center justify-between rounded-2xl bg-paper-3 px-4 py-3 text-sm font-semibold transition-colors hover:bg-accent hover:text-on-accent">
               View all products <Icon name="arrow" size={16} />
             </Link>
           </div>

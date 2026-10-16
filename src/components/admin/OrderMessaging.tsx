@@ -9,7 +9,7 @@ export function OrderMessaging({ orderRef, waHref, emailReady }: { orderRef: str
   return (
     <div className="space-y-2">
       {waHref ? (
-        <a href={waHref} target="_blank" rel="noopener noreferrer" className="btn w-full bg-[#25D366] text-ink hover:bg-[#1ebe5a]">
+        <a href={waHref} target="_blank" rel="noopener noreferrer" className="btn w-full bg-[#25D366] text-on-accent hover:bg-[#1ebe5a]">
           <Icon name="chat" size={16} /> Send WhatsApp confirmation
         </a>
       ) : (

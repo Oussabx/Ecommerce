@@ -6,7 +6,6 @@ import { ListingHeader, ListingSkeleton } from "@/components/listing/ListingHead
 import { ListingView } from "@/components/listing/ListingView";
 import { summarize } from "@/lib/catalog";
 import { getCatalog } from "@/server/catalog";
-import { cn } from "@/lib/format";
 
 export const generateStaticParams = async () => (await getCatalog()).categories.map((c) => ({ slug: c.slug }));
 
@@ -31,14 +30,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         description={category.description}
         count={items.length}
       />
-      <nav aria-label="Categories" className="container-x mb-6">
-        <ul className="no-scrollbar -mx-4 flex gap-1 overflow-x-auto px-4 md:mx-0 md:px-0">
+      <nav aria-label="Categories" className="container-x mb-8 md:mb-10">
+        <ul className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 md:mx-0 md:px-0">
           {categories.map((c) => (
             <li key={c.slug} className="shrink-0">
               <Link
                 href={`/category/${c.slug}`}
                 aria-current={c.slug === category.slug ? "page" : undefined}
-                className={cn("inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors", c.slug === category.slug ? "border-ink bg-ink text-paper" : "border-rule-strong hover:border-ink")}
+                className="chip"
               >
                 {c.name}
               </Link>
@@ -46,7 +45,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           ))}
         </ul>
       </nav>
-      <section className="container-x pb-20">
+      <section className="container-x pb-16 md:pb-24">
         <Suspense fallback={<ListingSkeleton />}>
           <ListingView items={items} facets={["brand", "price", "stock", "offer"]} />
         </Suspense>

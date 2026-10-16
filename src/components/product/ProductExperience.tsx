@@ -87,19 +87,19 @@ export function ProductExperience({ product }: { product: Product }) {
       </div>
 
       <div className="lg:col-span-5">
-        <p className="label flex flex-wrap gap-x-3 text-muted">
-          <span>{product.brand}</span>
-          <span aria-hidden>/</span>
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+          {product.isNew && <span className="badge">New</span>}
+          <span className="font-medium">{product.brand}</span>
+          <span aria-hidden>·</span>
           <span>Model {product.model}</span>
-          {product.isNew && <span className="bg-lime px-1.5 text-ink">New</span>}
         </p>
-        <h1 className="display mt-3 text-[clamp(2.8rem,5.6vw,5.25rem)]">{product.name}</h1>
-        <p className="mt-4 text-[17px] leading-relaxed text-ink-2">{product.tagline}</p>
+        <h1 className="mt-2 text-4xl font-semibold leading-[1.08] tracking-[-0.03em] md:text-5xl">{product.name}</h1>
+        <p className="mt-3 text-[17px] leading-relaxed text-muted">{product.tagline}</p>
 
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-ink pt-5">
+        <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
           <div>
             <Price price={price} compareAt={compareAt} size="xl" />
-            <p className="label mt-2 text-muted">Price in USD{config ? ` · ${config.label}` : ""}</p>
+            <p className="mt-1.5 text-[13px] text-muted">Price in USD{config ? ` · ${config.label}` : ""}</p>
           </div>
           <div className="text-right">
             <Stock value={avail} />
@@ -110,21 +110,20 @@ export function ProductExperience({ product }: { product: Product }) {
 
         {/* colour */}
         {product.colors.length > 1 && (
-          <fieldset className="mt-7">
-            <legend className="label mb-3 flex w-full justify-between">
-              <span>Colour</span>
-              <span className="text-muted">{color.name}</span>
+          <fieldset className="mt-8">
+            <legend className="mb-3 text-[15px] font-semibold">
+              Colour <span className="font-normal text-muted">· {color.name}</span>
             </legend>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {product.colors.map((c) => {
                 const out = availability(product, c.id) === "out-of-stock";
                 return (
                   <label key={c.id} className="relative cursor-pointer" title={`${c.name}${out ? " — out of stock" : ""}`}>
                     <input type="radio" name="color" value={c.id} checked={c.id === colorId} onChange={() => select({ color: c.id })} className="peer sr-only" />
-                    <span className="block size-11 border border-rule-strong p-1 transition-colors peer-checked:border-ink peer-checked:ring-1 peer-checked:ring-ink peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt">
-                      <span className="block size-full" style={{ background: c.swatch }} />
+                    <span className={cn("block size-10 rounded-full p-[3px] ring-1 ring-rule-strong transition-shadow hover:ring-subtle peer-checked:ring-2 peer-checked:ring-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent", out && "opacity-50")}>
+                      <span className="block size-full rounded-full ring-1 ring-inset ring-ink/10" style={{ background: c.swatch }} />
                     </span>
-                    {out && <span className="pointer-events-none absolute left-1/2 top-1/2 h-px w-12 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-ink" aria-hidden />}
+                    {out && <span className="pointer-events-none absolute left-1/2 top-1/2 h-px w-11 -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-muted" aria-hidden />}
                     <span className="sr-only">
                       {c.name}
                       {out ? " (out of stock)" : ""}
@@ -139,14 +138,14 @@ export function ProductExperience({ product }: { product: Product }) {
         {/* configuration */}
         {product.configs && product.configs.length > 1 && (
           <fieldset className="mt-7">
-            <legend className="label mb-3">{product.configLabel ?? "Option"}</legend>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            <legend className="mb-3 text-[15px] font-semibold">{product.configLabel ?? "Option"}</legend>
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
               {product.configs.map((c) => (
                 <label key={c.id} className="cursor-pointer">
                   <input type="radio" name="config" value={c.id} checked={c.id === configId} onChange={() => select({ config: c.id })} className="peer sr-only" />
-                  <span className="flex h-full flex-col border border-rule-strong px-3 py-2.5 transition-colors hover:border-ink peer-checked:border-ink peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-cobalt">
-                    <span className="text-sm font-semibold">{c.label}</span>
-                    <span className="label mt-0.5 opacity-70">{formatPrice(product.price + c.priceDelta)}</span>
+                  <span className="flex h-full flex-col rounded-2xl bg-paper-2 px-4 py-3.5 ring-1 ring-rule transition hover:bg-paper-3 peer-checked:bg-paper-3 peer-checked:ring-2 peer-checked:ring-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent">
+                    <span className="text-[15px] font-semibold">{c.label}</span>
+                    <span className="mt-0.5 text-[13px] tabular-nums text-muted">{formatPrice(product.price + c.priceDelta)}</span>
                   </span>
                 </label>
               ))}
@@ -154,34 +153,34 @@ export function ProductExperience({ product }: { product: Product }) {
           </fieldset>
         )}
         {product.configs?.length === 1 && (
-          <p className="mt-6 text-sm">
-            <span className="label text-muted">{product.configLabel ?? "Configuration"}: </span>
+          <p className="mt-6 text-[15px]">
+            <span className="text-muted">{product.configLabel ?? "Configuration"}: </span>
             {product.configs[0].label}
           </p>
         )}
 
         {/* buy */}
-        <div ref={buyRef} className="mt-8 flex flex-wrap gap-2">
+        <div ref={buyRef} className="mt-8 flex items-center gap-2.5">
           <QuantityStepper value={Math.min(qty, Math.max(1, maxQty))} max={Math.max(1, maxQty)} onChange={setQty} />
-          <button type="button" onClick={add} disabled={soldOut || maxQty <= 0} className={cn("btn flex-1", added ? "btn-lime" : "btn-primary")}>
+          <button type="button" onClick={add} disabled={soldOut || maxQty <= 0} className="btn btn-primary min-w-0 flex-1">
             {added && <Icon name="check" size={16} />} {buyLabel}
           </button>
-          <WishlistButton slug={slug} name={product.name} withLabel className="flex-none" />
+          <WishlistButton slug={slug} name={product.name} className="!size-12 flex-none !bg-paper-2 hover:!bg-paper-3" />
         </div>
         {inCart > 0 && (
           <p className="mt-2 text-sm text-muted">
             {inCart} already in your cart ·{" "}
-            <button type="button" onClick={() => open("cart")} className="underline underline-offset-4">
+            <button type="button" onClick={() => open("cart")} className="text-link">
               View cart
             </button>
           </p>
         )}
 
         {/* service info */}
-        <dl className="mt-8 divide-y divide-rule border-y border-rule text-sm">
+        <dl className="tile mt-8 divide-y divide-rule px-5 text-sm">
           <InfoRow icon="truck" title="Delivery">
             {delivery.description}{" "}
-            <Link href="/delivery" className="underline underline-offset-4">
+            <Link href="/delivery" className="text-link">
               Details
             </Link>
           </InfoRow>
@@ -191,13 +190,11 @@ export function ProductExperience({ product }: { product: Product }) {
         </dl>
 
         {/* highlights */}
-        <ul className="mt-8 grid grid-cols-2 gap-px border border-rule bg-rule">
-          {product.highlights.map((h, i) => (
-            <li key={h.label} className="bg-paper p-4">
-              <p className="label text-muted">
-                {String(i + 1).padStart(2, "0")} — {h.label}
-              </p>
-              <p className="mt-1 font-semibold">{h.value}</p>
+        <ul className="mt-3 grid grid-cols-2 gap-3">
+          {product.highlights.map((h) => (
+            <li key={h.label} className="tile p-4 md:p-5">
+              <p className="text-[13px] text-muted">{h.label}</p>
+              <p className="mt-1 font-semibold leading-snug">{h.value}</p>
             </li>
           ))}
         </ul>
@@ -206,7 +203,7 @@ export function ProductExperience({ product }: { product: Product }) {
       {/* sticky mobile purchase bar */}
       <div
         className={cn(
-          "fixed inset-x-0 bottom-0 z-30 border-t border-ink bg-paper/95 px-4 py-3 backdrop-blur transition-transform duration-300 lg:hidden",
+          "fixed inset-x-0 bottom-0 z-30 border-t border-rule bg-paper/85 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl backdrop-saturate-150 transition-transform duration-300 lg:hidden",
           showSticky ? "translate-y-0" : "translate-y-full",
         )}
         aria-hidden={!showSticky}
@@ -214,9 +211,9 @@ export function ProductExperience({ product }: { product: Product }) {
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold">{product.name}</p>
-            <p className="font-mono text-sm tabular-nums">{formatPrice(price)}</p>
+            <p className="text-sm tabular-nums text-muted">{formatPrice(price)}</p>
           </div>
-          <button type="button" onClick={add} disabled={soldOut || maxQty <= 0} tabIndex={showSticky ? 0 : -1} className={cn("btn", added ? "btn-lime" : "btn-primary")}>
+          <button type="button" onClick={add} disabled={soldOut || maxQty <= 0} tabIndex={showSticky ? 0 : -1} className="btn btn-primary min-h-11 px-5">
             {buyLabel}
           </button>
         </div>
@@ -227,10 +224,14 @@ export function ProductExperience({ product }: { product: Product }) {
 
 function InfoRow({ icon, title, children }: { icon: "truck" | "cash"; title: string; children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-[24px_88px_1fr] items-start gap-3 py-3.5">
-      <Icon name={icon} size={20} />
-      <dt className="label pt-0.5">{title}</dt>
-      <dd className="text-ink-2">{children}</dd>
+    <div className="flex items-start gap-3.5 py-4">
+      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-paper-3 text-accent">
+        <Icon name={icon} size={18} />
+      </span>
+      <div className="min-w-0">
+        <dt className="font-semibold text-ink">{title}</dt>
+        <dd className="mt-0.5 leading-relaxed text-muted">{children}</dd>
+      </div>
     </div>
   );
 }
