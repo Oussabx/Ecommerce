@@ -31,7 +31,7 @@ export function QuickAdd({ slug, className, compact }: { slug: string; className
           onClick: () => open("cart"),
         });
       }}
-      className={cn("label inline-flex h-10 items-center gap-2 px-3 transition-colors", soldOut ? "text-subtle" : "bg-ink text-paper hover:bg-cobalt", className)}
+      className={cn("inline-flex h-10 items-center gap-1.5 rounded-md px-3.5 text-sm font-semibold transition-all active:scale-[0.97]", soldOut ? "text-subtle" : "bg-ink text-paper hover:-translate-y-px hover:bg-black hover:shadow-[0_8px_18px_-10px_rgba(0,0,0,.6)]", className)}
       aria-label={soldOut ? `${product.name} is out of stock` : `Quick add ${product.name} to cart`}
     >
       {soldOut ? "Sold out" : done ? <><Icon name="check" size={14} /> Added</> : <><Icon name="plus" size={14} /> {compact ? "Add" : "Quick add"}</>}

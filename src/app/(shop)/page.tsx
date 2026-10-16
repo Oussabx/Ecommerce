@@ -7,6 +7,7 @@ import { Intentions } from "@/components/home/Intentions";
 import { WhyOsa } from "@/components/home/WhyOsa";
 import { PersonalRails } from "@/components/product/PersonalRails";
 import { Newsletter } from "@/components/layout/Newsletter";
+import { ContactSection } from "@/components/home/ContactSection";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { summarize } from "@/lib/catalog";
 import { getCatalog } from "@/server/catalog";
@@ -32,11 +33,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero productCount={products.length} categoryCount={categories.length} />
+      <Hero categoryCount={categories.length} />
       <CategoryIndex />
       <section className="container-x pb-16 md:pb-24" aria-labelledby="shortlist-title">
         <SectionHeader
-          index="§ 02 — Featured"
           title={<span id="shortlist-title">The shortlist</span>}
           intro="Good choices, without the endless scrolling."
           link={{ href: "/shop", label: "Shop everything" }}
@@ -47,6 +47,7 @@ export default async function HomePage() {
       <Intentions />
       <WhyOsa />
       <PersonalRails />
+      <ContactSection />
       <Newsletter />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(org) }} />
     </>

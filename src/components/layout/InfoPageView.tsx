@@ -44,10 +44,8 @@ export function InfoPageView({ page, children }: { page: InfoPage; children?: Re
     <div className="container-x pb-20 pt-6">
       <Breadcrumbs items={[{ label: page.title }]} />
       <header className="mt-8 grid gap-6 border-t border-ink pt-4 md:grid-cols-12">
-        <p className="label text-muted md:col-span-2">{page.index}</p>
-        <div className="md:col-span-10">
-          <p className="label text-muted">{page.kicker}</p>
-          <h1 className="display mt-3 text-[clamp(3.2rem,9vw,8.5rem)]">{page.title}</h1>
+        <div className="md:col-span-12">
+          <h1 className="display text-[clamp(3.2rem,9vw,8.5rem)]">{page.title}</h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">{page.intro}</p>
           {page.updated && <p className="label mt-4 text-muted">Last updated: {rich(page.updated)}</p>}
         </div>

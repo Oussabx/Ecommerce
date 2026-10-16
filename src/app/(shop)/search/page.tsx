@@ -21,7 +21,6 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     <>
       <ListingHeader
         crumbs={[{ label: "Search" }]}
-        index="Search"
         title={q ? <>“{q}”</> : "Search"}
         description={q ? undefined : "Search across product names, brands, categories and key specs."}
         count={items.length}

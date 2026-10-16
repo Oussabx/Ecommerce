@@ -10,8 +10,8 @@ export default function Forbidden() {
         <Link href="/" className="btn btn-primary">
           Back to the store
         </Link>
-        <Link href="/account" className="btn btn-outline">
-          Your account
+        <Link href="/admin/login" className="btn btn-outline">
+          Sign in as staff
         </Link>
       </div>
     </div>

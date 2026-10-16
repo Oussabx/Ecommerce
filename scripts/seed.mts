@@ -120,6 +120,20 @@ async function main() {
     await db.setting.upsert({ where: { key }, create: { key, value: value as object }, update: {} });
   }
 
+  // One-time update: flat $4 delivery (stores seeded before this had "confirmed by phone").
+  if (!(await db.setting.findUnique({ where: { key: "migration:delivery-fee-4" } }))) {
+    const row = await db.setting.findUnique({ where: { key: "store" } });
+    const value = row?.value as { deliveryMethods?: { feeUSD: number | null; description: string }[] } | undefined;
+    if (value?.deliveryMethods?.length) {
+      value.deliveryMethods = value.deliveryMethods.map((m, i) =>
+        i === 0 && m.feeUSD === null ? { ...m, feeUSD: 4, description: storeDefaults.deliveryMethods[0].description } : m,
+      );
+      await db.setting.update({ where: { key: "store" }, data: { value } });
+      console.log("Set delivery fee to $4.");
+    }
+    await db.setting.create({ data: { key: "migration:delivery-fee-4", value: true } });
+  }
+
   // First admin: from ADMIN_EMAIL / ADMIN_PASSWORD, or — if no admin exists yet
   // and none were given — a generated login printed once in the build log.
   let email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
@@ -132,10 +146,10 @@ async function main() {
       const hash = `scrypt$${salt.toString("base64")}$${(await scrypt(password, salt, 64)).toString("base64")}`;
       await db.user.upsert({ where: { email }, create: { email, name: "Store admin", passwordHash: hash, role: "ADMIN" }, update: { passwordHash: hash, role: "ADMIN", sessionVersion: { increment: 1 } } });
       console.log("\n================ ADMIN LOGIN (shown once) ================");
-      console.log(`  Sign in at /account/login`);
+      console.log(`  Sign in at /admin/login`);
       console.log(`  Email:    ${email}`);
       console.log(`  Password: ${password}`);
-      console.log("  Change the password on your account page after signing in.");
+      console.log("  Change it in Admin → My account after signing in.");
       console.log("===========================================================\n");
     }
     return;

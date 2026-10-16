@@ -25,12 +25,9 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
       <div className="container-x py-20">
         <p className="label text-muted">Order lookup</p>
         <h1 className="display mt-4 text-6xl md:text-8xl">We can&apos;t show this order.</h1>
-        <p className="mt-4 max-w-lg text-muted">The link may be incomplete, or the order belongs to another account. Sign in to see your order history, or contact us with your order reference.</p>
+        <p className="mt-4 max-w-lg text-muted">The link may be incomplete. Use the link from your confirmation page, or contact us with your order reference.</p>
         <div className="mt-8 flex flex-wrap gap-2">
-          <Link href="/account/login" className="btn btn-primary">
-            Sign in
-          </Link>
-          <Link href="/contact" className="btn btn-outline">
+          <Link href="/contact" className="btn btn-primary">
             Contact us
           </Link>
         </div>
@@ -39,7 +36,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
   }
 
   const steps = [
-    { title: "We call to confirm", body: `Our team will call ${order.phone} to confirm stock, the delivery fee and a delivery window.` },
+    { title: "We call to confirm", body: `Our team will call ${order.phone} to confirm stock and a delivery time.` },
     { title: "We prepare and dispatch", body: "Your devices are checked and packed once the order is confirmed." },
     { title: "Delivery & payment", body: `You receive your order and pay ${order.paymentMethodLabel.toLowerCase()}.` },
   ];

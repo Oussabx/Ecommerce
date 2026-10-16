@@ -20,10 +20,8 @@ export default function FaqPage() {
     <div className="container-x pb-20 pt-6">
       <Breadcrumbs items={[{ label: "FAQs" }]} />
       <header className="mt-8 grid gap-6 border-t border-ink pt-4 md:grid-cols-12">
-        <p className="label text-muted md:col-span-2">H/00</p>
-        <div className="md:col-span-10">
-          <p className="label text-muted">Help</p>
-          <h1 className="display mt-3 text-[clamp(3.2rem,9vw,8.5rem)]">Questions, answered.</h1>
+        <div className="md:col-span-12">
+          <h1 className="display text-[clamp(3.2rem,9vw,8.5rem)]">Questions, answered.</h1>
         </div>
       </header>
       <div className="mt-12 grid gap-10 md:grid-cols-12">

@@ -20,7 +20,6 @@ export default async function DealsPage() {
       <div className="bg-lime">
         <ListingHeader
           crumbs={[{ label: "Shop", href: "/shop" }, { label: "Deals" }]}
-          index="% — Price drops"
           title="Deals"
           description="Products whose price has genuinely dropped. No countdowns, no inflated 'was' prices."
           count={items.length}

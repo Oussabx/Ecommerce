@@ -43,16 +43,16 @@ npm run dev                          # http://localhost:3000  ·  admin at /admi
 | Orders | Filter by status and search. Detail page with the status workflow (Received → Confirmed → Out for delivery → Delivered, or Cancelled), delivery fee agreed by phone, internal notes, timeline, call/WhatsApp links, printable delivery slip | Staff |
 | Products | Create, edit, publish/hide and delete products. Manage colours, options with price differences, image upload per colour, highlights, specs, in-the-box list, tags and "frequently bought together" | Staff (delete: Admin) |
 | Inventory | Stock levels, units in open orders, quick adjustments with a reason, movement history | Staff |
-| Customers | Accounts with order count and spend, saved addresses, order history (including guest orders with the same email) | Staff |
+| Customers | Grouped from orders by email, with order count, spend, contact details and last address | Staff |
 | Inbox | Contact-form messages (mark handled), newsletter subscribers, CSV export | Staff |
 | Content | Announcement strip, homepage campaign, categories, shop-by-intention collections | Admin |
 | Settings | Store details, contact details, social links, delivery areas, methods and fees, payment methods, "Why OSA", order-alert email, integration status | Admin |
-| Team | Grant or remove staff and admin access. Removing access ends that person's sessions immediately. | Admin |
+| Team | Create staff and admin logins, reset passwords, remove access. Removing access ends that person's sessions immediately. | Admin |
 | Activity log | Every admin change: who, what and when | Admin |
 
 **Stock rules:** placing an order reserves stock atomically, so overselling isn't possible. Cancelling an order returns the stock. Every change is recorded as a stock movement.
 
-**Giving someone access:** they create a normal account on the store, then an admin grants them a role under **Team**.
+**Customers don't have accounts.** Checkout is guest-only. Customers are grouped from their orders by email. Staff sign in at `/admin/login`, and admins create staff logins under **Team**.
 
 ## Deploying to Vercel + Postgres
 

@@ -191,7 +191,7 @@ export function ListingView({
       <div className="min-w-0">
         {/* toolbar */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-y border-ink py-2.5 lg:border-t-0 lg:pt-0">
-          <button type="button" onClick={() => setDrawer(true)} className="label inline-flex h-10 items-center gap-2 border border-ink px-3 lg:hidden">
+          <button type="button" onClick={() => setDrawer(true)} className="inline-flex h-10 items-center gap-2 rounded-md border-[1.5px] border-ink px-3.5 text-sm font-semibold lg:hidden">
             <Icon name="filter" size={16} /> Filters {activeCount > 0 && `(${activeCount})`}
           </button>
           <p className="label text-muted" aria-live="polite">
@@ -229,12 +229,12 @@ export function ListingView({
         {activeCount > 0 && (
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {chips.map((c) => (
-              <button key={`${c.k}-${c.v}`} type="button" onClick={() => toggle(c.k, c.v)} className="label inline-flex h-8 items-center gap-1.5 bg-ink px-2.5 text-paper hover:bg-cobalt" aria-label={`Remove filter ${c.label}`}>
+              <button key={`${c.k}-${c.v}`} type="button" onClick={() => toggle(c.k, c.v)} className="inline-flex h-8 items-center gap-1.5 rounded-full bg-ink px-3 text-xs font-semibold text-paper hover:bg-black" aria-label={`Remove filter ${c.label}`}>
                 {c.label} <Icon name="close" size={12} />
               </button>
             ))}
             {sel.stock && (
-              <button type="button" onClick={() => update({ stock: null })} className="label inline-flex h-8 items-center gap-1.5 bg-ink px-2.5 text-paper hover:bg-cobalt" aria-label="Remove filter In stock only">
+              <button type="button" onClick={() => update({ stock: null })} className="inline-flex h-8 items-center gap-1.5 rounded-full bg-ink px-3 text-xs font-semibold text-paper hover:bg-black" aria-label="Remove filter In stock only">
                 In stock <Icon name="close" size={12} />
               </button>
             )}

@@ -46,8 +46,8 @@ export const storeDefaults: StoreSettings = {
     {
       id: "home-delivery",
       label: "Home delivery",
-      description: "Delivered to your address anywhere in Lebanon. Fee and timing are confirmed when we call you.",
-      feeUSD: null,
+      description: "Flat $4 delivery to your address anywhere in Lebanon. We call to confirm the delivery time.",
+      feeUSD: 4,
     },
   ],
   paymentMethods: [{ id: "cod", label: "Cash on delivery", description: "Pay in cash (USD) when your order arrives." }],

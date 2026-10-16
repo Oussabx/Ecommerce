@@ -56,7 +56,7 @@ const pieces: Piece[] = [
   },
 ];
 
-export function Hero({ productCount, categoryCount }: { productCount: number; categoryCount: number }) {
+export function Hero({ categoryCount }: { categoryCount: number }) {
   const ref = useRef<HTMLElement>(null);
 
   // Scroll-linked drift for the product composition (skipped for reduced motion).
@@ -91,11 +91,6 @@ export function Hero({ productCount, categoryCount }: { productCount: number; ca
       </div>
 
       <div className="container-x relative pt-6 md:pt-8">
-        <div className="label flex animate-[fade_.8s_ease_both] items-center justify-between border-b border-ink/20 pb-3 text-muted">
-          <span>OSA/Index — Technology, curated</span>
-          <span className="hidden md:inline">Smartphones · Computers · Gaming · Audio · Accessories</span>
-          <span>N°{String(productCount).padStart(3, "0")}</span>
-        </div>
 
         <h1 id="hero-title" className="display relative z-[2] mt-6 text-[clamp(3.6rem,12.6vw,13.5rem)] md:mt-8">
           <span className="block overflow-hidden pb-[0.04em]">

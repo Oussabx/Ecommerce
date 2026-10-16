@@ -144,7 +144,7 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ref
               )}
             </p>
             <p className="label mt-3 text-muted">
-              {order.userId ? "Has an account" : "Guest checkout"} · {previous} previous {previous === 1 ? "order" : "orders"}
+              <a href={`/admin/customers/${encodeURIComponent(order.email)}`} className="underline underline-offset-4">{previous} previous {previous === 1 ? "order" : "orders"}</a>
             </p>
           </Panel>
           <Panel title="Deliver to">

@@ -1,26 +1,36 @@
 import Link from "next/link";
-import { Body, Empty, PageHeader, Pager, td, th } from "@/components/admin/ui";
+import { Body, Empty, PageHeader, td, th } from "@/components/admin/ui";
 import { requireStaff } from "@/server/auth";
 import { db, fromCents } from "@/server/db";
 import { formatDate, formatPrice } from "@/lib/format";
 
 export const metadata = { title: "Customers" };
-const PER_PAGE = 30;
 
-export default async function CustomersPage({ searchParams }: { searchParams: Promise<{ q?: string; page?: string }> }) {
+/** Customers don't have accounts: they're grouped from orders by email. */
+export default async function CustomersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   await requireStaff();
-  const sp = await searchParams;
-  const q = (sp.q ?? "").trim().slice(0, 100);
-  const page = Math.max(1, Number(sp.page) || 1);
-  const where = q ? { OR: [{ name: { contains: q, mode: "insensitive" as const } }, { email: { contains: q, mode: "insensitive" as const } }, { phone: { contains: q } }] } : {};
-  const [users, total, guestCount] = await Promise.all([
-    db.user.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * PER_PAGE, take: PER_PAGE, include: { orders: { where: { status: { not: "CANCELLED" } }, select: { subtotalCents: true } } } }),
-    db.user.count({ where }),
-    db.order.findMany({ where: { userId: null }, distinct: ["email"], select: { email: true } }).then((r) => r.length),
+  const q = ((await searchParams).q ?? "").trim().slice(0, 100);
+  const where = q
+    ? { OR: [{ email: { contains: q, mode: "insensitive" as const } }, { firstName: { contains: q, mode: "insensitive" as const } }, { lastName: { contains: q, mode: "insensitive" as const } }, { phone: { contains: q } }] }
+    : {};
+  const groups = await db.order.groupBy({
+    by: ["email"],
+    where,
+    _count: true,
+    _max: { createdAt: true },
+    orderBy: { _max: { createdAt: "desc" } },
+    take: 200,
+  });
+  const [latest, spent] = await Promise.all([
+    db.order.findMany({ where: { email: { in: groups.map((g) => g.email) } }, orderBy: { createdAt: "desc" }, distinct: ["email"], select: { email: true, firstName: true, lastName: true, phone: true, area: true } }),
+    db.order.groupBy({ by: ["email"], where: { email: { in: groups.map((g) => g.email) }, status: { not: "CANCELLED" } }, _sum: { subtotalCents: true } }),
   ]);
+  const info = new Map(latest.map((o) => [o.email, o]));
+  const spend = new Map(spent.map((s) => [s.email, s._sum.subtotalCents ?? 0]));
+
   return (
     <>
-      <PageHeader title="Customers" kicker={`${total} accounts · ${guestCount} guest checkout ${guestCount === 1 ? "email" : "emails"}`}>
+      <PageHeader title="Customers" kicker={`${groups.length} ${groups.length === 1 ? "customer" : "customers"} from orders`}>
         <form className="mt-5 flex" action="/admin/customers">
           <label className="sr-only" htmlFor="q">
             Search customers
@@ -30,42 +40,45 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
         </form>
       </PageHeader>
       <Body>
-        {users.length ? (
+        {groups.length ? (
           <div className="overflow-x-auto border border-rule bg-[#fbfaf7]">
             <table className="w-full min-w-[680px] text-sm">
               <thead>
                 <tr>
                   <th className={th}>Customer</th>
                   <th className={th}>Phone</th>
-                  <th className={th}>Joined</th>
+                  <th className={th}>Last order</th>
                   <th className={`${th} text-right`}>Orders</th>
                   <th className={`${th} text-right`}>Spent</th>
                 </tr>
               </thead>
               <tbody>
-                {users.map((u) => (
-                  <tr key={u.id} className="hover:bg-paper-2">
-                    <td className={td}>
-                      <Link href={`/admin/customers/${u.id}`} className="font-semibold hover:underline">
-                        {u.name}
-                      </Link>
-                      {u.role !== "CUSTOMER" && <span className="label ml-2 bg-ink px-1.5 text-paper">{u.role.toLowerCase()}</span>}
-                      <span className="block text-xs text-muted">{u.email}</span>
-                    </td>
-                    <td className={`${td} text-muted`}>{u.phone || "—"}</td>
-                    <td className={`${td} text-muted`}>{formatDate(u.createdAt.toISOString())}</td>
-                    <td className={`${td} text-right font-mono`}>{u.orders.length}</td>
-                    <td className={`${td} text-right font-mono`}>{formatPrice(fromCents(u.orders.reduce((s, o) => s + o.subtotalCents, 0)))}</td>
-                  </tr>
-                ))}
+                {groups.map((g) => {
+                  const c = info.get(g.email);
+                  return (
+                    <tr key={g.email} className="hover:bg-paper-2">
+                      <td className={td}>
+                        <Link href={`/admin/customers/${encodeURIComponent(g.email)}`} className="font-semibold hover:underline">
+                          {c ? `${c.firstName} ${c.lastName}` : g.email}
+                        </Link>
+                        <span className="block text-xs text-muted">{g.email}</span>
+                      </td>
+                      <td className={`${td} text-muted`}>
+                        {c?.phone}
+                        <span className="block text-xs">{c?.area}</span>
+                      </td>
+                      <td className={`${td} text-muted`}>{g._max.createdAt ? formatDate(g._max.createdAt.toISOString()) : "—"}</td>
+                      <td className={`${td} text-right font-mono`}>{g._count}</td>
+                      <td className={`${td} text-right font-mono`}>{formatPrice(fromCents(spend.get(g.email) ?? 0))}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         ) : (
-          <Empty title="No customer accounts found." />
+          <Empty title={q ? "No customers match." : "No customers yet."}>Customers appear here once they place an order.</Empty>
         )}
-        <Pager page={page} pages={Math.ceil(total / PER_PAGE)} href={(p) => `/admin/customers?${new URLSearchParams({ ...(q && { q }), page: String(p) })}`} />
-        <p className="mt-4 text-xs text-muted">Guests who check out without an account appear on their orders; search orders by email to see their history.</p>
       </Body>
     </>
   );

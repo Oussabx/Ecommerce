@@ -25,8 +25,7 @@ export default async function ContactPage() {
       <Breadcrumbs items={[{ label: "Contact" }]} />
       <div className="mt-8 grid gap-12 border-t border-ink pt-4 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <p className="label text-muted">Help — Contact</p>
-          <h1 className="display mt-3 text-[clamp(3.2rem,9vw,8rem)]">Talk to us.</h1>
+          <h1 className="display text-[clamp(3.2rem,9vw,8rem)]">Talk to us.</h1>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-2">
             Not sure which device fits? Have a question about an order or warranty? Send a message and a person who knows the product will reply.
           </p>

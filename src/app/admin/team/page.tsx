@@ -1,5 +1,5 @@
 import { Body, PageHeader, Panel, td, th } from "@/components/admin/ui";
-import { AddMember, RoleSelect } from "@/components/admin/TeamForms";
+import { AddMember, MemberActions } from "@/components/admin/TeamForms";
 import { requireStaff } from "@/server/auth";
 import { db } from "@/server/db";
 import { formatDate } from "@/lib/format";
@@ -13,9 +13,9 @@ export default async function TeamPage() {
     <>
       <PageHeader title="Team" kicker="Who can open the admin" />
       <Body className="space-y-6">
-        <Panel title="Give someone access">
+        <Panel title="Add a team member">
           <p className="mb-4 text-sm text-muted">
-            They first create a normal account on the store, then you grant a role here. <strong>Staff</strong> manage orders, products, inventory, customers and the inbox. <strong>Admins</strong> can also edit content, settings and the team.
+            Create a login and share the temporary password privately. They sign in at <strong>/admin/login</strong> and can change it under My account. <strong>Staff</strong> manage orders, products, inventory, customers and the inbox; <strong>admins</strong> can also edit content, settings and the team.
           </p>
           <AddMember />
         </Panel>
@@ -38,7 +38,7 @@ export default async function TeamPage() {
                   <td className={`${td} text-muted`}>{u.email}</td>
                   <td className={`${td} text-muted`}>{formatDate(u.createdAt.toISOString())}</td>
                   <td className={td}>
-                    <RoleSelect email={u.email} role={u.role} self={u.id === me.id} />
+                    <MemberActions email={u.email} role={u.role} self={u.id === me.id} />
                   </td>
                 </tr>
               ))}

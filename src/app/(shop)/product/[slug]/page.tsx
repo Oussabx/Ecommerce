@@ -70,8 +70,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className="border-t border-ink bg-paper-2" aria-labelledby="specs-title">
         <div className="container-x grid gap-10 py-14 md:py-20 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <p className="label text-muted">Overview</p>
-            <h2 className="display mt-3 text-5xl md:text-6xl">In short</h2>
+            <h2 className="display text-5xl md:text-6xl">In short</h2>
             <p className="mt-5 leading-relaxed text-ink-2">{product.description}</p>
             {product.inTheBox && (
               <div className="mt-8">
@@ -87,8 +86,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             )}
           </div>
           <div className="lg:col-span-8">
-            <p className="label text-muted">Technical specifications</p>
-            <h2 id="specs-title" className="display mt-3 text-5xl md:text-6xl">
+            <h2 id="specs-title" className="display text-5xl md:text-6xl">
               The details
             </h2>
             <div className="mt-6 border-t border-ink">
@@ -126,8 +124,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         {product.pairsWith?.length ? <FrequentlyBought slug={product.slug} pairs={product.pairsWith} /> : null}
         <section aria-labelledby="related-title">
           <div className="border-t border-ink pt-5">
-            <p className="label text-muted">More from {category.name.toLowerCase()} and beyond</p>
-            <h2 id="related-title" className="display mt-2 text-5xl md:text-6xl">
+            <h2 id="related-title" className="display text-5xl md:text-6xl">
               Related products
             </h2>
           </div>

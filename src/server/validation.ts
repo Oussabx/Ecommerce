@@ -48,14 +48,7 @@ export const orderSchema = z.object({
 });
 export type OrderInput = z.infer<typeof orderSchema>;
 
-export const registerSchema = z.object({
-  name: trimmed(120).min(1, "Enter your name."),
-  email: emailSchema,
-  password: passwordSchema,
-});
 export const loginSchema = z.object({ email: emailSchema, password: z.string().min(1, "Enter your password.").max(200) });
-export const profileSchema = z.object({ name: trimmed(120).min(1, "Enter your name."), phone: z.union([phoneSchema, z.literal("")]) });
-export const savedAddressSchema = addressSchema.extend({ label: trimmed(40).min(1, "Give this address a name.") });
 export const contactSchema = z.object({
   name: trimmed(120).min(1, "Enter your name."),
   email: emailSchema,

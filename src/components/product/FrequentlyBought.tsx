@@ -26,8 +26,7 @@ export function FrequentlyBought({ slug, pairs }: { slug: string; pairs: string[
     <section aria-labelledby="fbt-title" className="border-t border-ink pt-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="label text-muted">Bundle</p>
-          <h2 id="fbt-title" className="display mt-2 text-5xl md:text-6xl">
+          <h2 id="fbt-title" className="display text-5xl md:text-6xl">
             Frequently bought together
           </h2>
         </div>

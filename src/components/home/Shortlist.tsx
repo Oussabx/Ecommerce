@@ -50,7 +50,7 @@ export function Shortlist({ items, categories }: { items: ProductSummary[]; cate
               role="tab"
               aria-selected={cat === c.slug}
               onClick={() => setCat(c.slug)}
-              className={cn("label h-9 shrink-0 border px-3 transition-colors", cat === c.slug ? "border-ink bg-ink text-paper" : "border-rule hover:border-ink")}
+              className={cn("h-9 shrink-0 rounded-full border px-4 text-sm font-medium transition-colors", cat === c.slug ? "border-ink bg-ink text-paper" : "border-rule-strong hover:border-ink")}
             >
               {c.name}
             </button>
@@ -72,7 +72,7 @@ export function Shortlist({ items, categories }: { items: ProductSummary[]; cate
               </option>
             ))}
           </select>
-          <label className="label flex h-9 cursor-pointer items-center gap-2 border border-rule px-3 hover:border-ink">
+          <label className="flex h-9 cursor-pointer items-center gap-2 rounded-full border border-rule-strong px-4 text-sm font-medium hover:border-ink">
             <input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} className="size-3.5 accent-ink" />
             In stock
           </label>
