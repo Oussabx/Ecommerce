@@ -8,7 +8,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 export async function CategoryIndex() {
   const { categories, products } = await getCatalog();
   return (
-    <section className="container-x py-16 md:py-24" aria-labelledby="index-title">
+    <section className="container-x py-14 md:py-20" aria-labelledby="index-title">
       <SectionHeader title={<span id="index-title">Shop by category</span>} intro="A focused range, so choosing is easy." />
       <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:mt-10 lg:grid-cols-6 lg:gap-4">
         {categories.map((c, i) => {

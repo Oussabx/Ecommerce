@@ -9,7 +9,7 @@ export async function WhyOsa() {
   const { store } = await getSettings();
   if (!store.advantages.length) return null;
   return (
-    <section className="container-x py-16 md:py-24" aria-labelledby="why-title">
+    <section className="container-x py-14 md:py-20" aria-labelledby="why-title">
       <SectionHeader title={<span id="why-title">Why shop with OSA</span>} intro="A focused range, plain descriptions and real people after you buy." />
       <ul className={`mt-8 grid gap-3 md:mt-10 lg:gap-4 ${store.advantages.length % 3 === 0 ? "sm:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-4"}`}>
         {store.advantages.map((a, i) => (

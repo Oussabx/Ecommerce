@@ -52,6 +52,11 @@
     transform: none;
   }
 }
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
 @keyframes fade {
   from {
     opacity: 0;
@@ -528,6 +533,32 @@
   .brand-intro {
     display: none;
   }
+}
+
+/* Hero: faint grid + self-drawing ribbon */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 75%);
+}
+.hero-ribbon {
+  filter: drop-shadow(0 0 40px rgb(215 255 63 / 0.35));
+}
+.hero-ribbon path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: intro-draw 1.8s var(--ease-out-expo) 2.3s forwards;
+}
+.hero-ribbon .hero-ribbon__halo {
+  animation-delay: 2.5s;
+}
+.intro-seen .hero-ribbon path {
+  animation-delay: 0.2s;
+}
+.intro-seen .hero-ribbon .hero-ribbon__halo {
+  animation-delay: 0.4s;
 }
 
 /* Respect reduced motion everywhere */
