@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Hero } from "@/components/home/Hero";
+import { Hero, HeroMarquee } from "@/components/home/Hero";
 import { CategoryIndex } from "@/components/home/CategoryIndex";
 import { Shortlist } from "@/components/home/Shortlist";
 import { Campaign } from "@/components/home/Campaign";
@@ -33,7 +33,8 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero categoryCount={categories.length} />
+      <Hero categoryCount={categories.length} productCount={products.length} />
+      <HeroMarquee words={[...categories.map((c) => c.name), ...Array.from(new Set(products.map((p) => p.brand))).slice(0, 8)]} />
       <CategoryIndex />
       <section className="container-x pb-16 md:pb-24" aria-labelledby="shortlist-title">
         <SectionHeader

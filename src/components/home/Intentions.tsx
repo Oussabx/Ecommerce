@@ -29,7 +29,7 @@ const layout = [
 export async function Intentions() {
   const { collections, products } = await getCatalog();
   return (
-    <section id="intentions" className="container-x py-16 md:py-24" aria-labelledby="intentions-title">
+    <section id="intentions" className="container-x py-14 md:py-20" aria-labelledby="intentions-title">
       <SectionHeader
         title={<span id="intentions-title">Help me choose</span>}
         intro="Start with what you want to do. Each list is short and considered."

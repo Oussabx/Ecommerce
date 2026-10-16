@@ -1,128 +1,93 @@
-"use client";
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { MARK_PATH } from "@/components/layout/Logo";
 
-interface Piece {
-  src: string;
-  alt: string;
-  /** Position & size as % of the stage */
-  style: React.CSSProperties;
-  speed: number;
-  from: { x: string; y: string; r: string };
-  delay: number;
-  priority?: boolean;
-  z: number;
-}
-
-const pieces: Piece[] = [
-  {
-    src: "/products/macbook-air-13-m4/midnight-open.svg",
-    alt: "MacBook Air 13-inch with M4 in Midnight, open",
-    style: { left: "34%", top: "10%", width: "52%" },
-    speed: -0.05,
-    from: { x: "60px", y: "0px", r: "0deg" },
-    delay: 450,
-    z: 1,
-  },
-  {
-    src: "/products/iphone-16-pro/desert-duo.svg",
-    alt: "iPhone 16 Pro in Desert Titanium, front and back",
-    style: { left: "8%", top: "2%", width: "40%" },
-    speed: -0.12,
-    from: { x: "0px", y: "80px", r: "-4deg" },
-    delay: 250,
-    priority: true,
-    z: 3,
-  },
-  {
-    src: "/products/sony-wh-1000xm5/black-front.svg",
-    alt: "Sony WH-1000XM5 headphones in black",
-    style: { left: "68%", top: "40%", width: "30%" },
-    speed: -0.2,
-    from: { x: "80px", y: "40px", r: "8deg" },
-    delay: 650,
-    z: 4,
-  },
-  {
-    src: "/products/dualsense-wireless-controller/white-top.svg",
-    alt: "DualSense wireless controller in white",
-    style: { left: "2%", top: "54%", width: "28%" },
-    speed: -0.16,
-    from: { x: "-60px", y: "40px", r: "-10deg" },
-    delay: 800,
-    z: 4,
-  },
-];
-
-export function Hero({ categoryCount }: { categoryCount: number }) {
-  const ref = useRef<HTMLElement>(null);
-
-  // Gentle scroll-linked drift for the product composition (skipped for reduced motion).
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      el.style.setProperty("--sy", String(Math.min(window.scrollY, 1200)));
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
+/**
+ * Homepage hero: big type on black, with the lime S ribbon from the brand
+ * sweeping across the right side (it draws itself in after the intro).
+ */
+export function Hero({ categoryCount, productCount }: { categoryCount: number; productCount: number }) {
   return (
-    <section ref={ref} className="container-x pt-10 md:pt-16" aria-labelledby="hero-title">
-      <div className="mx-auto max-w-3xl text-center">
-        <h1 id="hero-title" className="display animate-[rise_1s_var(--ease-out-expo)_both] text-[clamp(2.75rem,7vw,5.5rem)]">
-          Good tech.
-          <br />
-          <span className="text-muted">No guesswork.</span>
-        </h1>
-        <p className="mx-auto mt-5 max-w-xl animate-[rise_.9s_var(--ease-out-expo)_.15s_both] text-lg leading-relaxed text-muted md:text-xl">
-          The devices worth your money, explained clearly and delivered across Lebanon.
-        </p>
-        <div className="mt-8 flex animate-[rise_.9s_var(--ease-out-expo)_.3s_both] flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/shop" className="btn btn-primary">
-            Shop all products
-          </Link>
-          <Link href="/#intentions" className="btn btn-outline">
-            Help me choose <Icon name="arrow" size={16} className="btn-arrow" />
-          </Link>
-        </div>
+    <section className="relative isolate overflow-hidden" aria-labelledby="hero-title">
+      {/* glow + grid texture */}
+      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
+        <div className="absolute -right-[10%] top-[-20%] h-[90%] w-[70%] rounded-full bg-accent/20 blur-[140px]" />
+        <div className="absolute bottom-[-30%] left-[-10%] h-[60%] w-[50%] rounded-full bg-cobalt/15 blur-[140px]" />
+        <div className="hero-grid absolute inset-0 opacity-[0.35]" />
       </div>
 
-      {/* Product composition */}
-      <div className="relative mt-12 overflow-hidden rounded-[32px] bg-[radial-gradient(ellipse_at_50%_30%,#24271a_0%,var(--color-paper-2)_60%)] md:mt-16">
-        <div className="relative mx-auto aspect-[1/0.8] max-w-5xl md:aspect-[1/0.58]">
-          {pieces.map((p) => (
-            <div
-              key={p.src}
-              className="absolute"
-              style={{ ...p.style, zIndex: p.z, transform: `translate3d(0, calc(var(--sy, 0) * ${p.speed * 0.5}px), 0)` }}
-            >
-              <div
-                className="relative aspect-square animate-[product-in_1.1s_var(--ease-out-expo)_both]"
-                style={{ animationDelay: `${p.delay}ms`, ["--from-x" as string]: p.from.x, ["--from-y" as string]: p.from.y, ["--from-r" as string]: p.from.r }}
-              >
-                <Image src={p.src} alt={p.alt} fill priority={p.priority} sizes="(min-width: 1024px) 40vw, 70vw" className="object-contain drop-shadow-[0_24px_30px_rgba(0,0,0,0.5)]" />
-              </div>
+      {/* brand ribbon */}
+      <svg
+        viewBox="0 0 120 96"
+        className="hero-ribbon pointer-events-none absolute -z-10 overflow-visible w-[150%] max-w-none opacity-30 sm:opacity-50 md:-right-[4%] md:top-1/2 md:w-[52%] md:-translate-y-1/2 lg:right-[2%] lg:w-[46%] md:opacity-100 max-md:-right-[60%] max-md:bottom-[-12%]"
+        fill="none"
+        aria-hidden
+      >
+        <path d={MARK_PATH} pathLength={1} stroke="var(--color-accent)" strokeOpacity={0.12} strokeWidth={22} strokeLinecap="round" strokeLinejoin="round" className="hero-ribbon__halo" />
+        <path d={MARK_PATH} pathLength={1} stroke="var(--color-accent)" strokeWidth={13} strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+
+      <div className="container-x flex min-h-[calc(100svh-100px)] flex-col justify-center py-16 md:min-h-[720px] md:py-24">
+        <div className="relative max-w-3xl">
+          <p className="inline-flex animate-[rise_.8s_var(--ease-out-expo)_both] items-center gap-2 rounded-full bg-paper-2/80 px-3.5 py-1.5 text-[13px] font-medium text-ink-2 ring-1 ring-rule backdrop-blur">
+            <span className="size-2 rounded-full bg-accent shadow-[0_0_10px_var(--color-accent)]" aria-hidden />
+            Delivering across Lebanon · Cash on delivery
+          </p>
+          <h1 id="hero-title" className="display mt-6 animate-[rise_1s_var(--ease-out-expo)_.08s_both] text-[clamp(3.4rem,8.4vw,7.75rem)] !leading-[0.92] !tracking-[-0.045em]">
+            Tech worth
+            <br />
+            <span className="text-accent">having.</span>
+          </h1>
+          <p className="mt-6 max-w-lg animate-[rise_1s_var(--ease-out-expo)_.18s_both] text-lg leading-relaxed text-ink-2 md:text-xl">
+            Phones, laptops, gaming and audio from the brands you trust, explained plainly and brought to your door.
+          </p>
+          <div className="mt-9 flex animate-[rise_1s_var(--ease-out-expo)_.28s_both] flex-col gap-3 sm:flex-row">
+            <Link href="/shop" className="btn btn-primary !min-h-14 !px-8 text-base shadow-[0_0_40px_-8px_var(--color-accent)]">
+              Shop now <Icon name="arrow" size={18} className="btn-arrow" />
+            </Link>
+            <Link href="/deals" className="btn btn-outline !min-h-14 !px-8 text-base backdrop-blur">
+              See the deals
+            </Link>
+          </div>
+        </div>
+
+        <dl className="mt-14 grid max-w-2xl animate-[fade_1s_ease_.5s_both] grid-cols-3 gap-3 md:mt-20">
+          {[
+            ["$4", "Flat delivery, anywhere"],
+            [String(productCount), "Products in store"],
+            [String(categoryCount), "Categories"],
+          ].map(([v, l]) => (
+            <div key={l} className="rounded-2xl bg-paper-2/70 p-4 ring-1 ring-rule backdrop-blur md:p-5">
+              <dd className="text-3xl font-semibold tracking-tight md:text-4xl">{v}</dd>
+              <dt className="mt-1 text-[13px] text-muted">{l}</dt>
             </div>
           ))}
-        </div>
-        <ul className="relative flex flex-wrap justify-center gap-x-8 gap-y-2 border-t border-rule px-6 py-5 text-sm text-muted">
-          <li className="flex items-center gap-2"><Icon name="truck" size={18} className="text-accent" /> Delivery across Lebanon</li>
-          <li className="flex items-center gap-2"><Icon name="cash" size={18} className="text-accent" /> Cash on delivery</li>
-          <li className="flex items-center gap-2"><Icon name="grid" size={18} className="text-accent" /> {categoryCount} categories</li>
-        </ul>
+        </dl>
       </div>
     </section>
+  );
+}
+
+/** Scrolling lime band of categories and brands under the hero. */
+export function HeroMarquee({ words }: { words: string[] }) {
+  const row = (
+    <ul className="flex shrink-0 items-center gap-8 pr-8">
+      {words.map((w, i) => (
+        <li key={i} className="flex items-center gap-8 whitespace-nowrap">
+          <span>{w}</span>
+          <svg viewBox="0 0 120 96" className="h-5 w-6 shrink-0" fill="none" aria-hidden>
+            <path d={MARK_PATH} stroke="currentColor" strokeWidth={17} strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </li>
+      ))}
+    </ul>
+  );
+  return (
+    <div className="relative -rotate-1 overflow-hidden bg-accent py-4 text-on-accent shadow-[0_0_60px_-20px_var(--color-accent)]" aria-hidden>
+      <div className="flex w-max animate-marquee text-2xl font-bold uppercase tracking-tight md:text-3xl">
+        {row}
+        {row}
+      </div>
+    </div>
   );
 }
