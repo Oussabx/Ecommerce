@@ -7,6 +7,7 @@
  *   npm run db:seed -- --reset (deletes catalogue data first)
  */
 import { PrismaClient } from "@prisma/client";
+import { resolveDatabaseEnv } from "./resolve-env.mjs";
 import { randomBytes, scrypt as _scrypt } from "node:crypto";
 import { promisify } from "node:util";
 import { products } from "../src/data/products.ts";
@@ -17,7 +18,7 @@ import { campaign } from "../src/data/promotions.ts";
 import { announcements } from "../src/config/announcements.ts";
 import { storeDefaults } from "../src/config/store-defaults.ts";
 
-const db = new PrismaClient();
+const db = new PrismaClient({ datasourceUrl: resolveDatabaseEnv().databaseUrl || undefined });
 const scrypt = promisify(_scrypt) as (pw: string, salt: Buffer, len: number) => Promise<Buffer>;
 const cents = (n: number) => Math.round(n * 100);
 
@@ -122,7 +123,10 @@ async function main() {
   const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.ADMIN_PASSWORD;
   if (email && password) {
-    if (password.length < 10) throw new Error("ADMIN_PASSWORD must be at least 10 characters.");
+    if (password.length < 10) {
+      console.warn("⚠ ADMIN_PASSWORD must be at least 10 characters — admin account not created. Fix it and redeploy.");
+      return;
+    }
     const salt = randomBytes(16);
     const hash = `scrypt$${salt.toString("base64")}$${(await scrypt(password, salt, 64)).toString("base64")}`;
     const existing = await db.user.findUnique({ where: { email } });

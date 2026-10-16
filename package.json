@@ -14,7 +14,7 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "node --no-warnings scripts/seed.mts",
     "db:studio": "prisma studio",
-    "vercel-build": "prisma migrate deploy && node --no-warnings scripts/seed.mts && next build"
+    "vercel-build": "node scripts/vercel-build.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
