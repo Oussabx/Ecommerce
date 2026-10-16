@@ -101,7 +101,6 @@ model Product {
   highlights     Json                @default("[]")
   /// [{ group, rows: [[label, value]] }]
   specs          Json                @default("[]")
-  warranty       String?
   inTheBox       String[]            @default([])
   tags           String[]            @default([])
   isNew          Boolean             @default(false)

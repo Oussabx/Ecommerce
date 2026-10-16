@@ -97,8 +97,6 @@ export interface Product {
   images?: Record<string, ProductImageRef[]>;
   highlights: { label: string; value: string }[];
   specs: SpecGroup[];
-  /** Warranty text. null = not yet confirmed; the UI will say so. */
-  warranty: string | null;
   inTheBox?: string[];
   /** Free-form attributes used by search and curated collections. */
   tags: string[];

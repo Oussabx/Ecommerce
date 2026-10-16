@@ -53,7 +53,6 @@ export const storeDefaults: StoreSettings = {
   paymentMethods: [{ id: "cod", label: "Cash on delivery", description: "Pay in cash (USD) when your order arrives." }],
   advantages: [
     { id: "authentic", title: "Authentic products", body: "Genuine devices from established brands — no grey-market guesswork." },
-    { id: "warranty", title: "Warranty support", body: "Warranty terms are listed on each product. We help you use them." },
     { id: "delivery", title: "Delivery across Lebanon", body: "From Beirut to the Bekaa, we deliver to every governorate." },
     { id: "support", title: "Real assistance", body: "Questions before or after you buy? Talk to a person who knows the product." },
   ],

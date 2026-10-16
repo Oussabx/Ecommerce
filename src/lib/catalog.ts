@@ -75,7 +75,6 @@ export interface ProductSummary {
   hoverImage?: string;
   colors: { id: string; name: string; swatch: string }[];
   availability: Availability;
-  warranty: string | null;
   isNew?: boolean;
   tags: string[];
   model: string;
@@ -100,7 +99,6 @@ export function summarize(p: Product, categories: Pick<Category, "slug" | "name"
     hoverImage: imgs[1]?.src,
     colors: p.colors.map(({ id, name, swatch }) => ({ id, name, swatch })),
     availability: availability(p),
-    warranty: p.warranty,
     isNew: p.isNew,
     tags: p.tags,
     model: p.model,

@@ -3,7 +3,7 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { pad2 } from "@/lib/format";
 
-const icons: Record<string, IconName> = { authentic: "badge", warranty: "shield", delivery: "truck", support: "chat", payment: "cash" };
+const icons: Record<string, IconName> = { authentic: "badge", delivery: "truck", support: "chat", payment: "cash" };
 
 export async function WhyOsa() {
   const { store } = await getSettings();

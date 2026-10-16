@@ -69,7 +69,7 @@ The build (`scripts/vercel-build.mjs`) does the rest:
 
 **Optional settings** (Settings → Environment Variables):
 - `SESSION_SECRET`: your own signing key. Without it, a key is derived from the database URL.
-- `ADMIN_EMAIL` / `ADMIN_PASSWORD`: choose the first admin's login yourself instead of using a generated one.
+- `ADMIN_EMAIL` / `ADMIN_PASSWORD`: your admin login. It is applied on every deploy; if the password differs, it is reset to this value. This is also the way back in if you lose the password.
 - `NEXT_PUBLIC_SITE_URL`: your public address, used in links and the sitemap.
 - `BLOB_READ_WRITE_TOKEN`: needed to upload product photos. Set it up under Storage → Blob.
 - `RESEND_API_KEY` + `EMAIL_FROM`: needed to send emails.

@@ -20,7 +20,6 @@ export function toProductInput(p: DbProduct): ProductInput {
     isNew: p.isNew,
     releaseYear: p.releaseYear,
     sortOrder: p.sortOrder,
-    warranty: p.warranty ?? "",
     configLabel: p.configLabel ?? "",
     artKind: p.artKind,
     colors: p.colors.map((c) => ({ key: c.key, name: c.name, swatch: c.swatch, soldOut: c.soldOut })),

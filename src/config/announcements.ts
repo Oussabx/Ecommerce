@@ -2,5 +2,5 @@
 export const announcements = [
   "Technology, delivered across Lebanon.",
   "Discover this week's best picks.",
-  "Shop confidently with warranty support.",
+  "Questions? Our team is happy to help.",
 ];

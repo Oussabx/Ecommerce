@@ -25,7 +25,6 @@ export const productSchema = z
     isNew: z.boolean(),
     releaseYear: z.coerce.number().int().min(1990).max(2100),
     sortOrder: z.coerce.number().int().min(0).max(100000),
-    warranty: text(200),
     configLabel: text(60),
     artKind: text(30),
     colors: z

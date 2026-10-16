@@ -31,7 +31,6 @@ function renderBlock(b: Block, i: number) {
 const helpLinks = [
   { href: "/delivery", label: "Delivery" },
   { href: "/returns", label: "Returns & exchanges" },
-  { href: "/warranty", label: "Warranty" },
   { href: "/faq", label: "FAQs" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy" },
