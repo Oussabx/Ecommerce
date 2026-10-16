@@ -1,4 +1,7 @@
-import { createOrder, OrderError } from "@/server/orders";
+import { after } from "next/server";
+import { createOrder, OrderError, orderInclude } from "@/server/orders";
+import { notifyOrderPlaced } from "@/server/notify";
+import { db } from "@/server/db";
 import { orderSchema } from "@/server/validation";
 import { currentUser } from "@/server/auth";
 import { orderAccessToken } from "@/server/crypto";
@@ -15,6 +18,12 @@ export async function POST(req: Request) {
   try {
     const user = await currentUser();
     const order = await createOrder(parsed.data, user?.id ?? null);
+    // Send the receipt email + WhatsApp after the response, once per order
+    // (a retried submission returns the same order, which already has notification events).
+    after(async () => {
+      const full = await db.order.findUnique({ where: { id: order.id }, include: orderInclude });
+      if (full && full.events.length <= 1) await notifyOrderPlaced(full);
+    });
     return ok({ ref: order.ref, token: orderAccessToken(order.ref) }, 201);
   } catch (e) {
     if (e instanceof OrderError) return fail(e.message, 409, e.field ? { [e.field]: e.message } : undefined);

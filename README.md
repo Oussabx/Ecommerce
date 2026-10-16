@@ -65,14 +65,15 @@ The only thing you need is a database.
 The build (`scripts/vercel-build.mjs`) does the rest:
 - It picks up the database settings that Neon adds.
 - It creates the tables and loads the sample catalogue.
-- On the first deploy it creates an admin account and prints its login in the **Build Logs**, between "ADMIN LOGIN" lines. Sign in at `/account/login`, then change the password on your account page.
+- On the first deploy it creates an admin account and prints its login in the **Build Logs**, between "ADMIN LOGIN" lines. Sign in at `/admin/login`, then change the password under My account.
 
 **Optional settings** (Settings → Environment Variables):
 - `SESSION_SECRET`: your own signing key. Without it, a key is derived from the database URL.
 - `ADMIN_EMAIL` / `ADMIN_PASSWORD`: your admin login. It is applied on every deploy; if the password differs, it is reset to this value. This is also the way back in if you lose the password.
 - `NEXT_PUBLIC_SITE_URL`: your public address, used in links and the sitemap.
 - `BLOB_READ_WRITE_TOKEN`: needed to upload product photos. Set it up under Storage → Blob.
-- `RESEND_API_KEY` + `EMAIL_FROM`: needed to send emails.
+- `RESEND_API_KEY` + `EMAIL_FROM`: email the customer a receipt when they order (a copy goes to the order-alert email).
+- `WHATSAPP_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID` (+ optional `WHATSAPP_TEMPLATE`, `WHATSAPP_TEMPLATE_LANG`): send an automatic WhatsApp confirmation through the WhatsApp Cloud API, using an approved message template. Without these, each admin order page has a one-click **Send WhatsApp confirmation** button that opens WhatsApp with the message already written.
 
 ## Honesty rules built into the code
 

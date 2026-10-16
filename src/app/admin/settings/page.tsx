@@ -3,6 +3,7 @@ import { SettingsForm } from "@/components/admin/SettingsForm";
 import { requireStaff } from "@/server/auth";
 import { getSettings } from "@/server/settings";
 import { emailConfigured } from "@/server/email";
+import { whatsappConfigured } from "@/server/notify";
 
 export const metadata = { title: "Settings" };
 
@@ -12,7 +13,8 @@ export default async function SettingsPage() {
   const integrations = [
     { name: "Database", ok: true, note: "PostgreSQL connected" },
     { name: "Image uploads", ok: !!process.env.BLOB_READ_WRITE_TOKEN, note: process.env.BLOB_READ_WRITE_TOKEN ? "Vercel Blob" : process.env.NODE_ENV === "production" ? "Set BLOB_READ_WRITE_TOKEN" : "Local folder (development)" },
-    { name: "Email", ok: emailConfigured, note: emailConfigured ? "Resend" : "Set RESEND_API_KEY and EMAIL_FROM" },
+    { name: "Receipt emails", ok: emailConfigured, note: emailConfigured ? "Resend" : "Set RESEND_API_KEY and EMAIL_FROM" },
+    { name: "WhatsApp auto-confirmations", ok: whatsappConfigured, note: whatsappConfigured ? "WhatsApp Cloud API" : "Manual button on each order (set WHATSAPP_TOKEN to automate)" },
     { name: "Online payments", ok: false, note: "Not connected — cash on delivery only" },
   ];
   return (

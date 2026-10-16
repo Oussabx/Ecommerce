@@ -171,8 +171,8 @@ export function CheckoutForm() {
           <div className="grid gap-4 sm:grid-cols-2">
             <TextField label="First name" name="firstName" autoComplete="given-name" value={form.firstName} onChange={set("firstName")} error={errors.firstName} />
             <TextField label="Last name" name="lastName" autoComplete="family-name" value={form.lastName} onChange={set("lastName")} error={errors.lastName} />
-            <TextField label="Email" name="email" type="email" inputMode="email" autoComplete="email" value={form.email} onChange={set("email")} error={errors.email} hint="For your order confirmation." />
-            <TextField label="Phone number" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="+961 70 123 456" value={form.phone} onChange={set("phone")} error={errors.phone} hint="We call to confirm your order and delivery." />
+            <TextField label="Email" name="email" type="email" inputMode="email" autoComplete="email" value={form.email} onChange={set("email")} error={errors.email} hint="We email your receipt here." />
+            <TextField label="WhatsApp / phone number" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="+961 70 123 456" value={form.phone} onChange={set("phone")} error={errors.phone} hint="We send your order confirmation here and call to arrange delivery." />
           </div>
         </Step>
 
