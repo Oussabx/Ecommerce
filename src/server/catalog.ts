@@ -3,6 +3,11 @@ import { unstable_cache } from "next/cache";
 import type { Prisma } from "@prisma/client";
 import { db, fromCents } from "./db";
 import type { Category, Collection, Product, SpecGroup } from "@/data/types";
+import { hasDatabase } from "./db";
+import { products as sampleProducts } from "@/data/products";
+import { categories as sampleCategories } from "@/data/categories";
+import { collections as sampleCollections } from "@/data/collections";
+import { artViews, viewLabels } from "@/data/art-views";
 
 export const CATALOG_TAG = "catalog";
 
@@ -53,8 +58,25 @@ export interface Catalog {
   collections: Collection[];
 }
 
+/** Built-in sample catalogue, used when no database is connected. */
+function sampleCatalog(): Catalog {
+  return {
+    products: sampleProducts.map((p) => ({
+      ...p,
+      images: Object.fromEntries(
+        p.colors.map((c) => [
+          c.id,
+          artViews[p.art.kind].map((v) => ({ src: `/products/${p.slug}/${c.id}-${v}.svg`, label: viewLabels[v] ?? v, alt: `${p.brand} ${p.name} in ${c.name}` })),
+        ]),
+      ),
+    })),
+    categories: sampleCategories,
+    collections: sampleCollections,
+  };
+}
+
 /** Published catalogue. Cached; invalidated by revalidateTag("catalog"). */
-export const getCatalog = unstable_cache(
+const getDbCatalog = unstable_cache(
   async (): Promise<Catalog> => {
     const [products, categories, collections] = await Promise.all([
       db.product.findMany({ where: { published: true }, include: productInclude, orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] }),
@@ -79,6 +101,8 @@ export const getCatalog = unstable_cache(
   ["catalog"],
   { tags: [CATALOG_TAG], revalidate: 3600 },
 );
+
+export const getCatalog = (): Promise<Catalog> => (hasDatabase ? getDbCatalog() : Promise.resolve(sampleCatalog()));
 
 // Convenience accessors over the cached catalogue.
 export async function getProduct(slug: string) {

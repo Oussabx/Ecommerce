@@ -3,9 +3,11 @@ import { orderSchema } from "@/server/validation";
 import { currentUser } from "@/server/auth";
 import { orderAccessToken } from "@/server/crypto";
 import { rateLimit } from "@/server/rate-limit";
-import { fail, ok, parseBody, sameOrigin } from "@/server/http";
+import { fail, ok, parseBody, sameOrigin, noDatabase } from "@/server/http";
 
 export async function POST(req: Request) {
+  const offline = noDatabase();
+  if (offline) return offline;
   if (!sameOrigin(req)) return fail("Forbidden.", 403);
   if (!(await rateLimit("orders", 10, 10 * 60_000))) return fail("Too many attempts. Please wait a few minutes and try again.", 429);
   const parsed = await parseBody(req, orderSchema);

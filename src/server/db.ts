@@ -10,5 +10,8 @@ export const db =
   g.prisma ?? new PrismaClient({ datasourceUrl, log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"] });
 if (process.env.NODE_ENV !== "production") g.prisma = db;
 
+/** False when no database is configured: the site then runs read-only on the built-in sample catalogue. */
+export const hasDatabase = Boolean(datasourceUrl);
+
 export const toCents = (usd: number) => Math.round(usd * 100);
 export const fromCents = (cents: number) => cents / 100;

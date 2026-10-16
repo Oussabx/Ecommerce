@@ -4,9 +4,11 @@ import { hashPassword, verifyPassword } from "@/server/crypto";
 import { db } from "@/server/db";
 import { passwordSchema } from "@/server/validation";
 import { rateLimit } from "@/server/rate-limit";
-import { fail, ok, parseBody, sameOrigin } from "@/server/http";
+import { fail, ok, parseBody, sameOrigin, noDatabase } from "@/server/http";
 
 export async function POST(req: Request) {
+  const offline = noDatabase();
+  if (offline) return offline;
   if (!sameOrigin(req)) return fail("Forbidden.", 403);
   if (!(await rateLimit("password", 10, 15 * 60_000))) return fail("Too many attempts. Please try again later.", 429);
   const user = await currentUser();

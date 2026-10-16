@@ -2,7 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { Address, Role, User } from "@prisma/client";
-import { db } from "./db";
+import { db, hasDatabase } from "./db";
 import { hashPassword, randomToken, safeEqual, sha256, sign, verifyPassword } from "./crypto";
 
 export type SavedAddress = Pick<Address, "id" | "label" | "line1" | "line2" | "city" | "area" | "notes">;
@@ -48,6 +48,7 @@ export async function destroySession() {
 }
 
 export async function currentUser(): Promise<UserWithAddresses | null> {
+  if (!hasDatabase) return null;
   const raw = (await cookies()).get(COOKIE)?.value;
   if (!raw) return null;
   const parts = raw.split(".");

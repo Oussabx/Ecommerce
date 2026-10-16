@@ -1,6 +1,6 @@
 /**
  * Production build used by Vercel (`npm run vercel-build`):
- *   1. checks required environment variables and explains what's missing
+ *   1. resolves database variables (the site also builds without a database)
  *   2. applies database migrations
  *   3. seeds empty tables (sample catalogue, settings, first admin)
  *   4. builds Next.js
@@ -11,14 +11,8 @@ import { resolveDatabaseEnv } from "./resolve-env.mjs";
 const { databaseUrl, directUrl } = resolveDatabaseEnv();
 const env = { ...process.env, DATABASE_URL: databaseUrl, DIRECT_URL: directUrl };
 
-const problems = [];
-if (!databaseUrl) problems.push("DATABASE_URL — your Postgres connection string (Vercel → Storage → connect a Neon database sets this automatically).");
-else if (!/^postgres(ql)?:\/\//.test(databaseUrl)) problems.push("DATABASE_URL must start with postgresql:// or postgres://");
-
-if (problems.length) {
-  console.error("\n✖ Build stopped: missing or invalid environment variables.\n");
-  for (const p of problems) console.error("  • " + p);
-  console.error("\nAdd them in Vercel → Project → Settings → Environment Variables (Production and Preview), then redeploy.\n");
+if (databaseUrl && !/^postgres(ql)?:\/\//.test(databaseUrl)) {
+  console.error("\n✖ DATABASE_URL must start with postgresql:// or postgres://\n");
   process.exit(1);
 }
 
@@ -28,6 +22,12 @@ const run = (cmd, args) => {
   if (r.status !== 0) process.exit(r.status ?? 1);
 };
 
-run("npx", ["prisma", "migrate", "deploy"]);
-run("node", ["--no-warnings", "scripts/seed.mts"]);
+if (databaseUrl) {
+  run("npx", ["prisma", "migrate", "deploy"]);
+  run("node", ["--no-warnings", "scripts/seed.mts"]);
+} else {
+  console.warn("\n⚠ No database connected — deploying the read-only storefront with the built-in sample catalogue.");
+  console.warn("  Orders, accounts and the admin switch on once you connect one:");
+  console.warn("  Vercel → Storage → Create Database → Neon → Connect (leave the prefix empty) → Redeploy.\n");
+}
 run("npx", ["next", "build"]);
