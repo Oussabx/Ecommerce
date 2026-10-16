@@ -6,7 +6,7 @@ import type { Collection } from "@/data/types";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { cn, pad2 } from "@/lib/format";
+import { cn } from "@/lib/format";
 
 export const toneClass: Record<Collection["tone"], string> = {
   lime: "bg-lime text-ink",
@@ -31,7 +31,6 @@ export async function Intentions() {
   return (
     <section id="intentions" className="container-x py-16 md:py-24" aria-labelledby="intentions-title">
       <SectionHeader
-        index="§ 04 — Shop by intention"
         title={<span id="intentions-title">Find your next device.</span>}
         intro="Start with what you want to do, not with a spec sheet. Each edit is a short, considered list."
       />
@@ -41,17 +40,13 @@ export async function Intentions() {
           return (
             <Reveal key={c.slug} delay={(i % 3) * 80} className={cn("relative", layout[i])}>
               <Link href={`/collections/${c.slug}`} className={cn("group relative flex h-full flex-col justify-between overflow-hidden p-5 md:p-6", toneClass[c.tone] ?? toneClass.paper)}>
-                <div className="relative z-10 flex items-start justify-between">
-                  <span className="label opacity-70">
-                    {pad2(c.index)} / {pad2(collections.length)}
-                  </span>
+                <div className="relative z-10 flex items-start justify-end">
                   <span className="grid size-11 place-items-center border border-current transition-transform duration-500 group-hover:rotate-45">
                     <Icon name="arrowUpRight" size={20} />
                   </span>
                 </div>
                 <div className={cn("relative z-10", i === 0 ? "max-w-[85%]" : "max-w-[56%]")}>
-                  <p className="label opacity-70">{c.kicker}</p>
-                  <h3 className="display mt-2 text-[clamp(2.2rem,4vw,3.75rem)]">{c.title}</h3>
+                  <h3 className="display text-[clamp(2.2rem,4vw,3.75rem)]">{c.title}</h3>
                   <p className="mt-3 hidden max-w-xs text-sm opacity-80 md:block">{c.description}</p>
                 </div>
                 <div

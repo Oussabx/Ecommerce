@@ -65,9 +65,6 @@ export function CampaignForm({ initial, products }: { initial: Campaign; product
       <label className="flex items-center gap-2 text-sm sm:col-span-2">
         <input type="checkbox" checked={c.enabled} onChange={(e) => setC({ ...c, enabled: e.target.checked })} className="size-4 accent-ink" /> Show the campaign section on the homepage
       </label>
-      <L label="Small label" className="sm:col-span-2">
-        <input value={c.eyebrow} onChange={(e) => setC({ ...c, eyebrow: e.target.value })} className={field} />
-      </L>
       <L label="Headline line 1">
         <input value={c.headline[0]} onChange={(e) => setC({ ...c, headline: [e.target.value, c.headline[1]] })} className={field} />
       </L>

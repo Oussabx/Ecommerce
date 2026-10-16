@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Logo } from "@/components/layout/Logo";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { cn } from "@/lib/format";
+import { SignOutButton } from "./StaffAccount";
 
 const NAV: { href: string; label: string; icon: IconName; adminOnly?: boolean; badgeKey?: "orders" | "messages" }[] = [
   { href: "/admin", label: "Overview", icon: "grid" },
@@ -90,9 +91,10 @@ export function AdminNav({ user, badges }: { user: { name: string; role: string 
             <Link href="/" className="label text-paper/60 hover:text-lime">
               View store ↗
             </Link>
-            <Link href="/account" className="label text-paper/60 hover:text-lime">
-              Account
+            <Link href="/admin/account" className="label text-paper/60 hover:text-lime">
+              My account
             </Link>
+            <SignOutButton />
           </div>
         </div>
       </aside>

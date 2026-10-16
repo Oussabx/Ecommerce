@@ -4,7 +4,6 @@ import { cn } from "@/lib/format";
 
 export function ListingHeader({
   crumbs,
-  index,
   title,
   description,
   count,
@@ -12,7 +11,6 @@ export function ListingHeader({
   aside,
 }: {
   crumbs: Crumb[];
-  index: string;
   title: ReactNode;
   description?: ReactNode;
   count: number;
@@ -23,9 +21,8 @@ export function ListingHeader({
     <header className={cn("container-x pb-8 pt-6 md:pb-12 md:pt-8", className)}>
       <Breadcrumbs items={crumbs} />
       <div className="mt-8 grid gap-6 border-t border-current pt-4 md:mt-12 md:grid-cols-12">
-        <p className="label md:col-span-2">{index}</p>
-        <h1 className="display animate-[rise_.8s_var(--ease-out-expo)_both] text-[clamp(3.2rem,10vw,9.5rem)] md:col-span-7">{title}</h1>
-        <div className="flex flex-col justify-end gap-3 md:col-span-3">
+        <h1 className="display animate-[rise_.8s_var(--ease-out-expo)_both] text-[clamp(3.2rem,10vw,9.5rem)] md:col-span-8">{title}</h1>
+        <div className="flex flex-col justify-end gap-3 md:col-span-4">
           {description && <p className="text-[15px] leading-relaxed opacity-75">{description}</p>}
           <p className="label">
             {String(count).padStart(2, "0")} {count === 1 ? "product" : "products"}

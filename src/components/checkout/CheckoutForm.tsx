@@ -11,7 +11,6 @@ import { api } from "@/lib/api";
 import { isEmail, isPhone, required } from "@/lib/client-validation";
 import { useShopData } from "@/components/layout/ShopData";
 import { cn, formatPrice } from "@/lib/format";
-import type { PublicUser } from "@/server/auth";
 
 type Form = {
   firstName: string;
@@ -37,7 +36,6 @@ export function CheckoutForm() {
   const { getProduct, settings } = useShopData();
   const { store } = settings;
   const { lines, subtotal, count, hasUnavailable } = resolveCart(cart, getProduct);
-  const [user, setUser] = useState<PublicUser | null>(null);
   const [form, setForm] = useState<Form>({
     firstName: "",
     lastName: "",
@@ -59,28 +57,13 @@ export function CheckoutForm() {
   const idempotencyKey = useRef<string>("");
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Restore a draft (contact + address only) and prefill from the signed-in account.
+  // Restore a draft (contact + address only).
   useEffect(() => {
     idempotencyKey.current = crypto.randomUUID();
     try {
       const draft = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "null");
       if (draft && typeof draft === "object") setForm((f) => ({ ...f, ...draft, acceptTerms: false }));
     } catch {}
-    fetch("/api/auth/me")
-      .then((r) => r.json())
-      .then((d) => {
-        if (!d.user) return;
-        setUser(d.user);
-        const [firstName, ...rest] = (d.user.name as string).split(" ");
-        setForm((f) => ({
-          ...f,
-          firstName: f.firstName || firstName,
-          lastName: f.lastName || rest.join(" "),
-          email: f.email || d.user.email,
-          phone: f.phone || d.user.phone,
-        }));
-      })
-      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -183,15 +166,6 @@ export function CheckoutForm() {
   return (
     <form ref={formRef} onSubmit={onSubmit} noValidate className="grid gap-10 lg:grid-cols-12">
       <div className="space-y-10 lg:col-span-7">
-        {!user && (
-          <p className="border border-rule bg-paper-2 px-4 py-3 text-sm">
-            Checking out as a guest.{" "}
-            <Link href="/account/login?next=/checkout" className="font-semibold underline underline-offset-4">
-              Sign in
-            </Link>{" "}
-            to use saved details — or just continue.
-          </p>
-        )}
 
         <Step n="01" title="Contact">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -203,23 +177,6 @@ export function CheckoutForm() {
         </Step>
 
         <Step n="02" title="Delivery address">
-          {user && user.addresses.length > 0 && (
-            <div className="mb-5">
-              <p className="mb-2 text-sm font-medium">Saved addresses</p>
-              <div className="flex flex-wrap gap-2">
-                {user.addresses.map((a) => (
-                  <button
-                    key={a.id}
-                    type="button"
-                    onClick={() => setForm((f) => ({ ...f, line1: a.line1, line2: a.line2, city: a.city, area: a.area, notes: a.notes }))}
-                    className="label border border-rule-strong px-3 py-2 hover:border-ink"
-                  >
-                    {a.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
           <div className="grid gap-4 sm:grid-cols-2">
             <TextField className="sm:col-span-2" label="Street, building, floor" name="line1" autoComplete="address-line1" value={form.line1} onChange={set("line1")} error={errors.line1} />
             <TextField className="sm:col-span-2" label="Apartment, landmark" name="line2" optional autoComplete="address-line2" value={form.line2} onChange={set("line2")} error={errors.line2} hint="Landmarks help our drivers find you." />
@@ -234,18 +191,15 @@ export function CheckoutForm() {
           </div>
         </Step>
 
-        <Step n="03" title="Delivery method">
-          <Radios name="deliveryMethod" value={form.deliveryMethod} onChange={set("deliveryMethod")} options={store.deliveryMethods.map((d) => ({ id: d.id, label: d.label, description: d.description, aside: d.feeUSD === null ? "Fee confirmed by phone" : formatPrice(d.feeUSD) }))} />
-        </Step>
 
-        <Step n="04" title="Payment">
+        <Step n="03" title="Payment">
           <Radios name="paymentMethod" value={form.paymentMethod} onChange={set("paymentMethod")} options={store.paymentMethods.map((p) => ({ id: p.id, label: p.label, description: p.description }))} />
           <p className="mt-3 flex gap-2 text-xs text-muted">
             <Icon name="info" size={16} className="shrink-0" /> Online card payment isn&apos;t available yet. Nothing is charged when you place your order.
           </p>
         </Step>
 
-        <Step n="05" title="Confirm">
+        <Step n="04" title="Confirm">
           <label className="flex cursor-pointer items-start gap-3 text-sm">
             <input type="checkbox" name="acceptTerms" checked={form.acceptTerms} onChange={set("acceptTerms")} className="mt-0.5 size-4 accent-ink" aria-invalid={!!errors.acceptTerms} aria-describedby={errors.acceptTerms ? "acceptTerms-error" : undefined} />
             <span>

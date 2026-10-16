@@ -12,7 +12,6 @@ export async function CategoryIndex() {
   return (
     <section className="container-x py-16 md:py-24" aria-labelledby="index-title">
       <SectionHeader
-        index="§ 01 — Index"
         title={<span id="index-title">What are you looking for?</span>}
         intro="Six departments, kept deliberately tight. Pick one and compare what's worth it."
       />

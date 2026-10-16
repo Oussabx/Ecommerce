@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { Address, Role, User } from "@prisma/client";
 import { db, hasDatabase } from "./db";
-import { hashPassword, randomToken, safeEqual, sha256, sign, verifyPassword } from "./crypto";
+import { safeEqual, sign, verifyPassword } from "./crypto";
 
 export type SavedAddress = Pick<Address, "id" | "label" | "line1" | "line2" | "city" | "area" | "notes">;
 export type UserWithAddresses = User & { addresses: Address[] };
@@ -66,18 +66,9 @@ export const isStaff = (u: Pick<User, "role"> | null | undefined) => u?.role ===
 /** For admin pages: redirect to sign-in unless the user is staff (or admin when required). */
 export async function requireStaff(opts: { admin?: boolean } = {}) {
   const user = await currentUser();
-  if (!user) redirect("/account/login?next=/admin");
+  if (!user) redirect("/admin/login");
   if (!isStaff(user) || (opts.admin && user.role !== "ADMIN")) redirect("/admin/forbidden");
   return user;
-}
-
-export async function registerUser(input: { name: string; email: string; password: string }) {
-  const passwordHash = await hashPassword(input.password);
-  try {
-    return await db.user.create({ data: { email: input.email, name: input.name, passwordHash }, include: { addresses: true } });
-  } catch {
-    return null; // unique email violation
-  }
 }
 
 export async function authenticate(email: string, password: string) {
@@ -85,28 +76,4 @@ export async function authenticate(email: string, password: string) {
   // Always run a hash comparison to keep timing similar for unknown emails.
   const ok = await verifyPassword(password, user?.passwordHash ?? "scrypt$AAAAAAAAAAAAAAAAAAAAAA==$AAAA");
   return ok && user ? user : null;
-}
-
-// ─── password reset ──────────────────────────────────────────────────────────
-
-/** Returns the raw token (to be emailed) or null when no such user exists. */
-export async function createResetToken(email: string) {
-  const user = await db.user.findUnique({ where: { email } });
-  if (!user) return null;
-  const token = randomToken();
-  await db.$transaction([
-    db.passwordReset.deleteMany({ where: { OR: [{ userId: user.id }, { expiresAt: { lt: new Date() } }] } }),
-    db.passwordReset.create({ data: { tokenHash: sha256(token), userId: user.id, expiresAt: new Date(Date.now() + 60 * 60 * 1000) } }),
-  ]);
-  return token;
-}
-
-export async function resetPassword(token: string, password: string) {
-  const row = await db.passwordReset.findUnique({ where: { tokenHash: sha256(token) } });
-  if (!row || row.used || row.expiresAt < new Date()) return false;
-  const passwordHash = await hashPassword(password);
-  const claimed = await db.passwordReset.updateMany({ where: { tokenHash: row.tokenHash, used: false }, data: { used: true } });
-  if (!claimed.count) return false;
-  await db.user.update({ where: { id: row.userId }, data: { passwordHash, sessionVersion: { increment: 1 } } });
-  return true;
 }

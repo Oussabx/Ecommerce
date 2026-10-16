@@ -29,8 +29,7 @@ export function Newsletter() {
   return (
     <section className="border-t border-ink bg-paper" aria-labelledby="newsletter-title">
       <div className="container-x grid gap-8 py-16 md:grid-cols-12 md:py-24">
-        <div className="label text-muted md:col-span-2">Newsletter</div>
-        <div className="md:col-span-6">
+        <div className="md:col-span-7">
           <h2 id="newsletter-title" className="display text-[clamp(3rem,9vw,7.5rem)]">
             Stay in
             <br />
@@ -38,7 +37,7 @@ export function Newsletter() {
           </h2>
           <p className="mt-5 max-w-md text-muted">New arrivals, worthwhile deals, and technology worth paying attention to.</p>
         </div>
-        <div className="flex flex-col justify-end md:col-span-4">
+        <div className="flex flex-col justify-end md:col-span-5">
           {state === "done" ? (
             <div className="border border-ink bg-lime p-5" role="status">
               <p className="label">Subscribed</p>

@@ -18,7 +18,6 @@ export default async function ShopPage() {
     <>
       <ListingHeader
         crumbs={[{ label: "Shop" }]}
-        index="Index — All"
         title="The collection"
         description="Everything we stock, in one place. Narrow it down by what matters to you."
         count={items.length}

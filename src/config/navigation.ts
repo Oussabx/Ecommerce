@@ -1,11 +1,7 @@
+/** Desktop navbar links after the "Shop" dropdown (which lists every category). */
 export const mainNav = [
-  { href: "/shop", label: "Shop" },
-  { href: "/category/smartphones", label: "Smartphones" },
-  { href: "/category/computers", label: "Computers" },
-  { href: "/category/gaming", label: "Gaming" },
-  { href: "/category/audio", label: "Audio" },
-  { href: "/category/accessories", label: "Accessories" },
   { href: "/deals", label: "Deals" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export const footerNav = {
@@ -28,7 +24,6 @@ export const footerNav = {
   ],
   company: [
     { href: "/about", label: "About OSA" },
-    { href: "/account", label: "Your account" },
     { href: "/wishlist", label: "Wishlist" },
     { href: "/privacy", label: "Privacy policy" },
     { href: "/terms", label: "Terms & conditions" },

@@ -12,8 +12,7 @@ export async function WhyOsa() {
     <section className="bg-ink text-paper" aria-labelledby="why-title">
       <div className="container-x grid gap-10 py-16 md:py-24 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <p className="label text-paper/50">§ 05 — Why OSA?</p>
-          <h2 id="why-title" className="display mt-5 text-[clamp(3rem,7vw,6.5rem)]">
+          <h2 id="why-title" className="display text-[clamp(3rem,7vw,6.5rem)]">
             Less noise.
             <br />
             <span className="text-lime">More signal.</span>

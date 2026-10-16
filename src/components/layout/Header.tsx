@@ -8,6 +8,7 @@ import { Icon } from "@/components/ui/Icon";
 import { mainNav } from "@/config/navigation";
 import { cartStore, resolveCart, wishlistStore } from "@/lib/shop-state";
 import { useShopData } from "./ShopData";
+import { ShopMenu } from "./ShopMenu";
 import { cn } from "@/lib/format";
 
 export function Header() {
@@ -45,7 +46,7 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const isActive = (href: string) => (href === "/shop" ? pathname === "/shop" : pathname.startsWith(href));
+  const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <header className={cn("sticky top-0 z-40 border-b bg-paper/92 backdrop-blur-md transition-[border-color] duration-300", scrolled ? "border-ink/15" : "border-transparent")}>
@@ -65,28 +66,21 @@ export function Header() {
           <Logo className={cn("transition-[width] duration-300", scrolled ? "w-[92px] lg:w-[104px]" : "w-[100px] lg:w-[118px]")} />
         </Link>
 
-        <nav aria-label="Main" className="ml-8 hidden flex-1 lg:block xl:ml-14">
-          <ul className="flex items-center">
-            {mainNav.map((item, i) => (
-              <li key={item.href} className="flex items-center">
-                {i > 0 && <span className="mx-1 h-3.5 w-px bg-rule-strong xl:mx-2" aria-hidden />}
+        <nav aria-label="Main" className="ml-8 hidden flex-1 lg:block xl:ml-12">
+          <ul className="flex items-center gap-1">
+            <li>
+              <ShopMenu />
+            </li>
+            {mainNav.map((item) => (
+              <li key={item.href}>
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={cn(
-                    "relative px-2 py-2 text-[13px] font-medium tracking-tight transition-colors xl:px-3",
-                    isActive(item.href) ? "text-ink" : "text-ink/70 hover:text-ink",
-                    item.href === "/deals" && "text-ink",
-                  )}
+                  className={cn("relative block px-3 py-2 text-sm font-medium transition-colors", isActive(item.href) ? "text-ink" : "text-ink/70 hover:text-ink")}
                 >
                   {item.href === "/deals" && <span className="mr-1.5 inline-block size-1.5 bg-lime align-middle ring-1 ring-ink" aria-hidden />}
                   {item.label}
-                  <span
-                    className={cn(
-                      "absolute inset-x-2 -bottom-px h-[2px] origin-left bg-ink transition-transform duration-300 xl:inset-x-3",
-                      isActive(item.href) ? "scale-x-100" : "scale-x-0",
-                    )}
-                  />
+                  <span className={cn("absolute inset-x-3 -bottom-px h-[2px] origin-left bg-ink transition-transform duration-300", isActive(item.href) ? "scale-x-100" : "scale-x-0")} />
                 </Link>
               </li>
             ))}
@@ -107,9 +101,6 @@ export function Header() {
           <button type="button" onClick={() => open("search")} className="grid size-11 place-items-center lg:hidden" aria-label="Search products">
             <Icon name="search" size={21} />
           </button>
-          <Link href="/account" className="hidden size-11 place-items-center lg:grid" aria-label="Account">
-            <Icon name="user" size={21} />
-          </Link>
           <Link href="/wishlist" className="relative hidden size-11 place-items-center sm:grid" aria-label={`Wishlist, ${wishlist.length} items`}>
             <Icon name="heart" size={21} />
             {wishlist.length > 0 && <span className="absolute right-1.5 top-2 size-2 rounded-full bg-ink" aria-hidden />}

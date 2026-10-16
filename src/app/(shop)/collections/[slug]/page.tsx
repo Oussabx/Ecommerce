@@ -31,7 +31,6 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
       <div className={cn("relative overflow-hidden", toneClass[c.tone] ?? toneClass.paper)}>
         <ListingHeader
           crumbs={[{ label: "Shop", href: "/shop" }, { label: "Collections", href: "/collections" }, { label: c.title }]}
-          index={`Edit ${pad2(c.index)} — ${c.kicker}`}
           title={c.title}
           description={c.description}
           count={items.length}

@@ -6,7 +6,7 @@ import { ListingHeader, ListingSkeleton } from "@/components/listing/ListingHead
 import { ListingView } from "@/components/listing/ListingView";
 import { summarize } from "@/lib/catalog";
 import { getCatalog } from "@/server/catalog";
-import { cn, pad2 } from "@/lib/format";
+import { cn } from "@/lib/format";
 
 export const generateStaticParams = async () => (await getCatalog()).categories.map((c) => ({ slug: c.slug }));
 
@@ -27,7 +27,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     <>
       <ListingHeader
         crumbs={[{ label: "Shop", href: "/shop" }, { label: category.name }]}
-        index={`${pad2(category.index)} — ${category.code}`}
         title={category.indexName}
         description={category.description}
         count={items.length}
@@ -39,9 +38,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               <Link
                 href={`/category/${c.slug}`}
                 aria-current={c.slug === category.slug ? "page" : undefined}
-                className={cn("label inline-flex h-9 items-center gap-2 border px-3 transition-colors", c.slug === category.slug ? "border-ink bg-ink text-paper" : "border-rule hover:border-ink")}
+                className={cn("inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors", c.slug === category.slug ? "border-ink bg-ink text-paper" : "border-rule-strong hover:border-ink")}
               >
-                <span className="opacity-60">{pad2(c.index)}</span> {c.name}
+                {c.name}
               </Link>
             </li>
           ))}

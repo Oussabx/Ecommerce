@@ -45,7 +45,6 @@ export function MobileMenu() {
         </ul>
         <ul className="mt-6 grid grid-cols-2 gap-px border border-rule bg-rule text-sm">
           {[
-            ["/account", "Account", "user"],
             ["/wishlist", "Wishlist", "heart"],
             ["/cart", "Cart", "bag"],
             ["/contact", "Contact", "chat"],

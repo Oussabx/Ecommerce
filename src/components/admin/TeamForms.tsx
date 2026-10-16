@@ -1,52 +1,57 @@
 "use client";
 import { useState } from "react";
 import type { Role } from "@prisma/client";
-import { setRole } from "@/app/admin/team/actions";
+import { addMember, resetMemberPassword, setRole } from "@/app/admin/team/actions";
 import { FormError } from "@/components/ui/Field";
 import { useAction } from "./useAction";
 
 export function AddMember() {
-  const [email, setEmail] = useState("");
-  const [role, setR] = useState<Role>("STAFF");
+  const [f, setF] = useState({ name: "", email: "", password: "", role: "STAFF" as "STAFF" | "ADMIN" });
   const a = useAction();
+  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => setF((x) => ({ ...x, [k]: e.target.value }));
   return (
     <form
-      className="flex flex-wrap items-end gap-2"
+      className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_140px_auto] lg:items-end"
       onSubmit={(e) => {
         e.preventDefault();
-        a.exec(() => setRole(email, role), { onOk: () => setEmail("") });
+        a.exec(() => addMember(f), { onOk: () => setF({ name: "", email: "", password: "", role: "STAFF" }) });
       }}
     >
-      <div className="min-w-[240px] flex-1">
-        <label htmlFor="member-email" className="mb-1.5 block text-sm font-medium">
-          Account email
+      {(
+        [
+          ["name", "Name", "text"],
+          ["email", "Email", "email"],
+          ["password", "Temporary password", "text"],
+        ] as const
+      ).map(([k, label, type]) => (
+        <label key={k} className="block">
+          <span className="mb-1.5 block text-sm font-medium">{label}</span>
+          <input type={type} value={f[k]} onChange={set(k)} className="field text-sm" aria-invalid={!!a.fields[k]} autoComplete="off" />
+          {a.fields[k] && <span className="mt-1 block text-xs text-danger">{a.fields[k]}</span>}
         </label>
-        <input id="member-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="field text-sm" placeholder="colleague@example.com" />
-      </div>
-      <div>
-        <label htmlFor="member-role" className="mb-1.5 block text-sm font-medium">
-          Role
-        </label>
-        <select id="member-role" value={role} onChange={(e) => setR(e.target.value as Role)} className="field w-40 text-sm">
+      ))}
+      <label className="block">
+        <span className="mb-1.5 block text-sm font-medium">Role</span>
+        <select value={f.role} onChange={set("role")} className="field text-sm">
           <option value="STAFF">Staff</option>
           <option value="ADMIN">Admin</option>
         </select>
-      </div>
+      </label>
       <button disabled={a.pending} className="btn btn-primary">
-        Grant access
+        Add
       </button>
-      <div className="w-full">
-        <FormError message={a.error} />
+      <div className="sm:col-span-2 lg:col-span-5">
+        <FormError message={a.error && !Object.keys(a.fields).length ? a.error : null} />
         {a.message && !a.error && <p className="label text-ok">{a.message}</p>}
       </div>
     </form>
   );
 }
 
-export function RoleSelect({ email, role, self }: { email: string; role: Role; self: boolean }) {
+export function MemberActions({ email, role, self }: { email: string; role: Role; self: boolean }) {
   const a = useAction();
   return (
-    <div>
+    <div className="flex flex-wrap items-center gap-2">
       <select
         value={role}
         disabled={a.pending || self}
@@ -62,7 +67,20 @@ export function RoleSelect({ email, role, self }: { email: string; role: Role; s
         <option value="ADMIN">Admin</option>
         <option value="CUSTOMER">Remove access</option>
       </select>
-      {a.error && <p className="mt-1 text-xs text-danger">{a.error}</p>}
+      {!self && (
+        <button
+          type="button"
+          onClick={() => {
+            const pw = prompt(`New password for ${email} (at least 10 characters):`);
+            if (pw) a.exec(() => resetMemberPassword(email, pw), { refresh: false });
+          }}
+          className="label text-muted hover:text-ink"
+        >
+          Reset password
+        </button>
+      )}
+      {a.error && <p className="w-full text-xs text-danger">{a.error}</p>}
+      {a.message && !a.error && <p className="label w-full text-ok">{a.message}</p>}
     </div>
   );
 }

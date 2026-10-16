@@ -18,10 +18,6 @@ export async function Campaign() {
   return (
     <section className="relative overflow-hidden bg-lime text-ink" aria-labelledby="campaign-title">
       <div className="container-x relative grid gap-8 py-14 md:py-20 lg:grid-cols-12">
-        <div className="label flex justify-between border-b border-ink pb-3 lg:col-span-12">
-          <span>{campaign.eyebrow}</span>
-          <span className="hidden sm:inline">§ 03</span>
-        </div>
 
         <div className="relative z-10 lg:col-span-7">
           <Reveal>
