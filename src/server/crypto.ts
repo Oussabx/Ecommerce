@@ -1,15 +1,20 @@
 import "server-only";
-import { createHmac, randomBytes, scrypt as _scrypt, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, randomBytes, scrypt as _scrypt, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 
 const scrypt = promisify(_scrypt) as (pw: string, salt: Buffer, len: number) => Promise<Buffer>;
 
+/**
+ * Signing key for sessions and order links. Uses SESSION_SECRET when set;
+ * otherwise derives a stable key from the (already secret) database URL so a
+ * deployment works with only a database connected.
+ */
 function secret(): string {
   const s = process.env.SESSION_SECRET;
   if (s && s.length >= 32) return s;
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("SESSION_SECRET must be set (32+ characters) in production.");
-  }
+  const db = process.env.DATABASE_URL || process.env.POSTGRES_PRISMA_URL || process.env.POSTGRES_URL;
+  if (db) return createHash("sha256").update(`osa-session-key:${db}`).digest("hex");
+  if (process.env.NODE_ENV === "production") throw new Error("Set SESSION_SECRET (32+ characters) or connect a database.");
   return "dev-only-insecure-secret-change-me-0000000000";
 }
 

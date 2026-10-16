@@ -3,6 +3,12 @@ import { NextResponse } from "next/server";
 import type { z, ZodTypeAny } from "zod";
 import { fieldErrors } from "./validation";
 
+import { hasDatabase } from "./db";
+
+/** Response for features that need the database when none is connected. */
+export const noDatabase = () =>
+  hasDatabase ? null : fail("This isn't available yet: the store's database hasn't been connected. Please try again later.", 503);
+
 export const ok = <T extends object>(data: T, status = 200) => NextResponse.json({ ok: true, ...data }, { status });
 export const fail = (error: string, status = 400, fields?: Record<string, string>) =>
   NextResponse.json({ ok: false, error, fields }, { status });

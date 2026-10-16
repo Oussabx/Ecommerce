@@ -3,11 +3,13 @@ import { currentUser, toPublic } from "@/server/auth";
 import { db } from "@/server/db";
 import { getSettings } from "@/server/settings";
 import { savedAddressSchema } from "@/server/validation";
-import { fail, ok, parseBody, sameOrigin } from "@/server/http";
+import { fail, ok, parseBody, sameOrigin, noDatabase } from "@/server/http";
 
 const reload = (id: string) => db.user.findUniqueOrThrow({ where: { id }, include: { addresses: { orderBy: { createdAt: "asc" } } } });
 
 export async function POST(req: Request) {
+  const offline = noDatabase();
+  if (offline) return offline;
   if (!sameOrigin(req)) return fail("Forbidden.", 403);
   const user = await currentUser();
   if (!user) return fail("Please sign in.", 401);
@@ -21,6 +23,8 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  const offline = noDatabase();
+  if (offline) return offline;
   if (!sameOrigin(req)) return fail("Forbidden.", 403);
   const user = await currentUser();
   if (!user) return fail("Please sign in.", 401);

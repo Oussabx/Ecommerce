@@ -6,7 +6,7 @@ import { currentUser } from "@/server/auth";
 import { orderAccessToken, safeEqual } from "@/server/crypto";
 import { Icon } from "@/components/ui/Icon";
 import { getSettings } from "@/server/settings";
-import { fromCents } from "@/server/db";
+import { fromCents, hasDatabase } from "@/server/db";
 import { formatDate, formatPrice } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "Order confirmation", robots: { index
 export default async function OrderPage({ params, searchParams }: { params: Promise<{ ref: string }>; searchParams: Promise<{ t?: string }> }) {
   const { ref } = await params;
   const { t } = await searchParams;
-  const order = /^OSA-[A-Z0-9]{6}$/.test(ref) ? await getOrder(ref) : undefined;
+  const order = hasDatabase && /^OSA-[A-Z0-9]{6}$/.test(ref) ? await getOrder(ref) : undefined;
   const user = order ? await currentUser() : null;
   const allowed = !!order && ((t && safeEqual(t, orderAccessToken(order.ref))) || (user && order.userId === user.id));
   const { store } = await getSettings();

@@ -7,6 +7,7 @@
  *   npm run db:seed -- --reset (deletes catalogue data first)
  */
 import { PrismaClient } from "@prisma/client";
+import { resolveDatabaseEnv } from "./resolve-env.mjs";
 import { randomBytes, scrypt as _scrypt } from "node:crypto";
 import { promisify } from "node:util";
 import { products } from "../src/data/products.ts";
@@ -17,7 +18,7 @@ import { campaign } from "../src/data/promotions.ts";
 import { announcements } from "../src/config/announcements.ts";
 import { storeDefaults } from "../src/config/store-defaults.ts";
 
-const db = new PrismaClient();
+const db = new PrismaClient({ datasourceUrl: resolveDatabaseEnv().databaseUrl || undefined });
 const scrypt = promisify(_scrypt) as (pw: string, salt: Buffer, len: number) => Promise<Buffer>;
 const cents = (n: number) => Math.round(n * 100);
 
@@ -119,10 +120,31 @@ async function main() {
     await db.setting.upsert({ where: { key }, create: { key, value: value as object }, update: {} });
   }
 
-  const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-  const password = process.env.ADMIN_PASSWORD;
-  if (email && password) {
-    if (password.length < 10) throw new Error("ADMIN_PASSWORD must be at least 10 characters.");
+  // First admin: from ADMIN_EMAIL / ADMIN_PASSWORD, or — if no admin exists yet
+  // and none were given — a generated login printed once in the build log.
+  let email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  let password = process.env.ADMIN_PASSWORD;
+  if (!email || !password) {
+    if ((await db.user.count({ where: { role: "ADMIN" } })) === 0) {
+      email ||= "admin@osatechstore.com";
+      password = randomBytes(9).toString("base64url");
+      const salt = randomBytes(16);
+      const hash = `scrypt$${salt.toString("base64")}$${(await scrypt(password, salt, 64)).toString("base64")}`;
+      await db.user.upsert({ where: { email }, create: { email, name: "Store admin", passwordHash: hash, role: "ADMIN" }, update: { passwordHash: hash, role: "ADMIN", sessionVersion: { increment: 1 } } });
+      console.log("\n================ ADMIN LOGIN (shown once) ================");
+      console.log(`  Sign in at /account/login`);
+      console.log(`  Email:    ${email}`);
+      console.log(`  Password: ${password}`);
+      console.log("  Change the password on your account page after signing in.");
+      console.log("===========================================================\n");
+    }
+    return;
+  }
+  {
+    if (password.length < 10) {
+      console.warn("⚠ ADMIN_PASSWORD must be at least 10 characters — admin account not created. Fix it and redeploy.");
+      return;
+    }
     const salt = randomBytes(16);
     const hash = `scrypt$${salt.toString("base64")}$${(await scrypt(password, salt, 64)).toString("base64")}`;
     const existing = await db.user.findUnique({ where: { email } });

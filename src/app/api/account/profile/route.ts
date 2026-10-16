@@ -1,9 +1,11 @@
 import { currentUser, toPublic } from "@/server/auth";
 import { db } from "@/server/db";
 import { profileSchema } from "@/server/validation";
-import { fail, ok, parseBody, sameOrigin } from "@/server/http";
+import { fail, ok, parseBody, sameOrigin, noDatabase } from "@/server/http";
 
 export async function PUT(req: Request) {
+  const offline = noDatabase();
+  if (offline) return offline;
   if (!sameOrigin(req)) return fail("Forbidden.", 403);
   const user = await currentUser();
   if (!user) return fail("Please sign in.", 401);
