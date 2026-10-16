@@ -1,13 +1,7 @@
 // Catalog types. All product, category and collection data lives in src/data
 // and is consumed through the helpers in src/lib/catalog.ts.
 
-export type CategorySlug =
-  | "smartphones"
-  | "computers"
-  | "gaming"
-  | "audio"
-  | "accessories"
-  | "smart-devices";
+export type CategorySlug = string;
 
 export interface Category {
   slug: CategorySlug;
@@ -65,7 +59,16 @@ export interface SpecGroup {
   rows: [label: string, value: string][];
 }
 
+export interface ProductImageRef {
+  src: string;
+  label?: string;
+  alt?: string;
+}
+
 export interface Product {
+  /** Database id (absent for static sample data). */
+  id?: string;
+  published?: boolean;
   slug: string;
   brand: string;
   name: string;
@@ -88,10 +91,10 @@ export interface Product {
   configLabel?: string;
   art: { kind: ArtKind; variant?: string };
   /**
-   * Real photography overrides, keyed by colour id. When present these are used
-   * instead of the generated renders in public/products.
+   * Gallery images keyed by colour id ("*" = shown for every colour). When a
+   * colour has none, generated renders in public/products are used.
    */
-  images?: Record<string, string[]>;
+  images?: Record<string, ProductImageRef[]>;
   highlights: { label: string; value: string }[];
   specs: SpecGroup[];
   /** Warranty text. null = not yet confirmed; the UI will say so. */

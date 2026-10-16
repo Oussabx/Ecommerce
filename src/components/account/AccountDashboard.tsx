@@ -6,7 +6,7 @@ import { FormError, SelectField, TextField } from "@/components/ui/Field";
 import { Icon } from "@/components/ui/Icon";
 import { api } from "@/lib/api";
 import { isPhone } from "@/lib/client-validation";
-import { store } from "@/config/store";
+import { useSettings } from "@/components/layout/ShopData";
 
 export function ProfileForm({ user }: { user: PublicUser }) {
   const router = useRouter();
@@ -62,6 +62,7 @@ export function ProfileForm({ user }: { user: PublicUser }) {
 }
 
 export function Addresses({ user }: { user: PublicUser }) {
+  const { store } = useSettings();
   const router = useRouter();
   const empty = { label: "", line1: "", line2: "", city: "", area: "", notes: "" };
   const [adding, setAdding] = useState(false);

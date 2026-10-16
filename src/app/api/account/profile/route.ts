@@ -1,4 +1,5 @@
-import { currentUser, toPublic, updateUser } from "@/server/auth";
+import { currentUser, toPublic } from "@/server/auth";
+import { db } from "@/server/db";
 import { profileSchema } from "@/server/validation";
 import { fail, ok, parseBody, sameOrigin } from "@/server/http";
 
@@ -8,9 +9,6 @@ export async function PUT(req: Request) {
   if (!user) return fail("Please sign in.", 401);
   const parsed = await parseBody(req, profileSchema);
   if ("response" in parsed) return parsed.response;
-  const updated = await updateUser(user.id, (u) => {
-    u.name = parsed.data.name;
-    u.phone = parsed.data.phone;
-  });
-  return ok({ user: updated ? toPublic(updated) : null });
+  const updated = await db.user.update({ where: { id: user.id }, data: { name: parsed.data.name, phone: parsed.data.phone }, include: { addresses: true } });
+  return ok({ user: toPublic(updated) });
 }

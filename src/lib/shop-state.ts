@@ -1,6 +1,7 @@
 "use client";
 import { createPersisted, isStringArray } from "./persisted";
-import { getProduct, priceFor, availability } from "./catalog";
+import { priceFor, availability } from "./catalog";
+import type { Product } from "@/data/types";
 
 export interface CartItem {
   slug: string;
@@ -22,12 +23,12 @@ export const searchesStore = createPersisted<string[]>("osa.searches.v1", [], is
 export const lineKey = (i: Pick<CartItem, "slug" | "colorId" | "configId">) => `${i.slug}|${i.colorId}|${i.configId ?? ""}`;
 
 /** Max quantity allowed for a product, from configured stock. */
-export const stockLimit = (slug: string) => Math.min(MAX_QTY, getProduct(slug)?.stock ?? 0);
+export const stockLimit = (product?: Pick<Product, "stock">) => Math.min(MAX_QTY, product?.stock ?? 0);
 
-export function addToCart(item: CartItem) {
+export function addToCart(item: CartItem, product: Pick<Product, "stock">) {
   cartStore.set((cart) => {
     const key = lineKey(item);
-    const limit = stockLimit(item.slug);
+    const limit = stockLimit(product);
     const otherQty = cart.filter((c) => c.slug === item.slug && lineKey(c) !== key).reduce((s, c) => s + c.quantity, 0);
     const existing = cart.find((c) => lineKey(c) === key);
     const max = Math.max(0, limit - otherQty);
@@ -36,13 +37,13 @@ export function addToCart(item: CartItem) {
   });
 }
 
-export function setQuantity(key: string, quantity: number) {
+export function setQuantity(key: string, quantity: number, product: Pick<Product, "stock">) {
   cartStore.set((cart) =>
     cart
       .map((c) => {
         if (lineKey(c) !== key) return c;
         const otherQty = cart.filter((o) => o.slug === c.slug && lineKey(o) !== key).reduce((s, o) => s + o.quantity, 0);
-        return { ...c, quantity: Math.max(0, Math.min(stockLimit(c.slug) - otherQty, quantity)) };
+        return { ...c, quantity: Math.max(0, Math.min(stockLimit(product) - otherQty, quantity)) };
       })
       .filter((c) => c.quantity > 0),
   );
@@ -68,7 +69,7 @@ export const recordSearch = (q: string) => {
 };
 
 /** Resolve cart items against the catalog (drops items whose product was removed). */
-export function resolveCart(cart: CartItem[]) {
+export function resolveCart(cart: CartItem[], getProduct: (slug: string) => Product | undefined) {
   const lines = cart
     .map((item) => {
       const product = getProduct(item.slug);

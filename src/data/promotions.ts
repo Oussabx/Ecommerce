@@ -1,9 +1,7 @@
-/**
- * Campaign shown in the chartreuse "signature" section on the homepage.
- * It features products; it does not invent discounts. Any price drop shown is
- * the product's own configured compareAtPrice.
- */
-export const campaign = {
+import type { Campaign } from "../config/store-defaults";
+
+/** Default homepage campaign (seeded into the database; edit in Admin → Content). */
+export const campaign: Campaign = {
   enabled: true,
   eyebrow: "Campaign 01 — The upgrade edit",
   headline: ["Your next upgrade", "starts here."],

@@ -1,14 +1,16 @@
 "use client";
 import Link from "next/link";
-import { getProduct, summarize } from "@/lib/catalog";
+import { summarize } from "@/lib/catalog";
+import { useShopData } from "@/components/layout/ShopData";
 import { wishlistStore } from "@/lib/shop-state";
 import { ProductCard } from "./ProductCard";
 import { Icon } from "@/components/ui/Icon";
 
 export function WishlistView() {
   const list = wishlistStore.use();
+  const { getProduct, categories } = useShopData();
   const hydrated = wishlistStore.useHydrated();
-  const items = list.map(getProduct).filter((p): p is NonNullable<typeof p> => !!p).map(summarize);
+  const items = list.map(getProduct).filter((p): p is NonNullable<typeof p> => !!p).map((p) => summarize(p, categories));
 
   if (!hydrated) return <div className="skeleton h-80" aria-busy="true" />;
   if (!items.length)

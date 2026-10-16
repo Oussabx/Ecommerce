@@ -8,13 +8,15 @@ import { Price } from "@/components/ui/Price";
 import { Stock } from "@/components/ui/Stock";
 import { QuantityStepper } from "@/components/ui/QuantityStepper";
 import { useUI } from "@/components/layout/UIProvider";
-import { availability, getProduct, priceFor, productImages, LOW_STOCK_THRESHOLD } from "@/lib/catalog";
+import { availability, priceFor, productImages, LOW_STOCK_THRESHOLD } from "@/lib/catalog";
+import type { Product } from "@/data/types";
+import { useSettings } from "@/components/layout/ShopData";
 import { addToCart, cartStore, recordView, stockLimit } from "@/lib/shop-state";
-import { store } from "@/config/store";
 import { cn, formatPrice } from "@/lib/format";
 
-export function ProductExperience({ slug }: { slug: string }) {
-  const product = getProduct(slug)!;
+export function ProductExperience({ product }: { product: Product }) {
+  const slug = product.slug;
+  const { store } = useSettings();
   const firstAvailable = product.colors.find((c) => availability(product, c.id) !== "out-of-stock") ?? product.colors[0];
   const [colorId, setColorId] = useState(firstAvailable.id);
   const [configId, setConfigId] = useState(product.configs?.[0]?.id);
@@ -59,7 +61,7 @@ export function ProductExperience({ slug }: { slug: string }) {
   const { price, compareAt } = priceFor(product, configId);
   const avail = availability(product, colorId);
   const inCart = cart.filter((c) => c.slug === slug).reduce((s, c) => s + c.quantity, 0);
-  const maxQty = Math.max(0, stockLimit(slug) - inCart);
+  const maxQty = Math.max(0, stockLimit(product) - inCart);
   const soldOut = avail === "out-of-stock";
   const images = productImages(product, colorId);
   const delivery = store.deliveryMethods[0];
@@ -67,7 +69,7 @@ export function ProductExperience({ slug }: { slug: string }) {
   const add = () => {
     if (soldOut || maxQty <= 0) return;
     const q = Math.min(qty, maxQty);
-    addToCart({ slug, colorId, configId, quantity: q });
+    addToCart({ slug, colorId, configId, quantity: q }, product);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
     setQty(1);

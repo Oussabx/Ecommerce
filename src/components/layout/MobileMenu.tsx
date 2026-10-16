@@ -3,11 +3,12 @@ import Link from "next/link";
 import { useUI } from "./UIProvider";
 import { Logo } from "./Logo";
 import { Icon } from "@/components/ui/Icon";
-import { categories } from "@/lib/catalog";
+import { useShopData } from "./ShopData";
 import { pad2 } from "@/lib/format";
 
 export function MobileMenu() {
   const { panel, close, open } = useUI();
+  const { categories } = useShopData();
   if (panel !== "menu") return null;
   return (
     <div className="fixed inset-0 z-50 flex animate-[fade_.2s_ease] flex-col bg-paper lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">

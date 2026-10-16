@@ -1,5 +1,6 @@
 "use client";
-import { getProduct, pairsWith, summarize, type ProductSummary } from "@/lib/catalog";
+import { summarize, type ProductSummary } from "@/lib/catalog";
+import { useShopData } from "@/components/layout/ShopData";
 import { viewedStore } from "@/lib/shop-state";
 import { ProductRail } from "./ProductRail";
 
@@ -9,6 +10,7 @@ import { ProductRail } from "./ProductRail";
  */
 export function PersonalRails({ exclude, showPairs = true }: { exclude?: string; showPairs?: boolean }) {
   const viewed = viewedStore.use();
+  const { getProduct, categories } = useShopData();
   const recent = viewed
     .filter((s) => s !== exclude)
     .map(getProduct)
@@ -20,10 +22,10 @@ export function PersonalRails({ exclude, showPairs = true }: { exclude?: string;
   const pairs: ProductSummary[] = [];
   if (showPairs) {
     for (const p of recent.slice(0, 3))
-      for (const q of pairsWith(p))
+      for (const q of (p.pairsWith ?? []).map(getProduct).filter((x): x is NonNullable<typeof x> => !!x))
         if (!seen.has(q.slug)) {
           seen.add(q.slug);
-          pairs.push(summarize(q));
+          pairs.push(summarize(q, categories));
         }
   }
 
@@ -39,7 +41,7 @@ export function PersonalRails({ exclude, showPairs = true }: { exclude?: string;
         </button>
       </div>
       <div className="mt-6">
-        <ProductRail items={recent.map(summarize)} />
+        <ProductRail items={recent.map((p) => summarize(p, categories))} />
       </div>
       {pairs.length > 0 && (
         <>

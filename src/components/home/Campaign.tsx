@@ -1,17 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
-import { campaign } from "@/data/promotions";
-import { getProduct, priceFor, productImages, productsBySlugs, primaryImage } from "@/lib/catalog";
+import { priceFor, productImages, primaryImage } from "@/lib/catalog";
+import { bySlugs, getCatalog } from "@/server/catalog";
+import { getSettings } from "@/server/settings";
 import { Icon } from "@/components/ui/Icon";
 import { Price } from "@/components/ui/Price";
 import { Reveal } from "@/components/ui/Reveal";
 
-export function Campaign() {
-  const hero = getProduct(campaign.heroProduct);
+export async function Campaign() {
+  const [{ campaign }, { products }] = await Promise.all([getSettings(), getCatalog()]);
+  const hero = products.find((p) => p.slug === campaign.heroProduct);
   if (!campaign.enabled || !hero) return null;
   const heroImg = productImages(hero, campaign.heroColor)[0];
   const heroPrice = priceFor(hero);
-  const supporting = productsBySlugs(campaign.supporting);
+  const supporting = bySlugs(products, campaign.supporting);
 
   return (
     <section className="relative overflow-hidden bg-lime text-ink" aria-labelledby="campaign-title">

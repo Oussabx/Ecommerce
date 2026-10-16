@@ -7,6 +7,7 @@ import { useUI } from "./UIProvider";
 import { Icon } from "@/components/ui/Icon";
 import { mainNav } from "@/config/navigation";
 import { cartStore, resolveCart, wishlistStore } from "@/lib/shop-state";
+import { useShopData } from "./ShopData";
 import { cn } from "@/lib/format";
 
 export function Header() {
@@ -14,7 +15,8 @@ export function Header() {
   const { open, panel } = useUI();
   const cart = cartStore.use();
   const wishlist = wishlistStore.use();
-  const count = resolveCart(cart).count;
+  const { getProduct } = useShopData();
+  const count = resolveCart(cart, getProduct).count;
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

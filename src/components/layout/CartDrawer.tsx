@@ -7,14 +7,16 @@ import { Icon } from "@/components/ui/Icon";
 import { QuantityStepper } from "@/components/ui/QuantityStepper";
 import { cartStore, removeFromCart, resolveCart, setQuantity, stockLimit } from "@/lib/shop-state";
 import { primaryImage } from "@/lib/catalog";
-import { store } from "@/config/store";
+import { useShopData } from "./ShopData";
 import { formatPrice } from "@/lib/format";
 
 export function CartDrawer() {
   const { panel, close } = useUI();
   const isOpen = panel === "cart";
   const cart = cartStore.use();
-  const { lines, subtotal, count, hasUnavailable } = resolveCart(cart);
+  const { getProduct, settings } = useShopData();
+  const { store } = settings;
+  const { lines, subtotal, count, hasUnavailable } = resolveCart(cart, getProduct);
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -75,8 +77,8 @@ export function CartDrawer() {
                       <QuantityStepper
                         size="sm"
                         value={l.item.quantity}
-                        max={stockLimit(l.product.slug)}
-                        onChange={(n) => setQuantity(l.key, n)}
+                        max={stockLimit(l.product)}
+                        onChange={(n) => setQuantity(l.key, n, l.product)}
                         label={`Quantity of ${l.product.name}`}
                       />
                       <button type="button" onClick={() => removeFromCart(l.key)} className="label text-muted underline-offset-4 hover:text-danger hover:underline">

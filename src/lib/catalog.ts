@@ -1,19 +1,8 @@
-import { products } from "@/data/products";
-import { categories } from "@/data/categories";
-import { collections } from "@/data/collections";
-import { artViews, viewLabels } from "@/data/art-views";
-import type { CategorySlug, Product } from "@/data/types";
+// Pure catalogue helpers — safe on server and client. Data is loaded on the
+// server by src/server/catalog.ts and passed to the client via ShopDataProvider.
+import type { Category, Product } from "@/data/types";
 
-export { products, categories, collections };
-
-const bySlug = new Map(products.map((p) => [p.slug, p]));
-
-export const getProduct = (slug: string) => bySlug.get(slug);
-export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
-export const getCollection = (slug: string) => collections.find((c) => c.slug === slug);
-export const productsInCategory = (slug: CategorySlug) => products.filter((p) => p.category === slug);
-export const productsBySlugs = (slugs: string[]) => slugs.map((s) => bySlug.get(s)).filter((p): p is Product => !!p);
-export const brands = Array.from(new Set(products.map((p) => p.brand))).sort();
+export const PLACEHOLDER_IMAGE = "/placeholder-product.svg";
 
 export interface ProductImage {
   src: string;
@@ -21,21 +10,22 @@ export interface ProductImage {
   label: string;
 }
 
-/** Gallery images for a product colour (real photography if configured, else generated renders). */
+/** Gallery images for a product colour (colour-specific first, then shared images). */
 export function productImages(product: Product, colorId?: string): ProductImage[] {
   const color = product.colors.find((c) => c.id === colorId) ?? product.colors[0];
-  const override = product.images?.[color.id];
-  if (override?.length) {
-    return override.map((src, i) => ({ src, alt: `${product.brand} ${product.name} in ${color.name}, image ${i + 1}`, label: `Image ${i + 1}` }));
+  const own = [...(product.images?.[color?.id ?? ""] ?? []), ...(product.images?.["*"] ?? [])];
+  if (own.length) {
+    return own.map((im, i) => ({
+      src: im.src,
+      alt: im.alt || `${product.brand} ${product.name}${color ? ` in ${color.name}` : ""}, image ${i + 1}`,
+      label: im.label || `Image ${i + 1}`,
+    }));
   }
-  return artViews[product.art.kind].map((view) => ({
-    src: `/products/${product.slug}/${color.id}-${view}.svg`,
-    alt: `${product.brand} ${product.name} in ${color.name} — ${viewLabels[view]?.toLowerCase() ?? view} view`,
-    label: viewLabels[view] ?? view,
-  }));
+  return [{ src: PLACEHOLDER_IMAGE, alt: `${product.brand} ${product.name}`, label: "No image yet" }];
 }
 
-export const primaryImage = (product: Product, colorId?: string) => productImages(product, colorId)[0];
+export const primaryImage = (product: Product, colorId?: string): ProductImage =>
+  productImages(product, colorId)[0] ?? { src: PLACEHOLDER_IMAGE, alt: product.name, label: "Image" };
 
 export function priceFor(product: Product, configId?: string) {
   const cfg = product.configs?.find((c) => c.id === configId) ?? product.configs?.[0];
@@ -59,8 +49,8 @@ export function availability(product: Product, colorId?: string): Availability {
 }
 
 /** Products related by category and shared tags, excluding the product itself. */
-export function relatedProducts(product: Product, limit = 4) {
-  return products
+export function relatedProducts(product: Product, all: Product[], limit = 4) {
+  return all
     .filter((p) => p.slug !== product.slug)
     .map((p) => ({
       p,
@@ -71,15 +61,14 @@ export function relatedProducts(product: Product, limit = 4) {
     .map((x) => x.p);
 }
 
-export const pairsWith = (product: Product) => productsBySlugs(product.pairsWith ?? []);
-
-/** Minimal product shape sent to client components (search, rails). */
+/** Minimal product shape for cards, rails and search. */
 export interface ProductSummary {
   slug: string;
   brand: string;
   name: string;
-  category: CategorySlug;
+  category: string;
   categoryName: string;
+  categoryCode: string;
   price: number;
   compareAt?: number;
   image: string;
@@ -94,18 +83,20 @@ export interface ProductSummary {
   releaseYear: number;
 }
 
-export function summarize(p: Product): ProductSummary {
+export function summarize(p: Product, categories: Pick<Category, "slug" | "name" | "code">[] = []): ProductSummary {
   const imgs = productImages(p);
   const { price, compareAt } = priceFor(p);
+  const cat = categories.find((c) => c.slug === p.category);
   return {
     slug: p.slug,
     brand: p.brand,
     name: p.name,
     category: p.category,
-    categoryName: getCategory(p.category)?.name ?? p.category,
+    categoryName: cat?.name ?? p.category,
+    categoryCode: cat?.code ?? "",
     price,
     compareAt,
-    image: imgs[0].src,
+    image: imgs[0]?.src ?? PLACEHOLDER_IMAGE,
     hoverImage: imgs[1]?.src,
     colors: p.colors.map(({ id, name, swatch }) => ({ id, name, swatch })),
     availability: availability(p),
@@ -118,4 +109,5 @@ export function summarize(p: Product): ProductSummary {
   };
 }
 
-export const allSummaries = () => products.map(summarize);
+/** Strip long-form fields before sending a product to the browser. */
+export const toClientProduct = (p: Product): Product => ({ ...p, description: "", specs: [], inTheBox: undefined });

@@ -9,7 +9,7 @@ import { cartStore, clearCart, resolveCart } from "@/lib/shop-state";
 import { primaryImage } from "@/lib/catalog";
 import { api } from "@/lib/api";
 import { isEmail, isPhone, required } from "@/lib/client-validation";
-import { store } from "@/config/store";
+import { useShopData } from "@/components/layout/ShopData";
 import { cn, formatPrice } from "@/lib/format";
 import type { PublicUser } from "@/server/auth";
 
@@ -34,7 +34,9 @@ export function CheckoutForm() {
   const router = useRouter();
   const cart = cartStore.use();
   const hydrated = cartStore.useHydrated();
-  const { lines, subtotal, count, hasUnavailable } = resolveCart(cart);
+  const { getProduct, settings } = useShopData();
+  const { store } = settings;
+  const { lines, subtotal, count, hasUnavailable } = resolveCart(cart, getProduct);
   const [user, setUser] = useState<PublicUser | null>(null);
   const [form, setForm] = useState<Form>({
     firstName: "",

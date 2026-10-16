@@ -2,7 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { availability, getProduct, primaryImage, priceFor } from "@/lib/catalog";
+import { availability, primaryImage, priceFor } from "@/lib/catalog";
+import { useShopData } from "@/components/layout/ShopData";
 import { addToCart } from "@/lib/shop-state";
 import { useUI } from "@/components/layout/UIProvider";
 import { Icon } from "@/components/ui/Icon";
@@ -10,6 +11,7 @@ import { cn, formatPrice } from "@/lib/format";
 
 /** Bundle builder: the product plus its configured companions. Uses each item's default option. */
 export function FrequentlyBought({ slug, pairs }: { slug: string; pairs: string[] }) {
+  const { getProduct } = useShopData();
   const all = [slug, ...pairs]
     .map(getProduct)
     .filter((p): p is NonNullable<typeof p> => !!p && p.colors.some((c) => availability(p, c.id) !== "out-of-stock"));
@@ -65,7 +67,7 @@ export function FrequentlyBought({ slug, pairs }: { slug: string; pairs: string[
             onClick={() => {
               for (const p of chosen) {
                 const color = p.colors.find((c) => availability(p, c.id) !== "out-of-stock")!;
-                addToCart({ slug: p.slug, colorId: color.id, configId: p.configs?.[0]?.id, quantity: 1 });
+                addToCart({ slug: p.slug, colorId: color.id, configId: p.configs?.[0]?.id, quantity: 1 }, p);
               }
               toast(`Added ${chosen.length} ${chosen.length === 1 ? "item" : "items"} to your cart`, { label: "View cart", onClick: () => open("cart") });
             }}

@@ -1,11 +1,12 @@
-import { store } from "@/config/store";
+import { getSettings } from "@/server/settings";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { pad2 } from "@/lib/format";
 
 const icons: Record<string, IconName> = { authentic: "badge", warranty: "shield", delivery: "truck", support: "chat", payment: "cash" };
 
-export function WhyOsa() {
+export async function WhyOsa() {
+  const { store } = await getSettings();
   if (!store.advantages.length) return null;
   return (
     <section className="bg-ink text-paper" aria-labelledby="why-title">

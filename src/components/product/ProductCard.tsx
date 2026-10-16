@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ProductSummary } from "@/lib/catalog";
-import { getCategory } from "@/lib/catalog";
 import { Price } from "@/components/ui/Price";
 import { Stock } from "@/components/ui/Stock";
 import { Icon } from "@/components/ui/Icon";
@@ -22,7 +21,7 @@ export function ProductCard({
   priority?: boolean;
   sizes?: string;
 }) {
-  const code = getCategory(p.category)?.code ?? "";
+  const code = p.categoryCode;
   const href = `/product/${p.slug}`;
   const badge = p.compareAt ? discountLabel(p.price, p.compareAt) : p.isNew ? "New" : null;
 

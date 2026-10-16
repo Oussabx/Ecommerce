@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
-import { categories } from "@/lib/catalog";
+import { getCatalog } from "@/server/catalog";
+import { ShopChrome } from "@/components/layout/ShopChrome";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const { categories } = await getCatalog();
   return (
+    <ShopChrome>
     <div className="container-x py-16 md:py-24">
       <p className="label text-muted">Error 404 — Signal lost</p>
       <h1 className="display mt-4 text-[clamp(5rem,22vw,20rem)]">
@@ -28,5 +31,6 @@ export default function NotFound() {
         ))}
       </ul>
     </div>
+    </ShopChrome>
   );
 }

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { store } from "@/config/store";
 
 const phoneRe = /^\+?[0-9 ()-]{7,20}$/;
 const trimmed = (max: number) => z.string().trim().max(max);
@@ -16,7 +15,8 @@ export const addressSchema = z.object({
   line1: trimmed(200).min(3, "Enter your street and building."),
   line2: trimmed(200).optional().default(""),
   city: trimmed(100).min(2, "Enter your city or town."),
-  area: z.enum(store.deliveryAreas as [string, ...string[]], { errorMap: () => ({ message: "Choose a governorate." }) }),
+  /** Checked against the configured delivery areas in the handler. */
+  area: trimmed(60).min(1, "Choose a governorate."),
   notes: trimmed(500).optional().default(""),
 });
 
@@ -28,8 +28,8 @@ export const orderSchema = z.object({
     phone: phoneSchema,
   }),
   address: addressSchema,
-  deliveryMethod: z.enum(store.deliveryMethods.map((d) => d.id) as [string, ...string[]]),
-  paymentMethod: z.enum(store.paymentMethods.map((p) => p.id) as [string, ...string[]]),
+  deliveryMethod: trimmed(60).min(1),
+  paymentMethod: trimmed(60).min(1),
   items: z
     .array(
       z.object({

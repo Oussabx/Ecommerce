@@ -5,13 +5,15 @@ import { Icon } from "@/components/ui/Icon";
 import { QuantityStepper } from "@/components/ui/QuantityStepper";
 import { cartStore, removeFromCart, resolveCart, setQuantity, stockLimit } from "@/lib/shop-state";
 import { primaryImage } from "@/lib/catalog";
-import { store } from "@/config/store";
+import { useShopData } from "@/components/layout/ShopData";
 import { formatPrice } from "@/lib/format";
 
 export function CartView() {
   const cart = cartStore.use();
   const hydrated = cartStore.useHydrated();
-  const { lines, subtotal, count, hasUnavailable } = resolveCart(cart);
+  const { getProduct, settings } = useShopData();
+  const { store } = settings;
+  const { lines, subtotal, count, hasUnavailable } = resolveCart(cart, getProduct);
   const delivery = store.deliveryMethods[0];
 
   if (!hydrated) {
@@ -87,7 +89,7 @@ export function CartView() {
                 </button>
               </div>
               <div className="col-start-2 md:col-start-auto">
-                <QuantityStepper value={l.item.quantity} max={stockLimit(l.product.slug)} onChange={(n) => setQuantity(l.key, n)} label={`Quantity of ${l.product.name}`} />
+                <QuantityStepper value={l.item.quantity} max={stockLimit(l.product)} onChange={(n) => setQuantity(l.key, n, l.product)} label={`Quantity of ${l.product.name}`} />
               </div>
               <p className="col-start-2 font-mono tabular-nums md:col-start-auto md:text-right">{formatPrice(l.lineTotal)}</p>
             </li>

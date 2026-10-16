@@ -1,0 +1,299 @@
+// OSA Techstore database schema (PostgreSQL).
+// Money is stored as integer cents. Product colour/config "key" values are the
+// short ids used in URLs and carts (e.g. "black", "256").
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  CUSTOMER
+  STAFF
+  ADMIN
+}
+
+enum OrderStatus {
+  RECEIVED
+  CONFIRMED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+// ─── People ───────────────────────────────────────────────────────────────────
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  name           String
+  phone          String          @default("")
+  passwordHash   String
+  role           Role            @default(CUSTOMER)
+  /// Incremented on password change / role change to invalidate sessions.
+  sessionVersion Int             @default(1)
+  createdAt      DateTime        @default(now())
+  addresses      Address[]
+  orders         Order[]
+  resets         PasswordReset[]
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label     String
+  line1     String
+  line2     String   @default("")
+  city      String
+  area      String
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model PasswordReset {
+  tokenHash String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+}
+
+// ─── Catalogue ────────────────────────────────────────────────────────────────
+
+model Category {
+  slug         String    @id
+  index        Int
+  code         String
+  name         String
+  indexName    String
+  description  String
+  coverProduct String?
+  products     Product[]
+}
+
+model Product {
+  id             String              @id @default(uuid())
+  slug           String              @unique
+  brand          String
+  name           String
+  model          String              @default("")
+  categorySlug   String
+  category       Category            @relation(fields: [categorySlug], references: [slug])
+  tagline        String              @default("")
+  description    String              @default("")
+  priceCents     Int
+  compareAtCents Int?
+  stock          Int                 @default(0)
+  published      Boolean             @default(true)
+  configLabel    String?
+  artKind        String              @default("phone")
+  artVariant     String?
+  /// [{ label, value }]
+  highlights     Json                @default("[]")
+  /// [{ group, rows: [[label, value]] }]
+  specs          Json                @default("[]")
+  warranty       String?
+  inTheBox       String[]            @default([])
+  tags           String[]            @default([])
+  isNew          Boolean             @default(false)
+  releaseYear    Int                 @default(2025)
+  pairsWith      String[]            @default([])
+  sortOrder      Int                 @default(0)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  colors         ProductColor[]
+  configs        ProductConfig[]
+  images         ProductImage[]
+  collections    CollectionProduct[]
+  stockMoves     StockMovement[]
+
+  @@index([categorySlug])
+}
+
+model ProductColor {
+  id        String  @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  key       String
+  name      String
+  swatch    String
+  body      String
+  accent    String?
+  soldOut   Boolean @default(false)
+  position  Int     @default(0)
+
+  @@unique([productId, key])
+}
+
+model ProductConfig {
+  id              String  @id @default(uuid())
+  productId       String
+  product         Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  key             String
+  label           String
+  priceDeltaCents Int     @default(0)
+  position        Int     @default(0)
+
+  @@unique([productId, key])
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  /// null = shown for every colour
+  colorKey  String?
+  url       String
+  label     String  @default("")
+  alt       String  @default("")
+  position  Int     @default(0)
+
+  @@index([productId])
+}
+
+model Collection {
+  slug         String              @id
+  index        Int
+  title        String
+  kicker       String
+  description  String
+  tone         String
+  coverProduct String
+  products     CollectionProduct[]
+}
+
+model CollectionProduct {
+  collectionSlug String
+  collection     Collection @relation(fields: [collectionSlug], references: [slug], onDelete: Cascade)
+  productId      String
+  product        Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  position       Int        @default(0)
+
+  @@id([collectionSlug, productId])
+}
+
+model StockMovement {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  delta     Int
+  reason    String
+  orderRef  String?
+  actorName String?
+  createdAt DateTime @default(now())
+
+  @@index([productId, createdAt])
+}
+
+// ─── Orders ───────────────────────────────────────────────────────────────────
+
+model Order {
+  id                  String       @id @default(uuid())
+  ref                 String       @unique
+  idempotencyKey      String       @unique
+  userId              String?
+  user                User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status              OrderStatus  @default(RECEIVED)
+  firstName           String
+  lastName            String
+  email               String
+  phone               String
+  line1               String
+  line2               String       @default("")
+  city                String
+  area                String
+  notes               String       @default("")
+  deliveryMethodId    String
+  deliveryMethodLabel String
+  /// null until confirmed with the customer
+  deliveryFeeCents    Int?
+  paymentMethodId     String
+  paymentMethodLabel  String
+  subtotalCents       Int
+  internalNote        String       @default("")
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+  lines               OrderLine[]
+  events              OrderEvent[]
+
+  @@index([status, createdAt])
+  @@index([email])
+}
+
+model OrderLine {
+  id             String  @id @default(uuid())
+  orderId        String
+  order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId      String?
+  slug           String
+  name           String
+  brand          String
+  colorKey       String
+  colorName      String
+  configKey      String?
+  configLabel    String?
+  unitPriceCents Int
+  quantity       Int
+  image          String
+}
+
+model OrderEvent {
+  id         String       @id @default(uuid())
+  orderId    String
+  order      Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  type       String
+  message    String
+  fromStatus OrderStatus?
+  toStatus   OrderStatus?
+  actorName  String?
+  createdAt  DateTime     @default(now())
+
+  @@index([orderId, createdAt])
+}
+
+// ─── Communication, settings, audit ──────────────────────────────────────────
+
+model Subscriber {
+  email     String   @id
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String   @default("")
+  topic     String
+  message   String
+  handled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+/// Store settings as JSON documents: "store", "announcements", "campaign".
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String?
+  actorName String
+  action    String
+  entity    String
+  entityId  String
+  detail    Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

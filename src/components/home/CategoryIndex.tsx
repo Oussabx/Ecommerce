@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { categories, getProduct, primaryImage, productsInCategory } from "@/lib/catalog";
+import { primaryImage } from "@/lib/catalog";
+import { getCatalog } from "@/server/catalog";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { pad2 } from "@/lib/format";
 
-export function CategoryIndex() {
+export async function CategoryIndex() {
+  const { categories, products } = await getCatalog();
   return (
     <section className="container-x py-16 md:py-24" aria-labelledby="index-title">
       <SectionHeader
@@ -16,9 +18,10 @@ export function CategoryIndex() {
       />
       <ol className="mt-10 border-b border-ink md:mt-14">
         {categories.map((c, i) => {
-          const cover = getProduct(c.coverProduct)!;
-          const img = primaryImage(cover);
-          const count = productsInCategory(c.slug).length;
+          const inCat = products.filter((p) => p.category === c.slug);
+          const cover = products.find((p) => p.slug === c.coverProduct) ?? inCat[0];
+          const img = cover ? primaryImage(cover) : null;
+          const count = inCat.length;
           return (
             <Reveal as="li" key={c.slug} delay={i * 60} className="border-t border-ink">
               <Link
@@ -29,7 +32,7 @@ export function CategoryIndex() {
                 <span className="absolute inset-0 -z-10 origin-left scale-x-0 bg-lime transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-x-100 group-focus-visible:scale-x-100" aria-hidden />
                 <span className="flex items-center gap-3">
                   <span className="relative size-14 shrink-0 bg-paper-2 md:hidden">
-                    <Image src={img.src} alt="" fill sizes="56px" className="object-contain p-1" />
+                    {img && <Image src={img.src} alt="" fill sizes="56px" className="object-contain p-1" />}
                   </span>
                   <span className="label hidden text-muted md:inline">
                     {pad2(c.index)} — {c.code}
@@ -55,7 +58,7 @@ export function CategoryIndex() {
                   className="pointer-events-none absolute right-[300px] top-1/2 hidden aspect-square w-[260px] -translate-y-1/2 rotate-[-4deg] scale-90 opacity-0 transition-all duration-500 ease-[var(--ease-out-expo)] group-hover:rotate-0 group-hover:scale-100 group-hover:opacity-100 lg:block"
                   aria-hidden
                 >
-                  <Image src={img.src} alt="" fill sizes="260px" className="object-contain drop-shadow-xl" />
+                  {img && <Image src={img.src} alt="" fill sizes="260px" className="object-contain drop-shadow-xl" />}
                 </span>
               </Link>
             </Reveal>

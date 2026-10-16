@@ -2,9 +2,10 @@ import Link from "next/link";
 import { Logo } from "./Logo";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { footerNav } from "@/config/navigation";
-import { store } from "@/config/store";
+import { getSettings } from "@/server/settings";
 
-export function Footer() {
+export async function Footer() {
+  const { store } = await getSettings();
   const socials = (Object.entries(store.social) as [IconName, string][]).filter(([, url]) => url);
   const c = store.contact;
   const contactRows = [

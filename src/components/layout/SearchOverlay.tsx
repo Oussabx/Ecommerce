@@ -5,12 +5,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useUI } from "./UIProvider";
 import { Icon } from "@/components/ui/Icon";
-import { allSummaries, categories } from "@/lib/catalog";
 import { searchProducts, suggestTerms } from "@/lib/search";
 import { recordSearch, searchesStore } from "@/lib/shop-state";
 import { cn, formatPrice } from "@/lib/format";
-
-const index = allSummaries();
+import { useShopData } from "./ShopData";
 
 type Option = { id: string; href: string; onSelect?: () => void };
 
@@ -23,6 +21,7 @@ export function SearchOverlay() {
   const inputRef = useRef<HTMLInputElement>(null);
   const recent = searchesStore.use();
   const listId = useId();
+  const { summaries: index, categories } = useShopData();
 
   useEffect(() => {
     if (isOpen) {
@@ -31,8 +30,8 @@ export function SearchOverlay() {
     }
   }, [isOpen]);
 
-  const results = useMemo(() => searchProducts(index, q).slice(0, 6), [q]);
-  const terms = useMemo(() => suggestTerms(index, q), [q]);
+  const results = useMemo(() => searchProducts(index, q).slice(0, 6), [index, q]);
+  const terms = useMemo(() => suggestTerms(index, q), [index, q]);
   const trimmed = q.trim();
 
   // Flattened, keyboard-navigable options.

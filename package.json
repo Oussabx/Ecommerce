@@ -8,9 +8,17 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "art": "node scripts/generate-product-art.mjs"
+    "art": "node scripts/generate-product-art.mjs",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "node --no-warnings scripts/seed.mts",
+    "db:studio": "prisma studio",
+    "vercel-build": "prisma migrate deploy && node --no-warnings scripts/seed.mts && next build"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "@vercel/blob": "^2.8.2",
     "next": "^15.5.28",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -26,7 +34,11 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^15.5.28",
     "postcss": "^8.5.30",
+    "prisma": "^6.19.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3"
+  },
+  "prisma": {
+    "seed": "node --no-warnings scripts/seed.mts"
   }
 }
