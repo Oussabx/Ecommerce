@@ -56,20 +56,23 @@ npm run dev                          # http://localhost:3000  ·  admin at /admi
 
 ## Deploying to Vercel + Postgres
 
-1. **Database:** create a Postgres database on [Neon](https://neon.tech) (or Supabase, or Vercel → Storage → Neon). Copy the **pooled** connection string into `DATABASE_URL` and the **direct** one into `DIRECT_URL`.
-2. **Images:** in Vercel → Storage, create a **Blob** store and connect it to the project. This sets `BLOB_READ_WRITE_TOKEN`.
-3. **Environment variables:** in Vercel → Project → Settings → Environment Variables, add `SESSION_SECRET`, `NEXT_PUBLIC_SITE_URL`, `ADMIN_EMAIL` and `ADMIN_PASSWORD`. Optionally add `RESEND_API_KEY` and `EMAIL_FROM` for email.
-4. **Deploy:** import the GitHub repo into Vercel. The `vercel-build` script (`scripts/vercel-build.mjs`) does the following:
-   - Checks the environment variables. If something is missing, the build log says exactly which variable to add.
-   - Runs the database migrations (`prisma migrate deploy`).
-   - Seeds empty tables and creates the admin account.
-   - Builds the site.
+The only thing you need is a database.
 
-   The database variables set by Vercel's Neon and Supabase integrations are recognised automatically.
-5. **Sign in:** go to `/account/login` with the admin email and change the password via "Forgot password" once email is connected. Then, in the admin:
-   - Settings: fill in your contact details and delivery fees, and turn off the sample-catalogue notice.
-   - Products: replace the sample products and upload real photos.
-   - Team: invite your staff.
+1. Import the GitHub repo into Vercel.
+2. In the project, go to **Storage → Create Database → Neon**. Leave the environment variable **prefix empty**, then **Connect**.
+3. Click **Redeploy**.
+
+The build (`scripts/vercel-build.mjs`) does the rest:
+- It picks up the database settings that Neon adds.
+- It creates the tables and loads the sample catalogue.
+- On the first deploy it creates an admin account and prints its login in the **Build Logs**, between "ADMIN LOGIN" lines. Sign in at `/account/login`, then change the password on your account page.
+
+**Optional settings** (Settings → Environment Variables):
+- `SESSION_SECRET`: your own signing key. Without it, a key is derived from the database URL.
+- `ADMIN_EMAIL` / `ADMIN_PASSWORD`: choose the first admin's login yourself instead of using a generated one.
+- `NEXT_PUBLIC_SITE_URL`: your public address, used in links and the sitemap.
+- `BLOB_READ_WRITE_TOKEN`: needed to upload product photos. Set it up under Storage → Blob.
+- `RESEND_API_KEY` + `EMAIL_FROM`: needed to send emails.
 
 ## Honesty rules built into the code
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUser, toPublic } from "@/server/auth";
 import { orderTotal, ordersForUser, statusLabel } from "@/server/orders";
-import { Addresses, ProfileForm, SignOutButton } from "@/components/account/AccountDashboard";
+import { Addresses, PasswordForm, ProfileForm, SignOutButton } from "@/components/account/AccountDashboard";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Icon } from "@/components/ui/Icon";
 import { formatDate, formatPrice } from "@/lib/format";
@@ -86,6 +86,14 @@ export default async function AccountPage() {
             </h2>
             <div className="mt-6">
               <ProfileForm user={pub} />
+            </div>
+          </section>
+          <section id="password" aria-labelledby="password-title">
+            <h2 id="password-title" className="display border-t border-ink pt-4 text-4xl md:text-5xl">
+              Password
+            </h2>
+            <div className="mt-6">
+              <PasswordForm />
             </div>
           </section>
           <section id="addresses" aria-labelledby="addresses-title">

@@ -14,7 +14,6 @@ const env = { ...process.env, DATABASE_URL: databaseUrl, DIRECT_URL: directUrl }
 const problems = [];
 if (!databaseUrl) problems.push("DATABASE_URL — your Postgres connection string (Vercel → Storage → connect a Neon database sets this automatically).");
 else if (!/^postgres(ql)?:\/\//.test(databaseUrl)) problems.push("DATABASE_URL must start with postgresql:// or postgres://");
-if (!process.env.SESSION_SECRET || process.env.SESSION_SECRET.length < 32) problems.push("SESSION_SECRET — any random string of 32+ characters (e.g. run: openssl rand -hex 32).");
 
 if (problems.length) {
   console.error("\n✖ Build stopped: missing or invalid environment variables.\n");
