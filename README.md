@@ -2,7 +2,7 @@
 
 Storefront, backend and admin dashboard for **OSA Techstore**, a technology retailer in Lebanon. Built with Next.js 15 (App Router), TypeScript, Tailwind CSS 4, PostgreSQL and Prisma.
 
-The design system is called the **OSA Signal System**: warm off-white paper (`#F5F3EE`), near-black ink (`#171816`), an electric chartreuse signal colour (`#D5FF45`) and cobalt (`#2340E8`) used sparingly for interaction. Type is condensed Archivo for display, Inter for the interface and JetBrains Mono for technical labels. Layouts use thin rules, index numbers and square corners.
+The look follows the OSA brand: a near-black background (`#101114`), lime (`#D7FF3F`) for buttons and highlights, chalk text (`#F2F0E8`) and cobalt (`#435CFF`) as a secondary colour. Type is Inter throughout. Surfaces are rounded cards with plenty of space. The logo is the lime "S" mark beside the OSA TECHSTORE wordmark (`src/components/layout/Logo.tsx`). On a visitor's first page load of a session, a short intro draws the rounded square and twists it into the S (`BrandIntro.tsx`); it is skipped for people who prefer reduced motion. All colours are tokens in `src/app/globals.css`, so the palette can be changed in one place.
 
 > **Status:** the backend and admin are production-ready. The catalogue is still **sample data**; see [Still to do before launch](#still-to-do-before-launch).
 

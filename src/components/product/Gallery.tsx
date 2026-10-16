@@ -35,9 +35,9 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
   const img = images[active] ?? images[0];
 
   return (
-    <div className="grid gap-3 md:grid-cols-[80px_1fr] md:gap-4">
+    <div className="grid gap-3 md:grid-cols-[92px_1fr] md:gap-4">
       {/* thumbnails */}
-      <ul className="no-scrollbar order-2 flex gap-2.5 overflow-x-auto p-1 md:order-1 md:flex-col" aria-label="Product images">
+      <ul className="no-scrollbar order-2 flex gap-2.5 overflow-x-auto p-1.5 md:order-1 md:flex-col md:overflow-visible" aria-label="Product images">
         {images.map((im, i) => (
           <li key={im.src} className="shrink-0">
             <button
