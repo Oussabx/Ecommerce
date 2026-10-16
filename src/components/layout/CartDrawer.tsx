@@ -32,8 +32,8 @@ export function CartDrawer() {
 
   return (
     <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-      <button type="button" aria-label="Close cart" className="absolute inset-0 animate-[fade_.25s_ease] bg-black/30 backdrop-blur-[2px]" onClick={close} />
-      <aside className="absolute inset-y-0 right-0 flex w-full max-w-[460px] animate-slide-in-right flex-col bg-white shadow-[var(--shadow-lift)] sm:rounded-l-3xl">
+      <button type="button" aria-label="Close cart" className="absolute inset-0 animate-[fade_.25s_ease] bg-paper/60 backdrop-blur-sm" onClick={close} />
+      <aside className="absolute inset-y-0 right-0 flex w-full max-w-[460px] animate-slide-in-right flex-col bg-paper shadow-[var(--shadow-lift)] ring-1 ring-rule sm:rounded-l-3xl">
         <div className="flex items-center justify-between px-6 pb-2 pt-5">
           <h2 id="cart-title" className="text-2xl font-semibold tracking-tight">
             Cart <span className="text-base font-medium text-muted">({count})</span>

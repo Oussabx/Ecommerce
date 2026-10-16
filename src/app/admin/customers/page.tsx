@@ -31,17 +31,17 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
   return (
     <>
       <PageHeader title="Customers" kicker={`${groups.length} ${groups.length === 1 ? "customer" : "customers"} from orders`}>
-        <form className="mt-5 flex" action="/admin/customers">
+        <form className="mt-5 flex gap-2" action="/admin/customers">
           <label className="sr-only" htmlFor="q">
             Search customers
           </label>
-          <input id="q" name="q" defaultValue={q} placeholder="Name, email or phone" className="field !min-h-9 w-64 !py-1.5 text-sm" />
-          <button className="btn btn-primary !min-h-9 !px-3 text-xs">Search</button>
+          <input id="q" name="q" defaultValue={q} placeholder="Name, email or phone" className="field !min-h-10 w-full !rounded-full !py-1.5 text-sm sm:w-64" />
+          <button className="btn btn-primary !min-h-10 !px-4 text-sm">Search</button>
         </form>
       </PageHeader>
       <Body>
         {groups.length ? (
-          <div className="card overflow-x-auto">
+          <div className="overflow-x-auto rounded-3xl bg-paper-2">
             <table className="w-full min-w-[680px] text-sm">
               <thead>
                 <tr>
@@ -56,9 +56,9 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
                 {groups.map((g) => {
                   const c = info.get(g.email);
                   return (
-                    <tr key={g.email} className="transition-colors hover:bg-paper-2 [&:last-child>td]:border-b-0">
+                    <tr key={g.email} className="transition-colors hover:bg-paper-3 [&:last-child>td]:border-b-0">
                       <td className={td}>
-                        <Link href={`/admin/customers/${encodeURIComponent(g.email)}`} className="font-semibold hover:underline">
+                        <Link href={`/admin/customers/${encodeURIComponent(g.email)}`} className="font-semibold hover:text-accent">
                           {c ? `${c.firstName} ${c.lastName}` : g.email}
                         </Link>
                         <span className="block text-xs text-muted">{g.email}</span>

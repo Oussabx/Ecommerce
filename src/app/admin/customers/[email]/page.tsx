@@ -22,7 +22,7 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
         kicker={`First order ${formatDate(orders[orders.length - 1].createdAt.toISOString())} · ${formatPrice(fromCents(spent))} spent`}
         title={`${last.firstName} ${last.lastName}`}
         actions={
-          <Link href="/admin/customers" className="label text-muted hover:text-ink">
+          <Link href="/admin/customers" className="text-sm font-medium text-accent hover:underline">
             ← All customers
           </Link>
         }
@@ -41,9 +41,9 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
               </thead>
               <tbody>
                 {orders.map((o) => (
-                  <tr key={o.id}>
+                  <tr key={o.id} className="transition-colors hover:bg-paper-3 [&:last-child>td]:border-b-0">
                     <td className={td}>
-                      <Link href={`/admin/orders/${o.ref}`} className="tabular-nums font-semibold hover:underline">
+                      <Link href={`/admin/orders/${o.ref}`} className="font-semibold tabular-nums hover:text-accent">
                         {o.ref}
                       </Link>
                     </td>
@@ -61,18 +61,18 @@ export default async function CustomerPage({ params }: { params: Promise<{ email
         <div className="space-y-6">
           <Panel title="Contact">
             <p>
-              <a href={`mailto:${email}`} className="underline underline-offset-4">
+              <a href={`mailto:${email}`} className="text-link">
                 {email}
               </a>
             </p>
             <p className="mt-1">
-              <a href={`tel:${last.phone.replace(/\s/g, "")}`} className="underline underline-offset-4">
+              <a href={`tel:${last.phone.replace(/\s/g, "")}`} className="text-link">
                 {last.phone}
               </a>
               {waNumber && (
                 <>
                   {" · "}
-                  <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">
+                  <a href={`https://wa.me/${waNumber}`} target="_blank" rel="noopener noreferrer" className="text-link">
                     WhatsApp
                   </a>
                 </>

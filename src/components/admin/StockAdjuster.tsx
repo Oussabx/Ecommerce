@@ -19,7 +19,7 @@ export function StockAdjuster({ productId, name }: { productId: string; name: st
     >
       <input value={delta} onChange={(e) => setDelta(e.target.value)} inputMode="numeric" placeholder="+5 / −2" className="field !min-h-9 w-20 !py-1 text-sm" aria-label={`Change in stock for ${name}`} />
       <input list="stock-reasons" value={reason} onChange={(e) => setReason(e.target.value)} className="field !min-h-9 w-44 !py-1 text-sm" aria-label="Reason" />
-      <button disabled={a.pending || !delta} className="btn btn-outline !min-h-9 !px-3 text-xs">
+      <button disabled={a.pending || !delta} className="btn btn-outline !min-h-9 !px-4 text-[13px]">
         Apply
       </button>
       <datalist id="stock-reasons">
@@ -28,7 +28,7 @@ export function StockAdjuster({ productId, name }: { productId: string; name: st
         ))}
       </datalist>
       {a.error && <span className="w-full text-xs text-danger">{a.error}</span>}
-      {a.message && !a.error && <span className="label w-full text-ok">{a.message}</span>}
+      {a.message && !a.error && <span className="w-full text-xs font-medium text-ok">{a.message}</span>}
     </form>
   );
 }

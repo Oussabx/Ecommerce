@@ -25,13 +25,13 @@ export function QuantityStepper({
   const atMin = value <= min;
   const showRemove = atMin && !!onRemove;
   return (
-    <div className={cn("inline-flex items-center gap-0.5 rounded-full bg-paper-2 p-1", size === "sm" ? "h-10" : "h-12")} role="group" aria-label={label}>
+    <div className={cn("inline-flex items-center gap-0.5 rounded-full bg-paper-2 p-1 ring-1 ring-inset ring-rule", size === "sm" ? "h-10" : "h-12")} role="group" aria-label={label}>
       <button
         type="button"
         className={cn(
           "grid place-items-center rounded-full transition-colors disabled:opacity-30",
           btn,
-          showRemove ? "text-muted hover:bg-danger/10 hover:text-danger" : "hover:bg-white hover:shadow-sm",
+          showRemove ? "text-muted hover:bg-danger/10 hover:text-danger" : "hover:bg-paper-3",
         )}
         onClick={() => (showRemove ? onRemove!() : onChange(value - 1))}
         disabled={atMin && !onRemove}
@@ -44,7 +44,7 @@ export function QuantityStepper({
       </output>
       <button
         type="button"
-        className={cn("grid place-items-center rounded-full transition-colors hover:bg-white hover:shadow-sm disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:shadow-none", btn)}
+        className={cn("grid place-items-center rounded-full transition-colors hover:bg-paper-3 disabled:opacity-30 disabled:hover:bg-transparent", btn)}
         onClick={() => onChange(value + 1)}
         disabled={value >= max}
         aria-label={`Increase ${what}`}

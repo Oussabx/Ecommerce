@@ -31,8 +31,8 @@ export function CartView() {
 
   if (!lines.length) {
     return (
-      <div className="tile flex flex-col items-center px-6 py-14 text-center md:py-20">
-        <span className="grid size-16 place-items-center rounded-full bg-white text-muted shadow-sm">
+      <div className="flex flex-col rounded-3xl bg-paper-2 items-center px-6 py-14 text-center md:py-20">
+        <span className="grid size-16 place-items-center rounded-full bg-paper-3 text-muted">
           <Icon name="bag" size={28} />
         </span>
         <p className="mt-5 text-2xl font-semibold tracking-tight md:text-3xl">Your cart is empty.</p>
@@ -52,10 +52,10 @@ export function CartView() {
   return (
     <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
       <div className="lg:col-span-8">
-        <ul className="card divide-y divide-rule px-4 md:px-6">
+        <ul className="divide-y divide-rule rounded-3xl bg-paper-2 px-4 md:px-6">
           {lines.map((l) => (
             <li key={l.key} className="grid grid-cols-[88px_1fr] gap-4 py-5 md:grid-cols-[120px_1fr_auto] md:gap-6 md:py-6">
-              <Link href={`/product/${l.product.slug}?color=${l.color.id}${l.config ? `&config=${l.config.id}` : ""}`} className="relative block aspect-square overflow-hidden rounded-2xl bg-paper-2 md:row-span-2">
+              <Link href={`/product/${l.product.slug}?color=${l.color.id}${l.config ? `&config=${l.config.id}` : ""}`} className="relative block aspect-square overflow-hidden rounded-2xl bg-paper-3 md:row-span-2">
                 <Image src={primaryImage(l.product, l.color.id).src} alt={l.product.name} fill sizes="120px" className="object-contain p-2.5" />
               </Link>
               <div className="min-w-0">
@@ -99,7 +99,7 @@ export function CartView() {
       </div>
 
       <aside className="lg:col-span-4" aria-label="Order summary">
-        <div className="tile sticky top-24 rounded-3xl p-6 md:p-7">
+        <div className="sticky top-24 rounded-3xl bg-paper-2 p-6 md:p-7">
           <h2 className="text-xl font-semibold tracking-tight">Order summary</h2>
           <dl className="mt-5 space-y-3 text-[15px]">
             <div className="flex justify-between">

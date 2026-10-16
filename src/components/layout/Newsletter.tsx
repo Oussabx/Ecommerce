@@ -34,7 +34,7 @@ export function Newsletter() {
         </h2>
         <p className="mt-2 text-lg text-muted">New arrivals, worthwhile deals, and technology worth paying attention to.</p>
         {state === "done" ? (
-          <div className="mx-auto mt-8 flex max-w-md items-center gap-3 rounded-2xl bg-[#e8f6ec] p-4 text-left" role="status">
+          <div className="mx-auto mt-8 flex max-w-md items-center gap-3 rounded-2xl bg-ok/15 p-4 text-left" role="status">
             <Icon name="check" size={20} className="shrink-0 text-ok" />
             <p className="font-medium">You&apos;re on the list. We&apos;ll only write when there&apos;s something worth reading.</p>
           </div>

@@ -68,15 +68,15 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {/* overview + specs */}
-      <section className="bg-paper-2" aria-labelledby="specs-title">
-        <div className="container-x grid gap-8 py-12 md:py-20 lg:grid-cols-12 lg:gap-10">
+      <section aria-labelledby="specs-title">
+        <div className="container-x grid gap-8 pb-12 md:pb-20 lg:grid-cols-12 lg:gap-10">
           <div className="space-y-5 lg:col-span-5">
-            <div className="card p-6 md:p-8">
+            <div className="rounded-3xl bg-paper-2 p-6 md:p-8">
               <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">In short</h2>
               <p className="mt-3 text-[15px] leading-relaxed text-muted md:text-base">{product.description}</p>
             </div>
             {product.inTheBox && (
-              <div className="card p-6 md:p-8">
+              <div className="rounded-3xl bg-paper-2 p-6 md:p-8">
                 <h3 className="text-lg font-semibold">In the box</h3>
                 <ul className="mt-3 divide-y divide-rule text-[15px]">
                   {product.inTheBox.map((x) => (
@@ -94,10 +94,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </h2>
             <div className="mt-5 space-y-3">
               {product.specs.map((g, gi) => (
-                <details key={g.group} open={gi < 3} className="card group overflow-hidden">
+                <details key={g.group} open={gi < 3} className="group overflow-hidden rounded-3xl bg-paper-2">
                   <summary className="flex list-none items-center justify-between gap-4 px-5 py-4 md:px-6 [&::-webkit-details-marker]:hidden">
                     <span className="text-[17px] font-semibold">{g.group}</span>
-                    <span className="grid size-8 place-items-center rounded-full bg-paper-2 text-muted transition-transform group-open:rotate-180" aria-hidden>
+                    <span className="grid size-8 place-items-center rounded-full bg-paper-3 text-muted transition-transform group-open:rotate-180" aria-hidden>
                       <Icon name="chevronDown" size={16} />
                     </span>
                   </summary>

@@ -24,7 +24,7 @@ export function MobileMenu() {
         <button type="button" onClick={close} className="-ml-2 grid size-11 place-items-center rounded-full hover:bg-paper-2" aria-label="Close menu">
           <Icon name="close" size={22} />
         </button>
-        <Logo className="w-[96px]" />
+        <Logo className="w-[124px]" />
         <button type="button" onClick={() => open("search")} className="-mr-2 grid size-11 place-items-center rounded-full hover:bg-paper-2" aria-label="Search">
           <Icon name="search" size={21} />
         </button>

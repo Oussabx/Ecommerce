@@ -5,11 +5,13 @@ import { Footer } from "./Footer";
 import { SearchOverlay } from "./SearchOverlay";
 import { CartDrawer } from "./CartDrawer";
 import { MobileMenu } from "./MobileMenu";
+import { BrandIntro } from "./BrandIntro";
 
 /** Storefront frame: announcement strip, header, footer and overlays. */
 export function ShopChrome({ children }: { children: ReactNode }) {
   return (
     <>
+      <BrandIntro />
       <AnnouncementBar />
       <Header />
       <main id="main" className="min-h-[60vh]">

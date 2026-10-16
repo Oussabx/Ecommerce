@@ -100,7 +100,7 @@ export function Hero({ categoryCount }: { categoryCount: number }) {
       </div>
 
       {/* Product composition */}
-      <div className="relative mt-12 overflow-hidden rounded-[32px] bg-gradient-to-b from-paper-2 to-[#ececf0] md:mt-16">
+      <div className="relative mt-12 overflow-hidden rounded-[32px] bg-[radial-gradient(ellipse_at_50%_30%,#24271a_0%,var(--color-paper-2)_60%)] md:mt-16">
         <div className="relative mx-auto aspect-[1/0.8] max-w-5xl md:aspect-[1/0.58]">
           {pieces.map((p) => (
             <div
@@ -112,15 +112,15 @@ export function Hero({ categoryCount }: { categoryCount: number }) {
                 className="relative aspect-square animate-[product-in_1.1s_var(--ease-out-expo)_both]"
                 style={{ animationDelay: `${p.delay}ms`, ["--from-x" as string]: p.from.x, ["--from-y" as string]: p.from.y, ["--from-r" as string]: p.from.r }}
               >
-                <Image src={p.src} alt={p.alt} fill priority={p.priority} sizes="(min-width: 1024px) 40vw, 70vw" className="object-contain drop-shadow-[0_24px_30px_rgba(0,0,0,0.12)]" />
+                <Image src={p.src} alt={p.alt} fill priority={p.priority} sizes="(min-width: 1024px) 40vw, 70vw" className="object-contain drop-shadow-[0_24px_30px_rgba(0,0,0,0.5)]" />
               </div>
             </div>
           ))}
         </div>
-        <ul className="relative flex flex-wrap justify-center gap-x-8 gap-y-2 border-t border-black/5 px-6 py-5 text-sm text-muted">
-          <li className="flex items-center gap-2"><Icon name="truck" size={18} className="text-ink" /> Delivery across Lebanon</li>
-          <li className="flex items-center gap-2"><Icon name="cash" size={18} className="text-ink" /> Cash on delivery</li>
-          <li className="flex items-center gap-2"><Icon name="grid" size={18} className="text-ink" /> {categoryCount} categories</li>
+        <ul className="relative flex flex-wrap justify-center gap-x-8 gap-y-2 border-t border-rule px-6 py-5 text-sm text-muted">
+          <li className="flex items-center gap-2"><Icon name="truck" size={18} className="text-accent" /> Delivery across Lebanon</li>
+          <li className="flex items-center gap-2"><Icon name="cash" size={18} className="text-accent" /> Cash on delivery</li>
+          <li className="flex items-center gap-2"><Icon name="grid" size={18} className="text-accent" /> {categoryCount} categories</li>
         </ul>
       </div>
     </section>

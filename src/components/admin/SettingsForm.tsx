@@ -34,7 +34,7 @@ export function SettingsForm({ initial }: { initial: StoreSettings }) {
             <Ta className="sm:col-span-2" label="Short description (footer & search engines)" value={s.description} onChange={(v) => upd({ description: v })} />
           </div>
           <label className="mt-4 flex items-start gap-3 text-sm">
-            <input type="checkbox" checked={s.sampleCatalog} onChange={(e) => upd({ sampleCatalog: e.target.checked })} className="mt-0.5 size-4 accent-ink" />
+            <input type="checkbox" checked={s.sampleCatalog} onChange={(e) => upd({ sampleCatalog: e.target.checked })} className="mt-0.5 size-4 accent-accent" />
             <span>
               <span className="font-semibold">Show “Sample catalogue” notice</span>
               <span className="block text-muted">Turn off once real products, prices and stock are entered.</span>
@@ -50,7 +50,7 @@ export function SettingsForm({ initial }: { initial: StoreSettings }) {
             <In label="Opening hours" value={s.contact.hours ?? ""} onChange={(v) => upd({ contact: { ...s.contact, hours: v } })} placeholder="Mon–Sat, 10:00–19:00" />
             <Ta className="sm:col-span-2" label="Address" value={s.contact.address ?? ""} onChange={(v) => upd({ contact: { ...s.contact, address: v } })} />
           </div>
-          <h3 className="label mb-2 mt-6">Social links</h3>
+          <h3 className="mb-3 mt-8 text-sm font-semibold">Social links</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             {(["instagram", "facebook", "tiktok", "youtube"] as const).map((k) => (
               <In key={k} label={k[0].toUpperCase() + k.slice(1)} value={s.social[k]} error={f(`social.${k}`)} placeholder="https://" onChange={(v) => upd({ social: { ...s.social, [k]: v } })} />
@@ -63,7 +63,7 @@ export function SettingsForm({ initial }: { initial: StoreSettings }) {
           {firstErr("deliveryMethods") && <p className="mt-3 text-sm text-danger">{firstErr("deliveryMethods")}</p>}
           <ul className="mt-4 space-y-3">
             {s.deliveryMethods.map((m, i) => (
-              <li key={i} className="grid gap-2 border border-rule p-3 sm:grid-cols-[1fr_140px_120px_auto]">
+              <li key={i} className="grid gap-3 rounded-2xl bg-paper p-4 sm:grid-cols-[1fr_140px_120px_auto]">
                 <In label="Name" value={m.label} onChange={(v) => upd({ deliveryMethods: s.deliveryMethods.map((x, j) => (j === i ? { ...x, label: v } : x)) })} />
                 <In label="Id" value={m.id} onChange={(v) => upd({ deliveryMethods: s.deliveryMethods.map((x, j) => (j === i ? { ...x, id: v } : x)) })} />
                 <In label="Fee (USD)" value={m.feeUSD === null ? "" : String(m.feeUSD)} placeholder="By phone" onChange={(v) => upd({ deliveryMethods: s.deliveryMethods.map((x, j) => (j === i ? { ...x, feeUSD: v } : x)) })} />
@@ -81,7 +81,7 @@ export function SettingsForm({ initial }: { initial: StoreSettings }) {
           {firstErr("paymentMethods") && <p className="mb-3 text-sm text-danger">{firstErr("paymentMethods")}</p>}
           <ul className="space-y-3">
             {s.paymentMethods.map((m, i) => (
-              <li key={i} className="grid gap-2 border border-rule p-3 sm:grid-cols-[1fr_160px_auto]">
+              <li key={i} className="grid gap-3 rounded-2xl bg-paper p-4 sm:grid-cols-[1fr_160px_auto]">
                 <In label="Name" value={m.label} onChange={(v) => upd({ paymentMethods: s.paymentMethods.map((x, j) => (j === i ? { ...x, label: v } : x)) })} />
                 <In label="Id" value={m.id} onChange={(v) => upd({ paymentMethods: s.paymentMethods.map((x, j) => (j === i ? { ...x, id: v } : x)) })} />
                 <button type="button" onClick={() => upd({ paymentMethods: s.paymentMethods.filter((_, j) => j !== i) })} className="self-end pb-3 text-danger" aria-label="Remove payment method">
@@ -97,7 +97,7 @@ export function SettingsForm({ initial }: { initial: StoreSettings }) {
         <Box title="Why OSA? (homepage)" note="Only list advantages that are true for the business.">
           <ul className="space-y-3">
             {s.advantages.map((m, i) => (
-              <li key={i} className="grid gap-2 border border-rule p-3 sm:grid-cols-[1fr_160px_auto]">
+              <li key={i} className="grid gap-3 rounded-2xl bg-paper p-4 sm:grid-cols-[1fr_160px_auto]">
                 <In label="Title" value={m.title} onChange={(v) => upd({ advantages: s.advantages.map((x, j) => (j === i ? { ...x, title: v } : x)) })} />
                 <In label="Icon id" value={m.id} hint="authentic, delivery, support, payment" onChange={(v) => upd({ advantages: s.advantages.map((x, j) => (j === i ? { ...x, id: v } : x)) })} />
                 <button type="button" onClick={() => upd({ advantages: s.advantages.filter((_, j) => j !== i) })} className="self-end pb-3 text-danger" aria-label="Remove advantage">
@@ -118,7 +118,7 @@ export function SettingsForm({ initial }: { initial: StoreSettings }) {
           </Box>
           <Box title="Save">
             <FormError message={a.error} />
-            {a.message && !a.error && <p className="label mb-2 text-ok">{a.message}</p>}
+            {a.message && !a.error && <p className="mb-3 text-sm font-medium text-ok">{a.message}</p>}
             <button disabled={a.pending} className="btn btn-primary w-full">
               {a.pending ? "Saving…" : "Save settings"}
             </button>
@@ -131,12 +131,12 @@ export function SettingsForm({ initial }: { initial: StoreSettings }) {
 
 function Box({ title, note, children }: { title: string; note?: string; children: React.ReactNode }) {
   return (
-    <section className="border border-rule bg-[#fbfaf7]">
-      <div className="border-b border-rule px-4 py-3">
-        <h2 className="label">{title}</h2>
-        {note && <p className="mt-1 text-xs text-muted">{note}</p>}
+    <section className="min-w-0 rounded-3xl bg-paper-2">
+      <div className="px-5 pb-1 pt-5 md:px-6">
+        <h2 className="text-[17px] font-semibold tracking-[-0.015em]">{title}</h2>
+        {note && <p className="mt-1 text-[13px] text-muted">{note}</p>}
       </div>
-      <div className="p-4">{children}</div>
+      <div className="p-5 md:px-6">{children}</div>
     </section>
   );
 }
@@ -160,7 +160,7 @@ function Ta({ label, value, onChange, error, rows = 3, className }: { label: str
 }
 function AddBtn({ label, onClick }: { label: string; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="label mt-3 inline-flex h-9 items-center gap-1.5 border border-dashed border-rule-strong px-3 hover:border-ink">
+    <button type="button" onClick={onClick} className="mt-4 inline-flex h-9 items-center gap-1.5 rounded-full bg-accent/15 px-4 text-[13px] font-semibold text-accent transition-colors hover:bg-accent/25">
       <Icon name="plus" size={12} /> {label}
     </button>
   );

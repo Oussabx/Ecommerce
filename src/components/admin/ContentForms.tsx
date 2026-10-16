@@ -13,7 +13,7 @@ function Status({ a }: { a: ReturnType<typeof useAction> }) {
   return (
     <>
       <FormError message={a.error} />
-      {a.message && !a.error && <p className="label text-ok">{a.message}</p>}
+      {a.message && !a.error && <p className="text-sm font-medium text-ok">{a.message}</p>}
     </>
   );
 }
@@ -43,7 +43,7 @@ export function AnnouncementsForm({ initial }: { initial: string[] }) {
       </L>
       <p className="text-xs text-muted">Keep them factual — no invented promises or countdowns.</p>
       <Status a={a} />
-      <button disabled={a.pending} className="btn btn-primary !min-h-10 text-xs">
+      <button disabled={a.pending} className="btn btn-primary !min-h-10 text-sm">
         Save announcements
       </button>
     </form>
@@ -63,7 +63,7 @@ export function CampaignForm({ initial, products }: { initial: Campaign; product
       className="grid gap-4 sm:grid-cols-2"
     >
       <label className="flex items-center gap-2 text-sm sm:col-span-2">
-        <input type="checkbox" checked={c.enabled} onChange={(e) => setC({ ...c, enabled: e.target.checked })} className="size-4 accent-ink" /> Show the campaign section on the homepage
+        <input type="checkbox" checked={c.enabled} onChange={(e) => setC({ ...c, enabled: e.target.checked })} className="size-4 accent-accent" /> Show the campaign section on the homepage
       </label>
       <L label="Headline line 1">
         <input value={c.headline[0]} onChange={(e) => setC({ ...c, headline: [e.target.value, c.headline[1]] })} className={field} />
@@ -120,7 +120,7 @@ export function CampaignForm({ initial, products }: { initial: Campaign; product
       </L>
       <div className="space-y-2 sm:col-span-2">
         <Status a={a} />
-        <button disabled={a.pending} className="btn btn-primary !min-h-10 text-xs">
+        <button disabled={a.pending} className="btn btn-primary !min-h-10 text-sm">
           Save campaign
         </button>
       </div>
@@ -136,13 +136,12 @@ export function CategoryEditor({ category, products }: { category: Category | nu
   const del = useAction();
   if (!open)
     return (
-      <button type="button" onClick={() => setOpen(true)} className="flex w-full items-center justify-between border border-rule bg-paper px-4 py-3 text-left hover:border-ink">
+      <button type="button" onClick={() => setOpen(true)} className="flex w-full items-center justify-between rounded-2xl bg-paper px-4 py-3.5 text-left transition-colors hover:bg-paper-3">
         <span>
-          <span className="label mr-3 text-muted">{String(c.index).padStart(2, "0")}</span>
           <span className="font-semibold">{c.name}</span>
           <span className="ml-2 text-sm text-muted">/category/{c.slug}</span>
         </span>
-        <span className="label">Edit</span>
+        <span className="text-sm font-medium text-accent">Edit</span>
       </button>
     );
   return (
@@ -151,7 +150,7 @@ export function CategoryEditor({ category, products }: { category: Category | nu
         e.preventDefault();
         a.exec(() => saveCategory(category?.slug ?? null, c), { onOk: () => !category && setC(blank) });
       }}
-      className="grid gap-3 border border-rule bg-paper p-4 sm:grid-cols-4"
+      className="grid gap-3 rounded-2xl bg-paper p-4 ring-1 ring-rule sm:grid-cols-4 md:p-5"
     >
       <L label="Name">
         <input value={c.name} onChange={(e) => setC({ ...c, name: e.target.value })} className={field} />
@@ -184,15 +183,15 @@ export function CategoryEditor({ category, products }: { category: Category | nu
         </select>
       </L>
       <div className="flex flex-wrap items-center gap-2 sm:col-span-4">
-        <button disabled={a.pending} className="btn btn-primary !min-h-10 text-xs">
+        <button disabled={a.pending} className="btn btn-primary !min-h-10 text-sm">
           {category ? "Save category" : "Add category"}
         </button>
         {category && (
           <>
-            <button type="button" onClick={() => setOpen(false)} className="btn btn-outline !min-h-10 text-xs">
+            <button type="button" onClick={() => setOpen(false)} className="btn btn-outline !min-h-10 text-sm">
               Close
             </button>
-            <button type="button" onClick={() => confirm(`Delete the “${c.name}” category?`) && del.exec(() => deleteCategory(category.slug))} className="label ml-auto text-danger">
+            <button type="button" onClick={() => confirm(`Delete the “${c.name}” category?`) && del.exec(() => deleteCategory(category.slug))} className="ml-auto text-sm font-medium text-danger hover:underline">
               Delete
             </button>
           </>
@@ -218,13 +217,12 @@ export function CollectionEditor({ collection, products }: { collection: Collect
   const name = (s: string) => products.find((p) => p.slug === s)?.name ?? s;
   if (!open)
     return (
-      <button type="button" onClick={() => setOpen(true)} className="flex w-full items-center justify-between border border-rule bg-paper px-4 py-3 text-left hover:border-ink">
+      <button type="button" onClick={() => setOpen(true)} className="flex w-full items-center justify-between rounded-2xl bg-paper px-4 py-3.5 text-left transition-colors hover:bg-paper-3">
         <span>
-          <span className="label mr-3 text-muted">{String(c.index).padStart(2, "0")}</span>
           <span className="font-semibold">{c.title}</span>
           <span className="ml-2 text-sm text-muted">{c.products.length} products</span>
         </span>
-        <span className="label">Edit</span>
+        <span className="text-sm font-medium text-accent">Edit</span>
       </button>
     );
   return (
@@ -233,7 +231,7 @@ export function CollectionEditor({ collection, products }: { collection: Collect
         e.preventDefault();
         a.exec(() => saveCollection(collection?.slug ?? null, c), { onOk: () => !collection && setC(blank) });
       }}
-      className="grid gap-3 border border-rule bg-paper p-4 sm:grid-cols-4"
+      className="grid gap-3 rounded-2xl bg-paper p-4 ring-1 ring-rule sm:grid-cols-4 md:p-5"
     >
       <L label="Title">
         <input value={c.title} onChange={(e) => setC({ ...c, title: e.target.value })} className={field} />
@@ -272,8 +270,8 @@ export function CollectionEditor({ collection, products }: { collection: Collect
         <p className="mb-1.5 text-sm font-medium">Products in this edit (in order)</p>
         <ol className="space-y-1">
           {c.products.map((s, i) => (
-            <li key={s} className="flex items-center gap-2 border border-rule px-3 py-1.5 text-sm">
-              <span className="label w-6 text-muted">{i + 1}</span>
+            <li key={s} className="flex items-center gap-2 rounded-xl bg-paper px-3 py-2 text-sm">
+              <span className="w-6 text-xs tabular-nums text-muted">{i + 1}</span>
               <span className="flex-1">{name(s)}</span>
               <button type="button" aria-label="Move up" onClick={() => i > 0 && setC({ ...c, products: c.products.map((x, j) => (j === i - 1 ? s : j === i ? c.products[i - 1] : x)) })} className="px-1 text-muted hover:text-ink">
                 ↑
@@ -295,21 +293,21 @@ export function CollectionEditor({ collection, products }: { collection: Collect
                 </option>
               ))}
           </select>
-          <button type="button" disabled={!add} onClick={() => { setC({ ...c, products: [...c.products, add] }); setAdd(""); }} className="btn btn-outline !min-h-10 text-xs">
+          <button type="button" disabled={!add} onClick={() => { setC({ ...c, products: [...c.products, add] }); setAdd(""); }} className="btn btn-outline !min-h-10 text-sm">
             Add
           </button>
         </div>
       </div>
       <div className="flex flex-wrap items-center gap-2 sm:col-span-4">
-        <button disabled={a.pending} className="btn btn-primary !min-h-10 text-xs">
+        <button disabled={a.pending} className="btn btn-primary !min-h-10 text-sm">
           {collection ? "Save collection" : "Add collection"}
         </button>
         {collection && (
           <>
-            <button type="button" onClick={() => setOpen(false)} className="btn btn-outline !min-h-10 text-xs">
+            <button type="button" onClick={() => setOpen(false)} className="btn btn-outline !min-h-10 text-sm">
               Close
             </button>
-            <button type="button" onClick={() => confirm(`Delete “${c.title}”?`) && del.exec(() => deleteCollection(collection.slug))} className="label ml-auto text-danger">
+            <button type="button" onClick={() => confirm(`Delete “${c.title}”?`) && del.exec(() => deleteCollection(collection.slug))} className="ml-auto text-sm font-medium text-danger hover:underline">
               Delete
             </button>
           </>

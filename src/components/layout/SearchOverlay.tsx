@@ -60,8 +60,8 @@ export function SearchOverlay() {
 
   return (
     <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Search">
-      <button type="button" aria-label="Close search" className="absolute inset-0 animate-[fade_.25s_ease] bg-ink/40 backdrop-blur-[2px]" onClick={close} />
-      <div className="relative max-h-[100dvh] animate-[rise_.45s_var(--ease-out-expo)_both] overflow-y-auto rounded-b-3xl bg-white shadow-[var(--shadow-lift)]">
+      <button type="button" aria-label="Close search" className="absolute inset-0 animate-[fade_.25s_ease] bg-paper/60 backdrop-blur-sm" onClick={close} />
+      <div className="relative max-h-[100dvh] animate-[rise_.45s_var(--ease-out-expo)_both] overflow-y-auto rounded-b-3xl bg-paper shadow-[var(--shadow-lift)] ring-1 ring-rule">
         <div className="container-x py-5 md:py-8">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-muted">Search the catalogue</span>
@@ -77,7 +77,7 @@ export function SearchOverlay() {
               if (opt && active >= 0) go(opt.href);
               else submit();
             }}
-            className="mt-3 flex h-14 items-center gap-3 rounded-2xl bg-paper-2 px-4 ring-accent/30 transition-shadow focus-within:bg-white focus-within:ring-4 focus-within:ring-offset-0 md:h-16 md:px-5"
+            className="mt-3 flex h-14 items-center gap-3 rounded-2xl bg-paper-2 px-4 ring-accent/30 transition-shadow focus-within:ring-4 focus-within:ring-offset-0 md:h-16 md:px-5"
           >
             <Icon name="search" size={22} className="shrink-0 text-muted" />
             <input

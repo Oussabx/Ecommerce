@@ -45,18 +45,18 @@ return (
         aria-expanded={open}
         aria-haspopup="true"
         onClick={() => setOpen((o) => !o)}
-        className={cn("flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors", active || open ? "bg-paper-2 text-ink" : "text-ink/75 hover:bg-paper-2 hover:text-ink")}
+        className={cn("flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors", active || open ? "bg-paper-2 text-ink" : "text-ink/75 hover:bg-paper-3 hover:text-ink")}
       >
         Shop <Icon name="chevronDown" size={14} className={cn("transition-transform duration-200", open && "rotate-180")} />
       </button>
       {open && (
         <div className="absolute left-0 top-full z-50 w-[600px] animate-[rise_.25s_var(--ease-out-expo)_both] pt-3">
-          <div className="rounded-3xl bg-white p-3 shadow-[var(--shadow-lift)] ring-1 ring-black/5">
+          <div className="rounded-3xl bg-paper-2 p-3 shadow-[var(--shadow-lift)]">
             <div className="grid grid-cols-3 gap-2">
               {categories.map((c) => {
                 const cover = products.find((p) => p.slug === c.coverProduct) ?? products.find((p) => p.category === c.slug);
                 return (
-                  <Link key={c.slug} href={`/category/${c.slug}`} className="group flex flex-col items-center gap-2 rounded-2xl p-3 text-center transition-colors hover:bg-paper-2">
+                  <Link key={c.slug} href={`/category/${c.slug}`} className="group flex flex-col items-center gap-2 rounded-2xl p-3 text-center transition-colors hover:bg-accent hover:text-on-accent">
                     <span className="relative size-20 shrink-0">
                       {cover && <Image src={primaryImage(cover).src} alt="" fill sizes="80px" className="object-contain transition-transform duration-300 group-hover:scale-105" />}
                     </span>
@@ -65,7 +65,7 @@ return (
                 );
               })}
             </div>
-            <Link href="/shop" className="mt-2 flex items-center justify-between rounded-2xl bg-paper-2 px-4 py-3 text-sm font-semibold transition-colors hover:bg-paper-3">
+            <Link href="/shop" className="mt-2 flex items-center justify-between rounded-2xl bg-paper-3 px-4 py-3 text-sm font-semibold transition-colors hover:bg-accent hover:text-on-accent">
               View all products <Icon name="arrow" size={16} />
             </Link>
           </div>

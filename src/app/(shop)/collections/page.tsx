@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function CollectionsPage() {
   return (
     <>
-      <div className="container-x pt-6">
+      <div className="container-x pt-5 md:pt-6">
         <Breadcrumbs items={[{ label: "Shop", href: "/shop" }, { label: "Collections" }]} />
       </div>
       <Intentions />

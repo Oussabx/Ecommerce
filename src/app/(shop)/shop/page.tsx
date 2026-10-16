@@ -22,7 +22,7 @@ export default async function ShopPage() {
         description="Everything we stock, in one place. Narrow it down by what matters to you."
         count={items.length}
       />
-      <section className="container-x pb-20">
+      <section className="container-x pb-16 md:pb-24">
         <Suspense fallback={<ListingSkeleton />}>
           <ListingView items={items} />
         </Suspense>

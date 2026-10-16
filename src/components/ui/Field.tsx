@@ -62,7 +62,7 @@ export function TextAreaField({ label, name, error, hint, optional, className, .
 export function FormError({ message }: { message?: string | null }) {
   if (!message) return null;
   return (
-    <div role="alert" className="rounded-2xl bg-[#fdecea] px-4 py-3 text-sm text-danger">
+    <div role="alert" className="rounded-2xl bg-danger/15 px-4 py-3 text-sm text-danger">
       {message}
     </div>
   );

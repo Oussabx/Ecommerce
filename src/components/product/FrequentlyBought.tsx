@@ -23,42 +23,42 @@ export function FrequentlyBought({ slug, pairs }: { slug: string; pairs: string[
   const total = chosen.reduce((s, p) => s + priceFor(p).price, 0);
 
   return (
-    <section aria-labelledby="fbt-title" className="border-t border-rule pt-5">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h2 id="fbt-title" className="display text-5xl md:text-6xl">
-            Frequently bought together
-          </h2>
-        </div>
-      </div>
-      <div className="mt-6 grid gap-6 lg:grid-cols-12">
-        <ul className="grid grid-cols-2 gap-px border border-rule bg-rule sm:grid-cols-4 lg:col-span-9">
+    <section aria-labelledby="fbt-title">
+      <h2 id="fbt-title" className="text-2xl font-semibold tracking-tight md:text-3xl">
+        Frequently bought together
+      </h2>
+      <div className="mt-6 grid gap-4 lg:grid-cols-12 lg:gap-5">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:gap-4 lg:col-span-9">
           {all.map((p, i) => {
             const on = selected.includes(p.slug);
             return (
-              <li key={p.slug} className={cn("relative bg-paper p-3 transition-opacity", !on && "opacity-50")}>
-                {i > 0 && <span className="absolute -left-3 top-1/3 z-10 hidden size-6 place-items-center bg-ink text-paper sm:grid" aria-hidden><Icon name="plus" size={14} /></span>}
-                <label className="flex cursor-pointer items-start gap-2">
+              <li key={p.slug} className={cn("relative rounded-3xl bg-paper p-3 ring-1 ring-rule transition md:p-4", on ? "" : "opacity-50")}>
+                {i > 0 && (
+                  <span className="absolute -left-[20px] top-[38%] z-10 hidden size-7 place-items-center rounded-full bg-paper-2 text-muted ring-1 ring-rule sm:grid md:-left-[22px]" aria-hidden>
+                    <Icon name="plus" size={14} />
+                  </span>
+                )}
+                <label className="flex cursor-pointer items-center gap-2">
                   <input
                     type="checkbox"
                     checked={on}
                     onChange={() => setSelected((s) => (on ? s.filter((x) => x !== p.slug) : [...s, p.slug]))}
-                    className="mt-1 size-4 accent-ink"
+                    className="size-4 rounded accent-[var(--color-accent)]"
                   />
-                  <span className="label text-muted">{i === 0 ? "This item" : `Add-on ${i}`}</span>
+                  <span className="text-[13px] text-muted">{i === 0 ? "This item" : `Add-on ${i}`}</span>
                 </label>
-                <Link href={`/product/${p.slug}`} className="relative mt-2 block aspect-square bg-paper-2">
-                  <Image src={primaryImage(p).src} alt={p.name} fill sizes="200px" className="object-contain p-3" />
+                <Link href={`/product/${p.slug}`} className="relative mt-3 block aspect-square overflow-hidden rounded-2xl bg-paper-2">
+                  <Image src={primaryImage(p).src} alt={p.name} fill sizes="200px" className="object-contain p-4" />
                 </Link>
-                <p className="mt-2 text-sm font-semibold leading-snug">{p.name}</p>
-                <p className="font-mono text-sm tabular-nums">{formatPrice(priceFor(p).price)}</p>
+                <p className="mt-3 text-sm font-semibold leading-snug">{p.name}</p>
+                <p className="mt-0.5 text-sm tabular-nums text-muted">{formatPrice(priceFor(p).price)}</p>
               </li>
             );
           })}
         </ul>
-        <div className="flex flex-col justify-end gap-3 lg:col-span-3">
-          <p className="label text-muted">{chosen.length} selected</p>
-          <p className="display-wide text-4xl tabular-nums">{formatPrice(total)}</p>
+        <div className="tile flex flex-col justify-end gap-3 p-6 lg:col-span-3">
+          <p className="text-sm text-muted">{chosen.length} selected</p>
+          <p className="text-3xl font-semibold tracking-tight tabular-nums">{formatPrice(total)}</p>
           <p className="text-xs text-muted">Default options for each item. Change colour or storage on each product page.</p>
           <button
             type="button"

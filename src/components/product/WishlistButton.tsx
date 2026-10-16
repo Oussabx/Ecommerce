@@ -25,11 +25,11 @@ export function WishlistButton({ slug, name, className, withLabel = false }: { s
       onAnimationEnd={() => setPop(false)}
       className={cn(
         "inline-flex items-center justify-center gap-2 transition-colors",
-        withLabel ? "btn btn-outline h-12 w-full sm:w-auto" : "size-10 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white",
+        withLabel ? "btn btn-outline h-12 w-full sm:w-auto" : "size-10 rounded-full bg-paper/60 backdrop-blur-sm hover:bg-paper",
         className,
       )}
     >
-      <Icon name="heart" size={18} fill={active ? "currentColor" : "none"} className={cn(active && "text-danger", pop && "animate-[pop_.35s_ease]")} />
+      <Icon name="heart" size={18} fill={active ? "currentColor" : "none"} className={cn(active && "text-accent", pop && "animate-[pop_.35s_ease]")} />
       {withLabel && <span>{active ? "Saved" : "Save"}</span>}
     </button>
   );

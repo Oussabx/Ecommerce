@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#101114",
   width: "device-width",
   initialScale: 1,
 };
@@ -33,12 +33,12 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [catalog, settings] = await Promise.all([getCatalog(), getSettings()]);
   return (
-    <html lang="en" className={ui.variable}>
+    <html lang="en" className={ui.variable} suppressHydrationWarning>
       <body className="min-h-dvh">
         <noscript>
           <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
         </noscript>
-        <a href="#main" className="sr-only z-[70] rounded-full bg-ink text-white px-4 py-3 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+        <a href="#main" className="sr-only z-[70] rounded-full bg-accent text-on-accent px-4 py-3 focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
           Skip to content
         </a>
         <ShopDataProvider products={catalog.products.map(toClientProduct)} categories={catalog.categories} settings={settings}>

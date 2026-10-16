@@ -36,7 +36,7 @@ export default async function ContentPage() {
               <CategoryEditor key={c.slug} category={{ ...c, coverProduct: c.coverProduct ?? "" }} products={opts} />
             ))}
             <details className="pt-2">
-              <summary className="label cursor-pointer">+ New category</summary>
+              <summary className="text-link cursor-pointer text-sm">+ New category</summary>
               <div className="mt-2">
                 <CategoryEditor category={null} products={opts} />
               </div>
@@ -49,7 +49,7 @@ export default async function ContentPage() {
               <CollectionEditor key={c.slug} collection={c} products={opts} />
             ))}
             <details className="pt-2">
-              <summary className="label cursor-pointer">+ New collection</summary>
+              <summary className="text-link cursor-pointer text-sm">+ New collection</summary>
               <div className="mt-2">
                 <CollectionEditor collection={null} products={opts} />
               </div>

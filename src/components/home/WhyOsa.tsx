@@ -14,7 +14,7 @@ export async function WhyOsa() {
       <ul className={`mt-8 grid gap-3 md:mt-10 lg:gap-4 ${store.advantages.length % 3 === 0 ? "sm:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-4"}`}>
         {store.advantages.map((a, i) => (
           <Reveal as="li" key={a.id} delay={i * 70} className="tile p-6 md:p-7">
-            <span className="grid size-12 place-items-center rounded-2xl bg-white text-accent shadow-sm">
+            <span className="grid size-12 place-items-center rounded-2xl bg-accent text-on-accent">
               <Icon name={icons[a.id] ?? "check"} size={24} />
             </span>
             <h3 className="mt-5 text-lg font-semibold">{a.title}</h3>

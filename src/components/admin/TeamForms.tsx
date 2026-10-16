@@ -42,7 +42,7 @@ export function AddMember() {
       </button>
       <div className="sm:col-span-2 lg:col-span-5">
         <FormError message={a.error && !Object.keys(a.fields).length ? a.error : null} />
-        {a.message && !a.error && <p className="label text-ok">{a.message}</p>}
+        {a.message && !a.error && <p className="text-sm font-medium text-ok">{a.message}</p>}
       </div>
     </form>
   );
@@ -74,13 +74,13 @@ export function MemberActions({ email, role, self }: { email: string; role: Role
             const pw = prompt(`New password for ${email} (at least 10 characters):`);
             if (pw) a.exec(() => resetMemberPassword(email, pw), { refresh: false });
           }}
-          className="label text-muted hover:text-ink"
+          className="text-[13px] font-medium text-accent hover:underline"
         >
           Reset password
         </button>
       )}
       {a.error && <p className="w-full text-xs text-danger">{a.error}</p>}
-      {a.message && !a.error && <p className="label w-full text-ok">{a.message}</p>}
+      {a.message && !a.error && <p className="w-full text-xs font-medium text-ok">{a.message}</p>}
     </div>
   );
 }

@@ -56,7 +56,7 @@ export default async function AdminOverview() {
         <ul className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
           {tiles.map((t) => (
             <li key={t.label}>
-              <Link href={t.href} className="card block h-full p-5 transition-shadow hover:shadow-[var(--shadow-lift)] md:p-6">
+              <Link href={t.href} className="block h-full rounded-3xl bg-paper-2 p-5 transition-colors hover:bg-paper-3 md:p-6">
                 <p className="flex items-center gap-2 text-[13px] font-medium text-muted">
                   {t.hot && <span className="size-2 shrink-0 rounded-full bg-warn" aria-hidden />}
                   {t.label}
@@ -76,19 +76,19 @@ export default async function AdminOverview() {
           <Panel title="Needs attention">
             <ul className="divide-y divide-rule text-sm">
               <li className="flex justify-between py-2.5">
-                <Link href="/admin/orders?status=RECEIVED" className="hover:underline">
+                <Link href="/admin/orders?status=RECEIVED" className="hover:text-accent">
                   Orders waiting for a call
                 </Link>
                 <span className="font-semibold tabular-nums">{toConfirm}</span>
               </li>
               <li className="flex justify-between py-2.5">
-                <Link href="/admin/messages" className="hover:underline">
+                <Link href="/admin/messages" className="hover:text-accent">
                   Unread messages
                 </Link>
                 <span className="font-semibold tabular-nums">{unread}</span>
               </li>
               <li className="flex justify-between py-2.5">
-                <Link href="/admin/inventory?filter=low" className="hover:underline">
+                <Link href="/admin/inventory?filter=low" className="hover:text-accent">
                   Low or out of stock
                 </Link>
                 <span className="font-semibold tabular-nums">{lowStock.length}</span>
@@ -143,11 +143,11 @@ export default async function AdminOverview() {
               <ul className="divide-y divide-rule">
                 {lowStock.map((p) => (
                   <li key={p.id} className="flex items-center gap-3 py-2.5">
-                    <span className="relative size-10 shrink-0 overflow-hidden rounded-xl bg-paper-2">{p.images[0] && <Image src={p.images[0].url} alt="" fill sizes="40px" className="object-contain p-0.5" />}</span>
+                    <span className="relative size-10 shrink-0 overflow-hidden rounded-xl bg-paper">{p.images[0] && <Image src={p.images[0].url} alt="" fill sizes="40px" className="object-contain p-0.5" />}</span>
                     <Link href={`/admin/products/${p.id}`} className="min-w-0 flex-1 truncate text-sm hover:text-accent">
                       {p.name}
                     </Link>
-                    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums ${p.stock === 0 ? "bg-[#fdecee] text-danger" : "bg-[#fff4e5] text-warn"}`}>{p.stock}</span>
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums ${p.stock === 0 ? "bg-danger/15 text-danger" : "bg-warn/15 text-warn"}`}>{p.stock}</span>
                   </li>
                 ))}
               </ul>

@@ -28,7 +28,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user || !isStaff(user)) return <>{children}</>;
   const [orders, messages] = await Promise.all([db.order.count({ where: { status: "RECEIVED" } }), db.message.count({ where: { handled: false } })]);
   return (
-    <div className="min-h-dvh bg-paper-2 lg:grid lg:grid-cols-[256px_1fr] print:block print:bg-white">
+    <div className="min-h-dvh bg-paper lg:grid lg:grid-cols-[256px_1fr] print:block print:bg-white">
       <AdminNav user={{ name: user.name, role: user.role }} badges={{ orders, messages }} />
       <div id="main" className="min-w-0">
         {children}

@@ -45,7 +45,7 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
               onClick={() => setActive(i)}
               aria-label={`Show ${im.label.toLowerCase()} view`}
               aria-current={i === active}
-              className={cn("relative block size-16 overflow-hidden rounded-2xl bg-paper-2 transition md:size-20", i === active ? "ring-2 ring-ink ring-offset-2" : "opacity-80 hover:opacity-100 hover:bg-paper-3")}
+              className={cn("relative block size-16 overflow-hidden rounded-2xl bg-paper-2 transition md:size-20", i === active ? "ring-2 ring-ink ring-offset-2 ring-offset-paper" : "opacity-80 hover:opacity-100 hover:bg-paper-3")}
             >
               <Image src={im.src} alt="" fill sizes="80px" className="object-contain p-2" />
             </button>
@@ -76,7 +76,7 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
             style={{ transform: zoom ? "scale(1.8)" : "scale(1)", transformOrigin: origin }}
           />
           {images.length > 1 && (
-            <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-white/80 px-2.5 py-1 text-xs font-medium text-muted backdrop-blur-sm">
+            <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-paper/80 px-2.5 py-1 text-xs font-medium text-muted backdrop-blur-sm">
               {active + 1} / {images.length}
             </span>
           )}
@@ -86,17 +86,17 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
               e.stopPropagation();
               setLightbox(true);
             }}
-            className="absolute bottom-4 right-4 grid size-10 place-items-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+            className="absolute bottom-4 right-4 grid size-10 place-items-center rounded-full bg-paper/85 text-ink backdrop-blur-sm transition-colors hover:bg-paper"
             aria-label={`Enlarge image of ${name}`}
           >
             <Icon name="zoom" size={18} />
           </button>
           {images.length > 1 && (
             <div className="absolute bottom-4 left-4 flex gap-2 md:hidden">
-              <button type="button" onClick={(e) => { e.stopPropagation(); setActive((active - 1 + images.length) % images.length); }} className="grid size-10 place-items-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm" aria-label="Previous image">
+              <button type="button" onClick={(e) => { e.stopPropagation(); setActive((active - 1 + images.length) % images.length); }} className="grid size-10 place-items-center rounded-full bg-paper/85 text-ink backdrop-blur-sm" aria-label="Previous image">
                 <Icon name="arrowLeft" size={16} />
               </button>
-              <button type="button" onClick={(e) => { e.stopPropagation(); setActive((active + 1) % images.length); }} className="grid size-10 place-items-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm" aria-label="Next image">
+              <button type="button" onClick={(e) => { e.stopPropagation(); setActive((active + 1) % images.length); }} className="grid size-10 place-items-center rounded-full bg-paper/85 text-ink backdrop-blur-sm" aria-label="Next image">
                 <Icon name="arrow" size={16} />
               </button>
             </div>

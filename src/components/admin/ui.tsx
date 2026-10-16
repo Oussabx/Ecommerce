@@ -22,7 +22,7 @@ export const Body = ({ children, className }: { children: ReactNode; className?:
 
 export function Panel({ title, children, actions, className }: { title?: string; children: ReactNode; actions?: ReactNode; className?: string }) {
   return (
-    <section className={cn("card min-w-0 overflow-hidden", className)}>
+    <section className={cn("min-w-0 overflow-hidden rounded-3xl bg-paper-2", className)}>
       {title && (
         <div className="flex items-center justify-between gap-3 px-5 pb-1 pt-5 md:px-6">
           <h2 className="text-[17px] font-semibold tracking-[-0.015em]">{title}</h2>
@@ -35,11 +35,11 @@ export function Panel({ title, children, actions, className }: { title?: string;
 }
 
 const statusStyle: Record<OrderStatus, string> = {
-  RECEIVED: "bg-[#fff4e5] text-warn",
-  CONFIRMED: "bg-accent-soft text-accent",
-  OUT_FOR_DELIVERY: "bg-[#f0ebff] text-[#6b3fd4]",
-  DELIVERED: "bg-[#e8f6ec] text-ok",
-  CANCELLED: "bg-paper-2 text-muted",
+  RECEIVED: "bg-warn/15 text-warn",
+  CONFIRMED: "bg-accent/15 text-accent",
+  OUT_FOR_DELIVERY: "bg-[#435CFF]/20 text-[#8c9bff]",
+  DELIVERED: "bg-ok/15 text-ok",
+  CANCELLED: "bg-paper-3 text-muted",
 };
 export const statusShort: Record<OrderStatus, string> = {
   RECEIVED: "To confirm",
@@ -56,7 +56,7 @@ export function StatusBadge({ status }: { status: OrderStatus }) {
 
 export function Empty({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="rounded-2xl bg-paper-2 p-10 text-center">
+    <div className="rounded-3xl bg-paper-2 p-10 text-center">
       <p className="font-semibold">{title}</p>
       {children && <div className="mt-2 text-sm text-muted">{children}</div>}
     </div>
@@ -73,12 +73,12 @@ export function Pager({ page, pages, href }: { page: number; pages: number; href
       </span>
       <div className="flex gap-2">
         {page > 1 && (
-          <Link href={href(page - 1)} className="inline-flex h-9 items-center rounded-full bg-paper px-4 font-medium shadow-[var(--shadow-card)] hover:bg-paper-3">
+          <Link href={href(page - 1)} className="inline-flex h-9 items-center rounded-full bg-paper-2 px-4 font-medium hover:bg-paper-3">
             Previous
           </Link>
         )}
         {page < pages && (
-          <Link href={href(page + 1)} className="inline-flex h-9 items-center rounded-full bg-paper px-4 font-medium shadow-[var(--shadow-card)] hover:bg-paper-3">
+          <Link href={href(page + 1)} className="inline-flex h-9 items-center rounded-full bg-paper-2 px-4 font-medium hover:bg-paper-3">
             Next
           </Link>
         )}
@@ -87,9 +87,9 @@ export function Pager({ page, pages, href }: { page: number; pages: number; href
   );
 }
 
-/** Rounded white container for admin tables. */
-export const tableWrap = "card overflow-x-auto";
+/** Rounded card container for admin tables. */
+export const tableWrap = "overflow-x-auto rounded-3xl bg-paper-2";
 export const th = "border-b border-rule px-4 py-3 text-left text-xs font-medium text-muted first:pl-5 last:pr-5";
 export const td = "border-b border-rule px-4 py-3 align-middle first:pl-5 last:pr-5";
 /** Row hover for clickable table rows. */
-export const tr = "transition-colors hover:bg-paper-2 [&:last-child>td]:border-b-0";
+export const tr = "transition-colors hover:bg-paper-3 [&:last-child>td]:border-b-0";

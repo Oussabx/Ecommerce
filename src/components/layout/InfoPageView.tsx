@@ -40,30 +40,28 @@ const helpLinks = [
 export function InfoPageView({ page, children }: { page: InfoPage; children?: ReactNode }) {
   const hasPlaceholders = JSON.stringify(page).includes("[[");
   return (
-    <div className="container-x pb-20 pt-6">
+    <div className="container-x pb-20 pt-6 md:pb-28">
       <Breadcrumbs items={[{ label: page.title }]} />
-      <header className="mt-8 grid gap-6 border-t border-rule pt-4 md:grid-cols-12">
-        <div className="md:col-span-12">
-          <h1 className="display text-[clamp(3.2rem,9vw,8.5rem)]">{page.title}</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">{page.intro}</p>
-          {page.updated && <p className="label mt-4 text-muted">Last updated: {rich(page.updated)}</p>}
-        </div>
-      </header>
-      <div className="mt-12 grid gap-10 md:grid-cols-12">
-        <nav aria-label="Help pages" className="md:col-span-3">
-          <ul className="sticky top-24 space-y-1 text-sm">
+      <div className="mt-8 grid gap-10 md:mt-12 md:grid-cols-12">
+        <nav aria-label="Help pages" className="order-last md:order-none md:col-span-3">
+          <ul className="flex flex-wrap gap-2 md:sticky md:top-24 md:block md:space-y-0.5">
             {helpLinks.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} aria-current={l.href === `/${page.slug}` ? "page" : undefined} className="block border-l-2 border-transparent py-1.5 pl-3 text-muted hover:text-ink aria-[current=page]:border-ink aria-[current=page]:text-ink">
+                <Link href={l.href} aria-current={l.href === `/${page.slug}` ? "page" : undefined} className="chip md:flex md:min-h-0 md:rounded-xl md:bg-transparent md:px-3 md:py-2 md:text-[15px] md:font-normal md:text-muted md:hover:bg-paper-2 md:hover:text-ink md:aria-[current=page]:bg-paper-2 md:aria-[current=page]:font-medium md:aria-[current=page]:text-ink">
                   {l.label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <article className="prose-osa max-w-3xl md:col-span-9">
+        <article className="prose-osa max-w-3xl text-[17px] md:col-span-9 lg:col-span-8">
+          <header className="mb-10">
+            <h1 className="display text-[clamp(2rem,4.5vw,3.5rem)]">{page.title}</h1>
+            <p className="mt-4 !text-lg leading-relaxed !text-muted md:!text-xl">{page.intro}</p>
+            {page.updated && <p className="mt-4 !text-sm !text-subtle">Last updated: {rich(page.updated)}</p>}
+          </header>
           {hasPlaceholders && (
-            <p className="!mb-8 border border-rule bg-paper-2 p-4 text-sm">
+            <p className="!mb-8 rounded-2xl bg-paper-2 p-4 !text-sm">
               <mark>Highlighted text</mark> is placeholder content awaiting confirmation from OSA Techstore.
             </p>
           )}

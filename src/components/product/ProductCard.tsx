@@ -9,13 +9,11 @@ import { cn } from "@/lib/format";
 
 export function ProductCard({
   p,
-  index,
   view = "grid",
   priority = false,
   sizes = "(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw",
 }: {
   p: ProductSummary;
-  index?: number;
   view?: "grid" | "list";
   priority?: boolean;
   sizes?: string;
@@ -25,8 +23,8 @@ export function ProductCard({
 
   if (view === "list") {
     return (
-      <article className="group relative grid grid-cols-[112px_1fr] gap-4 rounded-3xl bg-white p-3 ring-1 ring-rule sm:grid-cols-[168px_1fr_auto] sm:gap-6 sm:p-4">
-        <Link href={href} className="relative block aspect-square overflow-hidden rounded-2xl bg-paper-2" tabIndex={-1} aria-hidden>
+      <article className="group relative grid grid-cols-[112px_1fr] gap-4 rounded-3xl bg-paper-2 p-3 sm:grid-cols-[168px_1fr_auto] sm:gap-6 sm:p-4">
+        <Link href={href} className="relative block aspect-square overflow-hidden rounded-2xl bg-paper-3" tabIndex={-1} aria-hidden>
           <Image src={p.image} alt="" fill sizes="180px" className="object-contain p-3 transition-transform duration-500 group-hover:scale-[1.04]" />
         </Link>
         <div className="min-w-0 py-1">
@@ -45,7 +43,7 @@ export function ProductCard({
         <div className="relative z-10 col-span-2 flex items-center justify-between gap-3 sm:col-span-1 sm:flex-col sm:items-end sm:justify-between sm:py-1">
           <Price price={p.price} compareAt={p.compareAt} className="hidden sm:flex" size="lg" />
           <div className="flex items-center gap-2">
-            <WishlistButton slug={p.slug} name={p.name} className="bg-paper-2" />
+            <WishlistButton slug={p.slug} name={p.name} className="bg-paper-3" />
             <QuickAdd slug={p.slug} />
           </div>
         </div>
@@ -74,14 +72,14 @@ export function ProductCard({
             className="scale-[0.97] object-contain p-[12%] opacity-0 transition-all duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.04] group-hover:opacity-100"
           />
         )}
-        {badge && <span className="absolute left-3 top-3 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-accent shadow-sm">{badge}</span>}
+        {badge && <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-on-accent">{badge}</span>}
         <div className="absolute right-2 top-2 z-10">
           <WishlistButton slug={p.slug} name={p.name} />
         </div>
         {p.colors.length > 1 && (
-          <div className="absolute bottom-3 left-3 flex gap-1 rounded-full bg-white/80 px-2 py-1.5 backdrop-blur-sm" aria-label={`${p.colors.length} colours`}>
+          <div className="absolute bottom-3 left-3 flex gap-1 rounded-full bg-paper/70 px-2 py-1.5 backdrop-blur-sm" aria-label={`${p.colors.length} colours`}>
             {p.colors.slice(0, 5).map((c) => (
-              <span key={c.id} title={c.name} className="size-2.5 rounded-full ring-1 ring-black/15" style={{ background: c.swatch }} />
+              <span key={c.id} title={c.name} className="size-2.5 rounded-full ring-1 ring-white/20" style={{ background: c.swatch }} />
             ))}
           </div>
         )}

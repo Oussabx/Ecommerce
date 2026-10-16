@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { formatPrice } from "@/lib/format";
 
-/** Orders per day — single series, accent bars on white, hover tooltip, table fallback for screen readers. */
+/** Orders per day — single series, accent bars, hover tooltip, table fallback for screen readers. */
 export function OrdersChart({ days }: { days: { date: string; label: string; orders: number; revenue: number }[] }) {
   const [hover, setHover] = useState<number | null>(null);
   const max = Math.max(1, ...days.map((d) => d.orders));
@@ -33,7 +33,7 @@ export function OrdersChart({ days }: { days: { date: string; label: string; ord
               <path
                 key={d.date}
                 d={bar(i * barW + barW * 0.2, h - Math.max(bh, d.orders ? 2 : 0), barW * 0.6, Math.max(bh, d.orders ? 2 : 0))}
-                className={hover === i ? "fill-accent-hover" : hover === null ? "fill-accent" : "fill-accent/40"}
+                className={hover === null || hover === i ? "fill-accent" : "fill-accent/40"}
               />
             );
           })}
@@ -55,7 +55,7 @@ export function OrdersChart({ days }: { days: { date: string; label: string; ord
         </div>
         {hover !== null && (
           <div
-            className="pointer-events-none absolute z-10 -translate-x-1/2 whitespace-nowrap rounded-xl bg-paper px-3 py-2 text-xs text-ink shadow-[var(--shadow-lift)] ring-1 ring-rule"
+            className="pointer-events-none absolute z-10 -translate-x-1/2 whitespace-nowrap rounded-xl bg-paper-3 px-3 py-2 text-xs text-ink shadow-[var(--shadow-lift)] ring-1 ring-rule"
             style={{ left: `${(hover + 0.5) * barW}%`, top: Math.max(0, h - (days[hover].orders / max) * (h - 8) - 52) }}
           >
             <p className="text-muted">{days[hover].label}</p>

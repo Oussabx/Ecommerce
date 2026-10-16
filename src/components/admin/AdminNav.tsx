@@ -31,7 +31,7 @@ export function AdminNav({ user, badges }: { user: { name: string; role: string 
     <>
       {/* mobile top bar */}
       <div className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-rule bg-paper/85 px-4 text-ink backdrop-blur-xl lg:hidden print:hidden">
-        <button type="button" onClick={() => setOpen(true)} className="-ml-2 grid size-11 place-items-center rounded-full hover:bg-paper-2" aria-label="Open admin menu">
+        <button type="button" onClick={() => setOpen(true)} className="-ml-2 grid size-11 place-items-center rounded-full hover:bg-paper-3" aria-label="Open admin menu">
           <Icon name="menu" />
         </button>
         <Link href="/admin" className="flex items-center gap-2">
@@ -42,10 +42,10 @@ export function AdminNav({ user, badges }: { user: { name: string; role: string 
           Store
         </Link>
       </div>
-      {open && <button type="button" aria-label="Close admin menu" className="fixed inset-0 z-40 bg-ink/30 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
+      {open && <button type="button" aria-label="Close admin menu" className="fixed inset-0 z-40 bg-paper/70 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)} />}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-rule bg-paper-2 text-ink transition-transform duration-300 lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 print:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-rule bg-paper text-ink transition-transform duration-300 lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 print:hidden",
           open ? "translate-x-0" : "-translate-x-full",
         )}
         aria-label="Admin"
@@ -71,21 +71,21 @@ export function AdminNav({ user, badges }: { user: { name: string; role: string 
                     aria-current={on ? "page" : undefined}
                     className={cn(
                       "flex h-10 items-center gap-3 rounded-xl px-3 text-sm transition-colors",
-                      on ? "bg-paper font-semibold text-ink shadow-[var(--shadow-card)]" : "text-ink-2 hover:bg-paper-3 hover:text-ink",
+                      on ? "bg-paper-3 font-semibold text-ink" : "text-ink-2 hover:bg-paper-3 hover:text-ink",
                     )}
                   >
                     <Icon name={n.icon} size={17} className={on ? "text-accent" : "text-muted"} />
                     <span className="flex-1">{n.label}</span>
-                    {count > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1.5 text-[11px] font-semibold tabular-nums text-white">{count}</span>}
+                    {count > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1.5 text-[11px] font-semibold tabular-nums text-on-accent">{count}</span>}
                   </Link>
                 </li>
               );
             })}
           </ul>
         </nav>
-        <div className="m-3 rounded-2xl bg-paper p-4 text-sm shadow-[var(--shadow-card)]">
+        <div className="m-3 rounded-2xl bg-paper-2 p-4 text-sm">
           <div className="flex items-center gap-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-accent-soft text-sm font-semibold text-accent" aria-hidden>
+            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-accent/15 text-sm font-semibold text-accent" aria-hidden>
               {user.name.trim().charAt(0).toUpperCase()}
             </span>
             <div className="min-w-0">

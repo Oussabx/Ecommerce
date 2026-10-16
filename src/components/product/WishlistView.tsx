@@ -12,12 +12,15 @@ export function WishlistView() {
   const hydrated = wishlistStore.useHydrated();
   const items = list.map(getProduct).filter((p): p is NonNullable<typeof p> => !!p).map((p) => summarize(p, categories));
 
-  if (!hydrated) return <div className="skeleton h-80" aria-busy="true" />;
+  if (!hydrated) return <div className="skeleton h-80 rounded-3xl" aria-busy="true" />;
   if (!items.length)
     return (
-      <div className="border border-rule p-10 md:p-16">
-        <p className="display text-5xl">Nothing saved yet.</p>
-        <p className="mt-3 text-muted">Tap the heart on any product to keep it here for later.</p>
+      <div className="tile flex flex-col items-center px-6 py-14 text-center md:py-20">
+        <span className="grid size-14 place-items-center rounded-full bg-paper text-accent">
+          <Icon name="heart" size={24} />
+        </span>
+        <p className="mt-5 text-2xl font-semibold tracking-tight">Nothing saved yet.</p>
+        <p className="mt-2 text-muted">Tap the heart on any product to keep it here for later.</p>
         <Link href="/shop" className="btn btn-primary mt-6">
           Explore the collection <Icon name="arrow" size={16} className="btn-arrow" />
         </Link>
@@ -25,12 +28,12 @@ export function WishlistView() {
     );
   return (
     <>
-      <p className="label mb-3 text-muted">
+      <p className="mb-5 text-sm text-muted">
         {items.length} saved {items.length === 1 ? "product" : "products"}
       </p>
-      <div className="grid grid-cols-2 gap-px border border-rule bg-rule md:grid-cols-3 xl:grid-cols-4">
-        {items.map((p, i) => (
-          <ProductCard key={p.slug} p={p} index={i + 1} />
+      <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-3 md:gap-x-5 md:gap-y-10 xl:grid-cols-4">
+        {items.map((p) => (
+          <ProductCard key={p.slug} p={p} />
         ))}
       </div>
     </>

@@ -20,13 +20,13 @@ export async function Footer() {
     <footer className="mt-8 bg-paper-2 text-ink">
       <div className="container-x grid gap-10 py-14 md:grid-cols-12">
         <div className="md:col-span-4">
-          <Logo className="w-28" />
+          <Logo className="w-40" />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">{store.description}</p>
           {socials.length > 0 && (
             <ul className="mt-5 flex gap-2">
               {socials.map(([name, url]) => (
                 <li key={name}>
-                  <a href={url} target="_blank" rel="noopener noreferrer" className="grid size-10 place-items-center rounded-full bg-white text-ink transition-colors hover:text-accent" aria-label={name}>
+                  <a href={url} target="_blank" rel="noopener noreferrer" className="grid size-10 place-items-center rounded-full bg-paper-3 text-ink transition-colors hover:text-accent" aria-label={name}>
                     <Icon name={name} size={18} />
                   </a>
                 </li>

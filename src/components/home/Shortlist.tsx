@@ -73,7 +73,7 @@ export function Shortlist({ items, categories }: { items: ProductSummary[]; cate
             ))}
           </select>
           <label className="chip cursor-pointer">
-            <input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} className="size-3.5 accent-[#0066cc]" />
+            <input type="checkbox" checked={inStock} onChange={(e) => setInStock(e.target.checked)} className="size-3.5 accent-[#d7ff3f]" />
             In stock
           </label>
         </div>

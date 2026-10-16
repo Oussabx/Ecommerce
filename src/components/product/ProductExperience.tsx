@@ -121,7 +121,7 @@ export function ProductExperience({ product }: { product: Product }) {
                   <label key={c.id} className="relative cursor-pointer" title={`${c.name}${out ? " — out of stock" : ""}`}>
                     <input type="radio" name="color" value={c.id} checked={c.id === colorId} onChange={() => select({ color: c.id })} className="peer sr-only" />
                     <span className={cn("block size-10 rounded-full p-[3px] ring-1 ring-rule-strong transition-shadow hover:ring-subtle peer-checked:ring-2 peer-checked:ring-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent", out && "opacity-50")}>
-                      <span className="block size-full rounded-full ring-1 ring-inset ring-black/10" style={{ background: c.swatch }} />
+                      <span className="block size-full rounded-full ring-1 ring-inset ring-ink/10" style={{ background: c.swatch }} />
                     </span>
                     {out && <span className="pointer-events-none absolute left-1/2 top-1/2 h-px w-11 -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-muted" aria-hidden />}
                     <span className="sr-only">
@@ -143,7 +143,7 @@ export function ProductExperience({ product }: { product: Product }) {
               {product.configs.map((c) => (
                 <label key={c.id} className="cursor-pointer">
                   <input type="radio" name="config" value={c.id} checked={c.id === configId} onChange={() => select({ config: c.id })} className="peer sr-only" />
-                  <span className="flex h-full flex-col rounded-2xl bg-white px-4 py-3.5 ring-1 ring-rule-strong transition-shadow hover:ring-subtle peer-checked:ring-2 peer-checked:ring-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent">
+                  <span className="flex h-full flex-col rounded-2xl bg-paper-2 px-4 py-3.5 ring-1 ring-rule transition hover:bg-paper-3 peer-checked:bg-paper-3 peer-checked:ring-2 peer-checked:ring-accent peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent">
                     <span className="text-[15px] font-semibold">{c.label}</span>
                     <span className="mt-0.5 text-[13px] tabular-nums text-muted">{formatPrice(product.price + c.priceDelta)}</span>
                   </span>
@@ -162,7 +162,7 @@ export function ProductExperience({ product }: { product: Product }) {
         {/* buy */}
         <div ref={buyRef} className="mt-8 flex items-center gap-2.5">
           <QuantityStepper value={Math.min(qty, Math.max(1, maxQty))} max={Math.max(1, maxQty)} onChange={setQty} />
-          <button type="button" onClick={add} disabled={soldOut || maxQty <= 0} className={cn("btn min-w-0 flex-1", added ? "btn-lime" : "btn-primary")}>
+          <button type="button" onClick={add} disabled={soldOut || maxQty <= 0} className="btn btn-primary min-w-0 flex-1">
             {added && <Icon name="check" size={16} />} {buyLabel}
           </button>
           <WishlistButton slug={slug} name={product.name} className="!size-12 flex-none !bg-paper-2 hover:!bg-paper-3" />
@@ -203,7 +203,7 @@ export function ProductExperience({ product }: { product: Product }) {
       {/* sticky mobile purchase bar */}
       <div
         className={cn(
-          "fixed inset-x-0 bottom-0 z-30 border-t border-rule/70 bg-white/80 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl backdrop-saturate-150 transition-transform duration-300 lg:hidden",
+          "fixed inset-x-0 bottom-0 z-30 border-t border-rule bg-paper/85 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl backdrop-saturate-150 transition-transform duration-300 lg:hidden",
           showSticky ? "translate-y-0" : "translate-y-full",
         )}
         aria-hidden={!showSticky}
@@ -213,7 +213,7 @@ export function ProductExperience({ product }: { product: Product }) {
             <p className="truncate text-sm font-semibold">{product.name}</p>
             <p className="text-sm tabular-nums text-muted">{formatPrice(price)}</p>
           </div>
-          <button type="button" onClick={add} disabled={soldOut || maxQty <= 0} tabIndex={showSticky ? 0 : -1} className={cn("btn min-h-11 px-5", added ? "btn-lime" : "btn-primary")}>
+          <button type="button" onClick={add} disabled={soldOut || maxQty <= 0} tabIndex={showSticky ? 0 : -1} className="btn btn-primary min-h-11 px-5">
             {buyLabel}
           </button>
         </div>
@@ -225,7 +225,7 @@ export function ProductExperience({ product }: { product: Product }) {
 function InfoRow({ icon, title, children }: { icon: "truck" | "cash"; title: string; children: React.ReactNode }) {
   return (
     <div className="flex items-start gap-3.5 py-4">
-      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white text-accent shadow-sm">
+      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-paper-3 text-accent">
         <Icon name={icon} size={18} />
       </span>
       <div className="min-w-0">

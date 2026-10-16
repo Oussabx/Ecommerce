@@ -9,12 +9,12 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { cn } from "@/lib/format";
 
 export const toneClass: Record<Collection["tone"], string> = {
-  lime: "bg-[#eef4ff] text-ink",
-  ink: "bg-[#111113] text-white",
-  paper: "bg-paper-2 text-ink",
-  cobalt: "bg-[#0a3d91] text-white",
-  stone: "bg-[#f0eeea] text-ink",
-  sand: "bg-[#f6efe6] text-ink",
+  lime: "bg-accent text-on-accent",
+  ink: "bg-paper-2 text-ink",
+  paper: "bg-paper-3 text-ink",
+  cobalt: "bg-cobalt text-white",
+  stone: "bg-[#1e2024] text-ink",
+  sand: "bg-[#25231f] text-ink",
 };
 
 const layout = [

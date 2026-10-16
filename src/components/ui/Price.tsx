@@ -6,14 +6,11 @@ export function Price({
   compareAt,
   size = "md",
   className,
-  onLime = false,
 }: {
   price: number;
   compareAt?: number;
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
-  /** Use on lime backgrounds so the discount tag stays visible. */
-  onLime?: boolean;
 }) {
   const off = discountPercent(price, compareAt);
   return (
@@ -35,7 +32,7 @@ export function Price({
             <span className="sr-only">Was </span>
             {formatPrice(compareAt)}
           </span>
-          <span className="rounded-full bg-[#fdecea] px-2 py-0.5 text-xs font-semibold text-danger">−{off}%</span>
+          <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-on-accent">−{off}%</span>
         </>
       )}
     </div>

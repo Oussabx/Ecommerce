@@ -27,7 +27,7 @@ export async function ContactSection() {
           {rows.length > 0 && (
             <ul className="mt-8 space-y-2">
               {rows.map((r) => (
-                <li key={r.label} className="flex items-center gap-4 rounded-2xl bg-white p-3 pr-4">
+                <li key={r.label} className="flex items-center gap-4 rounded-2xl bg-paper-3 p-3 pr-4">
                   <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent">
                     <Icon name={r.icon} size={18} />
                   </span>
@@ -46,7 +46,7 @@ export async function ContactSection() {
             </ul>
           )}
         </div>
-        <div className="rounded-3xl bg-white p-5 shadow-[var(--shadow-card)] md:p-8 lg:col-span-7">
+        <div className="rounded-3xl bg-paper p-5 md:p-8 lg:col-span-7">
           <ContactForm />
         </div>
       </div>

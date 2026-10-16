@@ -47,11 +47,11 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
       <PageHeader title="Orders" kicker={`${total} ${total === 1 ? "order" : "orders"}`}>
         <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <nav className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 lg:mx-0 lg:px-0" aria-label="Filter by status">
-            <Link href={href({ status: undefined, page: undefined })} aria-current={!status ? "page" : undefined} className={cn("chip shrink-0", !status ? "is-active" : "bg-paper shadow-[var(--shadow-card)] hover:bg-paper-3")}>
+            <Link href={href({ status: undefined, page: undefined })} aria-current={!status ? "page" : undefined} className={cn("chip shrink-0", !status ? "is-active" : "")}>
               All
             </Link>
             {STATUSES.map((s) => (
-              <Link key={s} href={href({ status: s, page: undefined })} aria-current={status === s ? "page" : undefined} className={cn("chip shrink-0 gap-2", status === s ? "is-active" : "bg-paper shadow-[var(--shadow-card)] hover:bg-paper-3")}>
+              <Link key={s} href={href({ status: s, page: undefined })} aria-current={status === s ? "page" : undefined} className={cn("chip shrink-0 gap-2", status === s ? "is-active" : "")}>
                 {statusShort[s]} <span className="tabular-nums opacity-60">{countFor(s)}</span>
               </Link>
             ))}

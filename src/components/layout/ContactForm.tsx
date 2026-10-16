@@ -15,12 +15,13 @@ export function ContactForm() {
 
   if (done)
     return (
-      <div className="border border-rule bg-lime p-6" role="status">
-        <p className="label flex items-center gap-2">
-          <Icon name="check" size={16} /> Message sent
-        </p>
-        <p className="display mt-3 text-4xl">Thanks, {f.name.split(" ")[0]}.</p>
-        <p className="mt-2">We&apos;ve received your message and will reply to {f.email}.</p>
+      <div className="flex flex-col items-center py-8 text-center" role="status">
+        <span className="grid size-14 place-items-center rounded-full bg-ok/15 text-ok">
+          <Icon name="check" size={28} />
+        </span>
+        <p className="mt-4 text-sm font-medium text-ok">Message sent</p>
+        <p className="mt-1 text-2xl font-semibold tracking-tight">Thanks, {f.name.split(" ")[0]}.</p>
+        <p className="mt-2 text-muted">We&apos;ve received your message and will reply to {f.email}.</p>
       </div>
     );
 
@@ -60,8 +61,8 @@ export function ContactForm() {
       <TextAreaField className="sm:col-span-2" label="Message" name="message" rows={6} value={f.message} onChange={set("message")} error={errors.message} hint="Include your order reference if your message is about an order." />
       <div className="space-y-3 sm:col-span-2">
         <FormError message={error} />
-        <button type="submit" disabled={busy} className="btn btn-primary">
-          {busy ? "Sending…" : "Send message"} <Icon name="arrow" size={16} className="btn-arrow" />
+        <button type="submit" disabled={busy} className="btn btn-primary w-full sm:w-auto">
+          {busy ? "Sending…" : "Send message"}
         </button>
       </div>
     </form>

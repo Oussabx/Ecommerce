@@ -20,9 +20,9 @@ export default async function SettingsPage() {
   return (
     <>
       <PageHeader title="Settings" kicker="Store details used across the website">
-        <ul className="mt-4 flex flex-wrap gap-2">
+        <ul className="mt-5 flex flex-wrap gap-2">
           {integrations.map((i) => (
-            <li key={i.name} className="label flex items-center gap-2 border border-rule-strong px-2.5 py-1.5">
+            <li key={i.name} className="flex items-center gap-2 rounded-full bg-paper-2 px-3 py-1.5 text-[13px] font-medium">
               <span className={`size-2 rounded-full ${i.ok ? "bg-ok" : "bg-warn"}`} aria-hidden />
               {i.name}: <span className="text-muted">{i.note}</span>
             </li>

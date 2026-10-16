@@ -49,7 +49,7 @@ export function Header() {
   const isActive = (href: string) => pathname.startsWith(href);
 
   return (
-    <header className={cn("sticky top-0 z-40 border-b bg-white/80 backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300", scrolled ? "border-rule" : "border-transparent")}>
+    <header className={cn("sticky top-0 z-40 border-b bg-paper/80 backdrop-blur-xl backdrop-saturate-150 transition-colors duration-300", scrolled ? "border-rule" : "border-transparent")}>
       <div className="container-x flex h-16 items-center gap-4">
         {/* mobile: menu */}
         <button
@@ -63,7 +63,7 @@ export function Header() {
         </button>
 
         <Link href="/" className="mx-auto shrink-0 lg:mx-0" aria-label="OSA Techstore — home">
-          <Logo className="w-[92px] lg:w-[100px]" />
+          <Logo className="w-[132px] lg:w-[156px]" />
         </Link>
 
         <nav aria-label="Main" className="ml-6 hidden flex-1 lg:block xl:ml-10">
@@ -94,14 +94,14 @@ export function Header() {
           >
             <Icon name="search" size={16} />
             <span className="hidden xl:inline">Search products</span>
-            <kbd className="ml-auto hidden rounded-md bg-white px-1.5 py-0.5 text-[11px] font-medium text-subtle xl:inline">⌘K</kbd>
+            <kbd className="ml-auto hidden rounded-md bg-paper px-1.5 py-0.5 text-[11px] font-medium text-subtle xl:inline">⌘K</kbd>
           </button>
           <button type="button" onClick={() => open("search")} className="grid size-11 place-items-center rounded-full hover:bg-paper-2 lg:hidden" aria-label="Search products">
             <Icon name="search" size={21} />
           </button>
           <Link href="/wishlist" className="relative hidden size-11 place-items-center rounded-full hover:bg-paper-2 sm:grid" aria-label={`Wishlist, ${wishlist.length} items`}>
             <Icon name="heart" size={21} />
-            {wishlist.length > 0 && <span className="absolute right-2 top-2 size-2 rounded-full bg-accent ring-2 ring-white" aria-hidden />}
+            {wishlist.length > 0 && <span className="absolute right-2 top-2 size-2 rounded-full bg-accent ring-2 ring-paper" aria-hidden />}
           </Link>
           <button
             type="button"
@@ -115,7 +115,7 @@ export function Header() {
               key={count}
               className={cn(
                 "absolute right-0.5 top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full px-1 text-[10px] font-semibold tabular-nums",
-                count > 0 ? "animate-[pop_.35s_ease] bg-accent text-white ring-2 ring-white" : "bg-transparent text-transparent",
+                count > 0 ? "animate-[pop_.35s_ease] bg-accent text-on-accent ring-2 ring-paper" : "bg-transparent text-transparent",
               )}
               aria-hidden
             >
