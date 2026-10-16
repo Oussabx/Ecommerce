@@ -6,7 +6,7 @@ import { db } from "@/server/db";
 import { cn } from "@/lib/format";
 
 export const metadata = { title: "Inbox" };
-const topics: Record<string, string> = { product: "Product question", order: "Existing order", warranty: "Warranty / repair", other: "Other" };
+const topics: Record<string, string> = { product: "Product question", order: "Existing order", repair: "Faulty product", warranty: "Faulty product", other: "Other" };
 
 export default async function MessagesPage({ searchParams }: { searchParams: Promise<{ view?: string }> }) {
   await requireStaff();

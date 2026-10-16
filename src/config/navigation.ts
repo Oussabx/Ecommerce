@@ -20,7 +20,6 @@ export const footerNav = {
     { href: "/faq", label: "FAQs" },
     { href: "/delivery", label: "Delivery information" },
     { href: "/returns", label: "Returns & exchanges" },
-    { href: "/warranty", label: "Warranty" },
   ],
   company: [
     { href: "/about", label: "About OSA" },

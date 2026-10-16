@@ -6,7 +6,7 @@ import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
   title: "FAQs",
-  description: "Answers about ordering, payment, delivery across Lebanon, warranty and returns at OSA Techstore.",
+  description: "Answers about ordering, payment, delivery across Lebanon and returns at OSA Techstore.",
   alternates: { canonical: "/faq" },
 };
 

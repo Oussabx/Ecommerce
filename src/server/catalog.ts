@@ -43,7 +43,6 @@ export function mapProduct(p: DbProduct): Product {
     images,
     highlights: (p.highlights as Product["highlights"]) ?? [],
     specs: (p.specs as unknown as SpecGroup[]) ?? [],
-    warranty: p.warranty,
     inTheBox: p.inTheBox.length ? p.inTheBox : undefined,
     tags: p.tags,
     isNew: p.isNew,

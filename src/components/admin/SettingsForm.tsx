@@ -99,7 +99,7 @@ export function SettingsForm({ initial }: { initial: StoreSettings }) {
             {s.advantages.map((m, i) => (
               <li key={i} className="grid gap-2 border border-rule p-3 sm:grid-cols-[1fr_160px_auto]">
                 <In label="Title" value={m.title} onChange={(v) => upd({ advantages: s.advantages.map((x, j) => (j === i ? { ...x, title: v } : x)) })} />
-                <In label="Icon id" value={m.id} hint="authentic, warranty, delivery, support, payment" onChange={(v) => upd({ advantages: s.advantages.map((x, j) => (j === i ? { ...x, id: v } : x)) })} />
+                <In label="Icon id" value={m.id} hint="authentic, delivery, support, payment" onChange={(v) => upd({ advantages: s.advantages.map((x, j) => (j === i ? { ...x, id: v } : x)) })} />
                 <button type="button" onClick={() => upd({ advantages: s.advantages.filter((_, j) => j !== i) })} className="self-end pb-3 text-danger" aria-label="Remove advantage">
                   <Icon name="trash" size={16} />
                 </button>

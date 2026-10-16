@@ -54,7 +54,7 @@ export function ContactForm() {
       <SelectField label="Topic" name="topic" value={f.topic} onChange={set("topic")}>
         <option value="product">A product question</option>
         <option value="order">An existing order</option>
-        <option value="warranty">Warranty or repair</option>
+        <option value="repair">A faulty product</option>
         <option value="other">Something else</option>
       </SelectField>
       <TextAreaField className="sm:col-span-2" label="Message" name="message" rows={6} value={f.message} onChange={set("message")} error={errors.message} hint="Include your order reference if your message is about an order." />

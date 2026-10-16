@@ -56,7 +56,6 @@ async function main() {
           artVariant: p.art.variant ?? null,
           highlights: p.highlights,
           specs: p.specs,
-          warranty: p.warranty,
           inTheBox: p.inTheBox ?? [],
           tags: p.tags,
           isNew: !!p.isNew,
@@ -134,6 +133,23 @@ async function main() {
     await db.setting.create({ data: { key: "migration:delivery-fee-4", value: true } });
   }
 
+  // One-time update: remove warranty mentions from saved settings.
+  if (!(await db.setting.findUnique({ where: { key: "migration:remove-warranty" } }))) {
+    const store = await db.setting.findUnique({ where: { key: "store" } });
+    const sv = store?.value as { advantages?: { id: string; title: string; body: string }[] } | undefined;
+    if (sv?.advantages) {
+      sv.advantages = sv.advantages.filter((a) => !/warrant/i.test(`${a.id} ${a.title} ${a.body}`));
+      await db.setting.update({ where: { key: "store" }, data: { value: sv } });
+    }
+    const ann = await db.setting.findUnique({ where: { key: "announcements" } });
+    if (Array.isArray(ann?.value)) {
+      const lines = (ann.value as string[]).map((l) => (/warrant/i.test(l) ? "Questions? Our team is happy to help." : l));
+      await db.setting.update({ where: { key: "announcements" }, data: { value: lines } });
+    }
+    await db.setting.create({ data: { key: "migration:remove-warranty", value: true } });
+    console.log("Removed warranty mentions from settings.");
+  }
+
   // First admin: from ADMIN_EMAIL / ADMIN_PASSWORD, or — if no admin exists yet
   // and none were given — a generated login printed once in the build log.
   let email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
@@ -163,8 +179,15 @@ async function main() {
     const hash = `scrypt$${salt.toString("base64")}$${(await scrypt(password, salt, 64)).toString("base64")}`;
     const existing = await db.user.findUnique({ where: { email } });
     if (existing) {
-      if (existing.role !== "ADMIN") await db.user.update({ where: { email }, data: { role: "ADMIN", sessionVersion: { increment: 1 } } });
-      console.log(`Admin account ready: ${email} (existing password kept)`);
+      // ADMIN_EMAIL / ADMIN_PASSWORD always win: if the password differs, it is reset to the env value.
+      const [, s64, k64] = existing.passwordHash.split("$");
+      const same = s64 && k64 && (await scrypt(password, Buffer.from(s64, "base64"), 64)).toString("base64") === k64;
+      if (!same || existing.role !== "ADMIN") {
+        await db.user.update({ where: { email }, data: { role: "ADMIN", ...(same ? {} : { passwordHash: hash }), sessionVersion: { increment: 1 } } });
+        console.log(`Admin login updated from ADMIN_EMAIL / ADMIN_PASSWORD: ${email}`);
+      } else {
+        console.log(`Admin account ready: ${email}`);
+      }
     } else {
       await db.user.create({ data: { email, name: "Store admin", passwordHash: hash, role: "ADMIN" } });
       console.log(`Created admin account: ${email}`);

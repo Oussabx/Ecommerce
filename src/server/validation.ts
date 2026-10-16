@@ -53,7 +53,7 @@ export const contactSchema = z.object({
   name: trimmed(120).min(1, "Enter your name."),
   email: emailSchema,
   phone: z.union([phoneSchema, z.literal("")]).optional(),
-  topic: z.enum(["product", "order", "warranty", "other"]),
+  topic: z.enum(["product", "order", "repair", "other"]),
   message: trimmed(3000).min(10, "Tell us a little more (10+ characters)."),
 });
 

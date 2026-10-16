@@ -31,7 +31,7 @@ export const pages: Record<string, InfoPage> = {
         heading: "What we believe",
         blocks: [
           { p: "Buying technology shouldn't feel like guesswork. Spec sheets are long, product names are confusing and most stores show you everything at once." },
-          { p: "We do the opposite: a deliberately tight range, clear comparisons and honest information about price, availability and warranty." },
+          { p: "We do the opposite: a deliberately tight range, clear comparisons and honest information about price and availability." },
         ],
       },
       {
@@ -113,36 +113,6 @@ export const pages: Record<string, InfoPage> = {
     ],
   },
 
-  warranty: {
-    slug: "warranty",
-    index: "H/03",
-    title: "Warranty",
-    kicker: "Help — Warranty information",
-    intro: "Each product page shows the warranty that applies to it. This page explains how to use it.",
-    updated: "[[Date]]",
-    sections: [
-      {
-        heading: "What's covered",
-        blocks: [
-          { p: "Warranty covers manufacturing defects under normal use. It does not usually cover accidental damage, liquid damage or unauthorised repairs." },
-          { p: "[[Confirm warranty provider(s) — manufacturer, official distributor or OSA Techstore — and duration per brand or category.]]" },
-        ],
-      },
-      {
-        heading: "Making a claim",
-        blocks: [
-          {
-            ul: [
-              "Keep your order reference — it's your proof of purchase.",
-              "Contact us describing the issue; photos or a short video help.",
-              "We'll guide you through the manufacturer or distributor process.",
-            ],
-          },
-        ],
-      },
-    ],
-  },
-
   privacy: {
     slug: "privacy",
     index: "L/01",
@@ -199,8 +169,8 @@ export const pages: Record<string, InfoPage> = {
         blocks: [{ p: "Prices are in US dollars. Delivery fees are confirmed when we confirm your order. Payment is made by the method shown at checkout." }],
       },
       {
-        heading: "Delivery, returns and warranty",
-        blocks: [{ p: "See our Delivery, Returns & exchanges and Warranty pages, which form part of these terms." }],
+        heading: "Delivery and returns",
+        blocks: [{ p: "See our Delivery and Returns & exchanges pages, which form part of these terms." }],
       },
       {
         heading: "Business details",
@@ -215,7 +185,7 @@ export const faqs: { q: string; a: string }[] = [
   { q: "Do I need an account?", a: "No. You can check out as a guest. An account lets you see order history and save delivery addresses." },
   { q: "How can I pay?", a: "We currently accept cash on delivery in USD. Online card payment isn't available yet." },
   { q: "Where do you deliver?", a: "Anywhere in Lebanon — all eight governorates. The delivery fee and timing are confirmed by phone when we confirm your order." },
-  { q: "Are your products genuine?", a: "Yes. We sell genuine products from established brands. Warranty details are shown on each product page." },
-  { q: "What if my product has a problem?", a: "Contact us with your order reference. See the Warranty and Returns pages for how claims and returns work." },
+  { q: "Are your products genuine?", a: "Yes. We sell genuine products from established brands." },
+  { q: "What if my product has a problem?", a: "Contact us with your order reference. See the Returns page for how returns work." },
   { q: "Is the stock shown live?", a: "Stock levels are maintained by our team. We always confirm availability by phone before dispatch, so you will never be charged for something we can't deliver." },
 ];

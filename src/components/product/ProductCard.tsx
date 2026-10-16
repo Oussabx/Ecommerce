@@ -43,7 +43,6 @@ export function ProductCard({
           <p className="mt-2 hidden text-sm text-muted sm:block">{p.highlights.slice(0, 3).join(" · ")}</p>
           <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
             <Stock value={p.availability} />
-            {p.warranty && <span className="label text-muted">{p.warranty}</span>}
           </div>
           <Price price={p.price} compareAt={p.compareAt} className="mt-3 sm:hidden" />
         </div>
@@ -111,7 +110,6 @@ export function ProductCard({
         <Price price={p.price} compareAt={p.compareAt} />
         <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-1">
           <Stock value={p.availability} />
-          {p.warranty && <span className="label hidden text-muted xl:inline">{p.warranty}</span>}
         </div>
         <div className="relative z-10 mt-2 flex items-center justify-between gap-2 border-t border-rule pt-3">
           <QuickAdd slug={p.slug} compact />

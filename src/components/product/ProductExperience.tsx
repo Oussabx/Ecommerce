@@ -179,12 +179,6 @@ export function ProductExperience({ product }: { product: Product }) {
 
         {/* service info */}
         <dl className="mt-8 divide-y divide-rule border-y border-rule text-sm">
-          <InfoRow icon="shield" title="Warranty">
-            {product.warranty ?? "Warranty terms are confirmed with your order."}{" "}
-            <Link href="/warranty" className="underline underline-offset-4">
-              How warranty works
-            </Link>
-          </InfoRow>
           <InfoRow icon="truck" title="Delivery">
             {delivery.description}{" "}
             <Link href="/delivery" className="underline underline-offset-4">
@@ -231,7 +225,7 @@ export function ProductExperience({ product }: { product: Product }) {
   );
 }
 
-function InfoRow({ icon, title, children }: { icon: "shield" | "truck" | "cash"; title: string; children: React.ReactNode }) {
+function InfoRow({ icon, title, children }: { icon: "truck" | "cash"; title: string; children: React.ReactNode }) {
   return (
     <div className="grid grid-cols-[24px_88px_1fr] items-start gap-3 py-3.5">
       <Icon name={icon} size={20} />

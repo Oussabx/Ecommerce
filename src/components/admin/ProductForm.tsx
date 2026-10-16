@@ -38,7 +38,6 @@ export const emptyProduct: ProductInput = {
   isNew: false,
   releaseYear: new Date().getFullYear(),
   sortOrder: 100,
-  warranty: "",
   configLabel: "",
   artKind: "phone",
   colors: [{ key: "default", name: "Standard", swatch: "#2B2C2E", soldOut: false }],
@@ -324,7 +323,6 @@ export function ProductForm({
                 onChange={(v) => set("compareAtPrice", v as unknown as number)}
               />
               <Text label="Units in stock" inputMode="numeric" value={String(p.stock)} error={err("stock")} hint="Orders reserve stock automatically. Changes here are logged." onChange={(v) => set("stock", v as unknown as number)} />
-              <Text label="Warranty" optional value={p.warranty} hint="e.g. 1-year warranty via official distributor" onChange={(v) => set("warranty", v)} />
             </div>
           </Section>
 

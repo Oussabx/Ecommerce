@@ -34,7 +34,6 @@ export async function saveProduct(id: string | null, input: ProductInput) {
       isNew: p.isNew,
       releaseYear: p.releaseYear,
       sortOrder: p.sortOrder,
-      warranty: p.warranty || null,
       configLabel: p.configLabel || null,
       artKind: p.artKind || "phone",
       highlights: p.highlights,
